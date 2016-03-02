@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="gwt-user">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/gwt-2.5.1/gwt-user.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/mysql-connector-java-5.1.18-bin.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/gwt-2.5.1/gwt-user.jar!/" />
+    </SOURCES>
+  </library>
+</component>

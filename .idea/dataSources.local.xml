@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="Uml2Java" uuid="ab8689ba-b86a-49a0-99c6-7fec5be01d86">
+      <secret-storage>master_key</secret-storage>
+      <user-name>root</user-name>
+      <schema-pattern>uml2java.*</schema-pattern>
+      <default-schemas>uml2java.*</default-schemas>
+    </data-source>
+  </component>
+</project>

@@ -1,0 +1,32 @@
+/** Add css rules here for your application. */
+
+h1 {
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
+}
+
+body, td, a, div, .p {
+    font-family: arial, sans-serif
+}
+
+.headerPanel {
+    background-color: #7e8177;
+}
+
+.forgotPasswordLabelBackground {
+     color: #811a1e;
+ }
+
+.mainContainer {
+    background-color: #c6c6c6;
+}
+
+.panelBackground {
+    background-color: #c0c0c0;
+}
+
+.myLabel {
+    font-size: 70%;
+    /*font-weight: bold;*/
+}

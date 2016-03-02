@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+		  http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+           version="3.0">
+
+    <servlet>
+        <servlet-name>com.uml2Java.Uml2Java Uml2JavaService</servlet-name>
+        <servlet-class>com.uml2Java.server.service.Uml2JavaServiceImpl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>com.uml2Java.Uml2Java UsersService</servlet-name>
+        <servlet-class>com.uml2Java.server.service.UsersServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>com.uml2Java.Uml2Java Uml2JavaService</servlet-name>
+        <url-pattern>/Uml2Java/Uml2JavaService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>com.uml2Java.Uml2Java UsersService</servlet-name>
+        <url-pattern>/Uml2Java/UsersService</url-pattern>
+    </servlet-mapping>
+</web-app>
