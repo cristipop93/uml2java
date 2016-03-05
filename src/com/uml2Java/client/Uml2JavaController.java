@@ -16,9 +16,7 @@ import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer;
 import com.uml2Java.client.icons.Icons;
 import com.uml2Java.client.login.LoginController;
 import com.uml2Java.client.login.LoginView;
-import com.uml2Java.client.shapes.ClassShape;
-import com.uml2Java.client.shapes.IClassShape;
-import com.uml2Java.client.shapes.Shape;
+import com.uml2Java.client.shapes.*;
 import com.uml2Java.client.toolbar.ToolbarView;
 import com.uml2Java.client.uml2javaUtils.MouseState;
 import com.uml2Java.client.utilitiesPanels.rightPanel.RightPanelController;
@@ -126,6 +124,13 @@ public class Uml2JavaController {
     //    shape.scaleTo(0.8);
     shapes.add(shape);
     shapes.add(shape2);
+    final Link link = new AssociationLink(shape, shape2);
+    shape.getLinks().add(link);
+    shape2.getLinks().add(link);
+//    view.getDrawComponent().clearSurface();
+    for (Shape shapeTemp : shapes) {
+      shapeTemp.redraw();
+    }
     view.getDrawComponent().redrawSurface();
     MouseDownHandler mouseDownHandler = new MouseDownHandler() {
       @Override

@@ -32,6 +32,7 @@ public class ClassShape extends Shape implements IClassShape {
   private List<TextSprite> methodTextSprite;
   private List<Method> methods;
   private List<Attribute> attributes;
+  private List<Link> links;
   private int originalWidth, originalHeight;
   private double scaleFactor = 1;
 
@@ -50,6 +51,7 @@ public class ClassShape extends Shape implements IClassShape {
     this.methods = methods;
     this.attributes = attribs;
     this.dataTpe = new ObjectDataTypes(id, title);
+    this.links = new ArrayList<Link>();
     draw();
   }
 
@@ -161,6 +163,12 @@ public class ClassShape extends Shape implements IClassShape {
     drawComponent.addSprite(line3);
   }
 
+  private void drawLinks() {
+    for(Link link : links) {
+      link.draw(drawComponent);
+    }
+  }
+
   public void remove() {
     drawComponent.remove(rectangle);
     drawComponent.remove(titleSprite);
@@ -210,6 +218,8 @@ public class ClassShape extends Shape implements IClassShape {
     titleSprite
         .setTranslation(x + (width - ((title.length() + BRACKETS_SIZE) * 7 * scaleFactor)) / 2, y + 5 * scaleFactor);
     translateTextAndLine();
+
+    drawLinks();
   }
 
 
@@ -263,5 +273,9 @@ public class ClassShape extends Shape implements IClassShape {
   @Override
   public void setMethodsList(List<Method> methods) {
     this.methods = new ArrayList<Method>(methods);
+  }
+
+  public List<Link> getLinks() {
+    return links;
   }
 }
