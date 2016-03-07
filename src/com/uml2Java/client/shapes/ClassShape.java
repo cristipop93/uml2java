@@ -35,6 +35,7 @@ public class ClassShape extends Shape implements IClassShape {
   private List<Link> links;
   private int originalWidth, originalHeight;
   private double scaleFactor = 1;
+  private Logger logger = Logger.getLogger(ClassShape.class.getName());
 
   public ClassShape(DrawComponent drawComponent, int x, int y, int width, int height, String title,
       List<Attribute> attribs, List<Method> methods) {
@@ -86,13 +87,13 @@ public class ClassShape extends Shape implements IClassShape {
     double auxY = y + (25 + 5) * scaleFactor;
 
     for (TextSprite attributeSprite : attributeTextSprite) {
-      attributeSprite.setTranslation(x + 5, auxY);
+      attributeSprite.setTranslation(x + (5 * scaleFactor), auxY);
       auxY += (17 * scaleFactor);
     }
     line3.setTranslation(x, auxY);
     auxY += (5 * scaleFactor);
     for (TextSprite methodSprite : methodTextSprite) {
-      methodSprite.setTranslation(x + 5, auxY);
+      methodSprite.setTranslation(x + (5 * scaleFactor), auxY);
       auxY += (17 * scaleFactor);
     }
   }
@@ -109,7 +110,7 @@ public class ClassShape extends Shape implements IClassShape {
     determineMaxWidth();
     attributeTextSprite = new ArrayList<TextSprite>();
     methodTextSprite = new ArrayList<TextSprite>();
-    this.height = (int) ((25 + 5 + 5 + 5 + methods.size() * 17 + attributes.size() * 17) * scaleFactor);
+    this.height = (int) ((25 + 5 + 5 + 5 + methods.size() * 17 + attributes.size() * 17)); //* scaleFactor);
     // 25 -> title;  5 space after line title; 5 space before second line; 5 space after second line
     this.originalHeight = height;
     this.originalWidth = width;
@@ -156,7 +157,7 @@ public class ClassShape extends Shape implements IClassShape {
     }
 
     drawBoxAndTitle();
-    translateTo(x, y);
+    scaleTo(scaleFactor);
     drawComponent.addSprite(rectangle);
     drawComponent.addSprite(titleSprite);
     drawComponent.addSprite(line2);
@@ -216,7 +217,7 @@ public class ClassShape extends Shape implements IClassShape {
     rectangle.setTranslation(x, y);
     line2.setTranslation(x, y + 25 * scaleFactor);
     titleSprite
-        .setTranslation(x + (width - ((title.length() + BRACKETS_SIZE) * 7 * scaleFactor)) / 2, y + 5 * scaleFactor);
+        .setTranslation(x + (width - ((title.length() + BRACKETS_SIZE) * 7) * scaleFactor) / 2, y + 5 * scaleFactor);
     translateTextAndLine();
 
     drawLinks();
@@ -227,8 +228,6 @@ public class ClassShape extends Shape implements IClassShape {
   public void scaleTo(double scale) {
     this.width = (int) (originalWidth * scale);
     this.height = (int) (originalHeight * scale);
-    //    this.x = (int) (x * scale);
-    //    this.y = (int) (y * scale);
 
     this.scaleFactor = scale;
     rectangle.setScaling(scale);

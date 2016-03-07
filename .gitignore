@@ -2,3 +2,4 @@ lib
 .idea
 *.class
 .idea/workspace.xml
+out
