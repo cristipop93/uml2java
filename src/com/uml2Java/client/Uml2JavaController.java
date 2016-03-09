@@ -120,13 +120,18 @@ public class Uml2JavaController {
     ClassShape shape = new ClassShape(view.getDrawComponent(), 300, 200, 100, 65, "User", attributes, methods);
     ClassShape shape2 = new ClassShape(view.getDrawComponent(), 600, 300, 100, 65, "classExample",
         new ArrayList<Attribute>(), new ArrayList<Method>());
+    ClassShape shape3 = new ClassShape(view.getDrawComponent(), 400, 300, 100, 65, "AClass", new ArrayList<Attribute>(), new ArrayList<Method>());
     //    shape2.scaleTo(0.8);
     //    shape.scaleTo(0.8);
     shapes.add(shape);
     shapes.add(shape2);
-    final Link link = new AssociationLink(shape, shape2);
+    shapes.add(shape3);
+    Link link = new AssociationLink(shape, shape2);
     shape.getLinks().add(link);
     shape2.getLinks().add(link);
+    Link link11 = new AssociationLink(shape, shape3);
+    shape.getLinks().add(link11);
+    shape3.getLinks().add(link11);
 //    view.getDrawComponent().clearSurface();
     for (Shape shapeTemp : shapes) {
       shapeTemp.redraw();
