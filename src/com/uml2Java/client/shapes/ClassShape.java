@@ -165,8 +165,50 @@ public class ClassShape extends Shape implements IClassShape {
   }
 
   private void drawLinks() {
+    // establish if this class is first or not
+    // number the links on each side (NE, NW, SW, SE)
+    // draw only the ones on NE, then NW, then SW, then SE, then the horizontal and vertical
+    //add param on draw as the link number (the i from for)
+
+    List<Link> NWLinks = new ArrayList<Link>();
+    List<Link> NELinks = new ArrayList<Link>();
+    List<Link> SWLinks = new ArrayList<Link>();
+    List<Link> SELinks = new ArrayList<Link>();
+    List<Link> HORVLinks = new ArrayList<Link>();
+    for (Link link : links) {
+      LinkPosition linkPosition = link.getLinkPosition(this);
+      if (linkPosition == LinkPosition.NW)
+        NWLinks.add(link);
+      else if (linkPosition == LinkPosition.NE)
+        NELinks.add(link);
+      else if (linkPosition == LinkPosition.SW)
+        SWLinks.add(link);
+      else if (linkPosition == LinkPosition.SE)
+        SELinks.add(link);
+      else
+        HORVLinks.add(link);
+    }
+
+    setLinkOffsets(NWLinks);
+    setLinkOffsets(NELinks);
+    setLinkOffsets(SWLinks);
+    setLinkOffsets(SELinks);
+
     for(Link link : links) {
       link.draw(drawComponent);
+    }
+  }
+
+  private void setLinkOffsets(List<Link> links) {
+    for (int i=0; i < links.size(); i++) {
+      Link link = links.get(i);
+      if (link.isFirst(this)) {
+        link.setOffsetFirst(i+1);
+        link.setTotalFirst(links.size());
+      } else {
+        link.setOffsetSecond(i+1);
+        link.setTotalSecond(links.size());
+      }
     }
   }
 
