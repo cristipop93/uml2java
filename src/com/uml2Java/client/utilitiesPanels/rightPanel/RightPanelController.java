@@ -15,12 +15,9 @@ import com.uml2Java.client.utilitiesPanels.editAttributes.EditAttributesControll
 import com.uml2Java.client.utilitiesPanels.editAttributes.EditAttributesView;
 import com.uml2Java.client.utilitiesPanels.editMethods.EditMethodController;
 import com.uml2Java.client.utilitiesPanels.editMethods.EditMethodView;
-import com.uml2Java.shared.AccessType;
 import com.uml2Java.shared.Attribute;
 import com.uml2Java.shared.Method;
-import com.uml2Java.shared.PrimitiveDataTypes;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 /**

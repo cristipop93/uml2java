@@ -121,17 +121,27 @@ public class Uml2JavaController {
     ClassShape shape2 = new ClassShape(view.getDrawComponent(), 600, 300, 100, 65, "classExample",
         new ArrayList<Attribute>(), new ArrayList<Method>());
     ClassShape shape3 = new ClassShape(view.getDrawComponent(), 400, 300, 100, 65, "AClass", new ArrayList<Attribute>(), new ArrayList<Method>());
+    ClassShape shape4 = new ClassShape(view.getDrawComponent(), 350, 450, 100, 65, "BClass", new ArrayList<Attribute>(), new ArrayList<Method>());
+    ClassShape shape5 = new ClassShape(view.getDrawComponent(), 150, 100, 100, 65, "CClass", new ArrayList<Attribute>(), new ArrayList<Method>());
     //    shape2.scaleTo(0.8);
     //    shape.scaleTo(0.8);
     shapes.add(shape);
     shapes.add(shape2);
     shapes.add(shape3);
+    shapes.add(shape4);
+    shapes.add(shape5);
     Link link = new AssociationLink(shape, shape2);
     shape.getLinks().add(link);
     shape2.getLinks().add(link);
     Link link11 = new AssociationLink(shape, shape3);
     shape.getLinks().add(link11);
     shape3.getLinks().add(link11);
+    Link link2 = new AssociationLink(shape, shape4);
+    shape.getLinks().add(link2);
+    shape4.getLinks().add(link2);
+    Link link3 = new AssociationLink(shape4, shape5);
+    shape4.getLinks().add(link3);
+    shape5.getLinks().add(link3);
 //    view.getDrawComponent().clearSurface();
     for (Shape shapeTemp : shapes) {
       shapeTemp.redraw();
@@ -169,6 +179,9 @@ public class Uml2JavaController {
       @Override
       public void onMouseUp(MouseUpEvent event) {
         clickedShape = null;
+        for (Shape shape1 : shapes)
+          shape1.drawLinks();
+        view.getDrawComponent().redrawSurface();
       }
     };
 

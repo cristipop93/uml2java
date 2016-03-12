@@ -79,4 +79,6 @@ public abstract class Shape {
   }
 
   public abstract void redraw();
+
+  public abstract void drawLinks();
 }

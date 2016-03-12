@@ -164,35 +164,31 @@ public class ClassShape extends Shape implements IClassShape {
     drawComponent.addSprite(line3);
   }
 
-  private void drawLinks() {
+  public void drawLinks() {
     // establish if this class is first or not
-    // number the links on each side (NE, NW, SW, SE)
-    // draw only the ones on NE, then NW, then SW, then SE, then the horizontal and vertical
-    //add param on draw as the link number (the i from for)
+    // count the links on each side (N, S, E, W)
+    // establish for each side how many links are, than set for each one an offset where should be drawn
+    List<Link> NLinks = new ArrayList<Link>();
+    List<Link> SLinks = new ArrayList<Link>();
+    List<Link> ELinks = new ArrayList<Link>();
+    List<Link> WLinks = new ArrayList<Link>();
 
-    List<Link> NWLinks = new ArrayList<Link>();
-    List<Link> NELinks = new ArrayList<Link>();
-    List<Link> SWLinks = new ArrayList<Link>();
-    List<Link> SELinks = new ArrayList<Link>();
-    List<Link> HORVLinks = new ArrayList<Link>();
     for (Link link : links) {
       LinkPosition linkPosition = link.getLinkPosition(this);
-      if (linkPosition == LinkPosition.NW)
-        NWLinks.add(link);
-      else if (linkPosition == LinkPosition.NE)
-        NELinks.add(link);
-      else if (linkPosition == LinkPosition.SW)
-        SWLinks.add(link);
-      else if (linkPosition == LinkPosition.SE)
-        SELinks.add(link);
-      else
-        HORVLinks.add(link);
+      if (linkPosition == LinkPosition.N)
+        NLinks.add(link);
+      else if (linkPosition == LinkPosition.S)
+        SLinks.add(link);
+      else if (linkPosition == LinkPosition.E)
+        ELinks.add(link);
+      else if (linkPosition == LinkPosition.W)
+        WLinks.add(link);
     }
 
-    setLinkOffsets(NWLinks);
-    setLinkOffsets(NELinks);
-    setLinkOffsets(SWLinks);
-    setLinkOffsets(SELinks);
+    setLinkOffsets(NLinks);
+    setLinkOffsets(SLinks);
+    setLinkOffsets(ELinks);
+    setLinkOffsets(WLinks);
 
     for(Link link : links) {
       link.draw(drawComponent);
