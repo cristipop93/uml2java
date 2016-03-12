@@ -19,13 +19,13 @@ public abstract class Link {
   }
 
   // Establish where the link is relative to the given shape
-  public LinkPosition getLinkPosition(Shape relativeToShape) {
+  public Position getLinkPosition(Shape relativeToShape) {
     boolean isFirst = false;
     if(firstShape.getId() == relativeToShape.getId())
       isFirst = true;
 
-    LinkPosition firstShapePosition = LinkPosition.HORV;
-    LinkPosition secondShapePosition = LinkPosition.HORV;
+    Position firstShapePosition = Position.HORV;
+    Position secondShapePosition = Position.HORV;
 
     int fx1 = firstShape.getX();
     int fy1 = firstShape.getY();
@@ -40,78 +40,78 @@ public abstract class Link {
     if (sx1 >= fx1 && sx1 <= fx2) {
       /* s is below f */
       if (sy1 >= fy2) {
-        firstShapePosition = LinkPosition.HORV;
-        secondShapePosition = LinkPosition.HORV;
+        firstShapePosition = Position.HORV;
+        secondShapePosition = Position.HORV;
       }
       /* s is above f */
       else if (fy1 >= sy2) {
-        firstShapePosition = LinkPosition.HORV;
-        secondShapePosition = LinkPosition.HORV;
+        firstShapePosition = Position.HORV;
+        secondShapePosition = Position.HORV;
       }
     }
     /** horizontal intersection sx1 <= fx1 <= sx2 (II) */
     else if (fx1 >= sx1 && fx1 <= sx2) {
       /* f is below */
       if (fy1 >= sy2) {
-        firstShapePosition = LinkPosition.HORV;
-        secondShapePosition = LinkPosition.HORV;
+        firstShapePosition = Position.HORV;
+        secondShapePosition = Position.HORV;
       }
       /* f is above */
       else if (fy2 <= sy1) {
-        firstShapePosition = LinkPosition.HORV;
-        secondShapePosition = LinkPosition.HORV;
+        firstShapePosition = Position.HORV;
+        secondShapePosition = Position.HORV;
       }
     }
     /** vertical intersection fy1 <= sy1 <= fy2 (I) */
     else if (sy1 >= fy1 && sy1 <= fy2) {
       /* s is to the right */
       if (sx1 >= fx2) {
-        firstShapePosition = LinkPosition.HORV;
-        secondShapePosition = LinkPosition.HORV;
+        firstShapePosition = Position.HORV;
+        secondShapePosition = Position.HORV;
       }
       /* s is to the left */
       else if (sx2 <= fx1) {
-        firstShapePosition = LinkPosition.HORV;
-        secondShapePosition = LinkPosition.HORV;
+        firstShapePosition = Position.HORV;
+        secondShapePosition = Position.HORV;
       }
     }
     /** vertical intersection sy1 <= fy1 <= sy2 (II) */
     else if (fy1 >= sy1 && fy1 <= sy2) {
       /* f is to the right */
       if (fx1 >= sx2) {
-        firstShapePosition = LinkPosition.HORV;
-        secondShapePosition = LinkPosition.HORV;
+        firstShapePosition = Position.HORV;
+        secondShapePosition = Position.HORV;
       }
       /* f is to the left */
       else if (fx2 <= sx1) {
-        firstShapePosition = LinkPosition.HORV;
-        secondShapePosition = LinkPosition.HORV;
+        firstShapePosition = Position.HORV;
+        secondShapePosition = Position.HORV;
       }
     }
     /** s is below */
     else if (sy1 > fy2) {
       /* s is to the right */
       if (sx1 >= fx2) {
-        firstShapePosition = LinkPosition.E;
-        secondShapePosition = LinkPosition.N;
+        firstShapePosition = Position.E;
+        secondShapePosition = Position.N;
       }
       /* s is to the left */
       else if (sx2 <= fx1) {
-        firstShapePosition = LinkPosition.S;
-        secondShapePosition = LinkPosition.E;
+        firstShapePosition = Position.S;
+        secondShapePosition = Position.E;
       }
     }
     /** s is above */
     else if (sy2 < fy1) {
       /* s is to the right */
       if (sx1 >= fx2) {
-        firstShapePosition = LinkPosition.N;
-        secondShapePosition = LinkPosition.W;
+        firstShapePosition = Position.N;
+        secondShapePosition = Position.W;
       }
       /* s is to the left */
       else if (sx2 <= fx1) {
-        firstShapePosition = LinkPosition.W;
-        secondShapePosition = LinkPosition.S;
+        firstShapePosition = Position.W;
+        secondShapePosition = Position.S;
       }
     }
     if(!isFirst){
@@ -147,13 +147,13 @@ public abstract class Link {
       }
       /* s is below f */
       if (sy1 >= fy2) {
-        result.add(new Point(sx1 + diff, fy2));
-        result.add(new Point(sx1 + diff, sy1));
+        result.add(new Point(sx1 + diff, fy2, Position.S));
+        result.add(new Point(sx1 + diff, sy1, Position.N));
       }
       /* s is above f */
       else if (fy1 >= sy2) {
-        result.add(new Point(sx1 + diff, fy1));
-        result.add(new Point(sx1 + diff, sy2));
+        result.add(new Point(sx1 + diff, fy1, Position.N));
+        result.add(new Point(sx1 + diff, sy2, Position.S));
       }
     }
     /** horizontal intersection sx1 <= fx1 <= sx2 (II) */
@@ -166,13 +166,13 @@ public abstract class Link {
       }
       /* f is below */
       if (fy1 >= sy2) {
-        result.add(new Point(fx1 + diff, fy1));
-        result.add(new Point(fx1 + diff, sy2));
+        result.add(new Point(fx1 + diff, fy1, Position.N));
+        result.add(new Point(fx1 + diff, sy2, Position.S));
       }
       /* f is above */
       else if (fy2 <= sy1) {
-        result.add(new Point(fx1 + diff, fy2));
-        result.add(new Point(fx1 + diff, sy1));
+        result.add(new Point(fx1 + diff, fy2, Position.S));
+        result.add(new Point(fx1 + diff, sy1, Position.N));
       }
     }
     /** vertical intersection fy1 <= sy1 <= fy2 (I) */
@@ -185,13 +185,13 @@ public abstract class Link {
       }
       /* s is to the right */
       if (sx1 >= fx2) {
-        result.add(new Point(fx2, sy1 + diff));
-        result.add(new Point(sx1, sy1 + diff));
+        result.add(new Point(fx2, sy1 + diff, Position.E));
+        result.add(new Point(sx1, sy1 + diff, Position.W));
       }
       /* s is to the left */
       else if (sx2 <= fx1) {
-        result.add(new Point(fx1, sy1 + diff));
-        result.add(new Point(sx2, sy1 + diff));
+        result.add(new Point(fx1, sy1 + diff, Position.W));
+        result.add(new Point(sx2, sy1 + diff, Position.E));
       }
     }
     /** vertical intersection sy1 <= fy1 <= sy2 (II) */
@@ -204,13 +204,13 @@ public abstract class Link {
       }
       /* f is to the right */
       if (fx1 >= sx2) {
-        result.add(new Point(fx1, fy1 + diff));
-        result.add(new Point(sx2, fy1 + diff));
+        result.add(new Point(fx1, fy1 + diff, Position.W));
+        result.add(new Point(sx2, fy1 + diff, Position.E));
       }
       /* f is to the left */
       else if (fx2 <= sx1) {
-        result.add(new Point(fx2, fy1 + diff));
-        result.add(new Point(sx1, fy1 + diff));
+        result.add(new Point(fx2, fy1 + diff, Position.E));
+        result.add(new Point(sx1, fy1 + diff, Position.W));
       }
     }
     /** s is below */
@@ -221,15 +221,15 @@ public abstract class Link {
       int msY = sy1 + (sy2 - sy1) / (totalSecond + 1) * offsetSecond;
       /* s is to the right */
       if (sx1 >= fx2) {
-        result.add(new Point(fx2, mfY));
-        result.add(new Point(msX, mfY));
-        result.add(new Point(msX, sy1));
+        result.add(new Point(fx2, mfY, Position.E));
+        result.add(new Point(msX, mfY, Position.HORV));
+        result.add(new Point(msX, sy1, Position.N));
       }
       /* s is to the left */
       else if (sx2 <= fx1) {
-        result.add(new Point(mfX, fy2));
-        result.add(new Point(mfX, msY));
-        result.add(new Point(sx2, msY));
+        result.add(new Point(mfX, fy2, Position.S));
+        result.add(new Point(mfX, msY, Position.HORV));
+        result.add(new Point(sx2, msY, Position.E));
       }
     }
     /** s is above */
@@ -240,15 +240,15 @@ public abstract class Link {
       int mfY = fy1 + (fy2 - fy1) / (totalFirst + 1) * offsetFirst;
       /* s is to the right */
       if (sx1 >= fx2) {
-        result.add(new Point(mfX, fy1));
-        result.add(new Point(mfX, msY));
-        result.add(new Point(sx1, msY));
+        result.add(new Point(mfX, fy1, Position.N));
+        result.add(new Point(mfX, msY, Position.HORV));
+        result.add(new Point(sx1, msY, Position.W));
       }
       /* s is to the left */
       else if (sx2 <= fx1) {
-        result.add(new Point(fx1, mfY));
-        result.add(new Point(msX, mfY));
-        result.add(new Point(msX, sy2));
+        result.add(new Point(fx1, mfY, Position.W));
+        result.add(new Point(msX, mfY, Position.HORV));
+        result.add(new Point(msX, sy2, Position.S));
       }
     }
 

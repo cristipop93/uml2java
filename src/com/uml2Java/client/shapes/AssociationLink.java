@@ -36,8 +36,19 @@ public class AssociationLink extends Link {
     if (points.size() >= 2) {
       Point point1 = points.get(0);
       textSprite.setText("1..*");
-      textSprite.setX(point1.getX());
-      textSprite.setY(point1.getY());
+      if (point1.getPosition() == Position.N) {
+        textSprite.setX(point1.getX() + 2);
+        textSprite.setY(point1.getY() - 20);
+      } else if (point1.getPosition() == Position.S) {
+        textSprite.setX(point1.getX() + 2);
+        textSprite.setY(point1.getY() + 3);
+      } else if (point1.getPosition() == Position.E) {
+        textSprite.setX(point1.getX() + 7);
+        textSprite.setY(point1.getY() + 3);
+      } else if (point1.getPosition() == Position.W) {
+        textSprite.setX(point1.getX() - 25);
+        textSprite.setY(point1.getY() + 3);
+      }
       textSprite.setFontSize(12);
       textSprite.setFill(RGB.BLACK);
       drawComponent.addSprite(textSprite);

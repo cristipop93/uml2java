@@ -174,14 +174,14 @@ public class ClassShape extends Shape implements IClassShape {
     List<Link> WLinks = new ArrayList<Link>();
 
     for (Link link : links) {
-      LinkPosition linkPosition = link.getLinkPosition(this);
-      if (linkPosition == LinkPosition.N)
+      Position linkPosition = link.getLinkPosition(this);
+      if (linkPosition == Position.N)
         NLinks.add(link);
-      else if (linkPosition == LinkPosition.S)
+      else if (linkPosition == Position.S)
         SLinks.add(link);
-      else if (linkPosition == LinkPosition.E)
+      else if (linkPosition == Position.E)
         ELinks.add(link);
-      else if (linkPosition == LinkPosition.W)
+      else if (linkPosition == Position.W)
         WLinks.add(link);
     }
 

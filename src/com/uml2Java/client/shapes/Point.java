@@ -5,10 +5,13 @@ package com.uml2Java.client.shapes;
  */
 public class Point {
   private int x, y;
+  //Position relative to the shape
+  private Position position;
 
-  public Point(int x, int y) {
+  public Point(int x, int y, Position position) {
     this.x = x;
     this.y = y;
+    this.position = position;
   }
 
   public int getX() {
@@ -17,5 +20,9 @@ public class Point {
 
   public int getY() {
     return y;
+  }
+
+  public Position getPosition() {
+    return position;
   }
 }

@@ -130,7 +130,7 @@ public class Uml2JavaController {
     shapes.add(shape3);
     shapes.add(shape4);
     shapes.add(shape5);
-    Link link = new AssociationLink(shape, shape2);
+    Link link = new GeneralizationLink(shape2, shape);
     shape.getLinks().add(link);
     shape2.getLinks().add(link);
     Link link11 = new AssociationLink(shape, shape3);
