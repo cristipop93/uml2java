@@ -3,3 +3,7 @@ lib
 *.class
 .idea/workspace.xml
 out
+/Uml2Java-v2.iml
+war/uml2java/*
+/.idea/*
+.idea/*
