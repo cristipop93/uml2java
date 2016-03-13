@@ -15,12 +15,11 @@ import com.uml2Java.client.utilitiesPanels.rightPanel.RightPanelView;
  */
 public class Uml2JavaView implements Uml2JavaController.IUml2JavaView{
   private BorderLayoutContainer mainContainer;
-  private ToggleButton selectButton;
-  private ToggleButton classButton;
 
   private DrawComponent drawComponent;
   private CenterLayoutContainer centerLayoutContainer;
   private ContentPanel rightPanel;
+  private ContentPanel leftPanel;
 
 
   public Uml2JavaView() {
@@ -29,24 +28,12 @@ public class Uml2JavaView implements Uml2JavaController.IUml2JavaView{
   private void initGUI() {
     mainContainer = new BorderLayoutContainer();
 
-    ContentPanel leftPanel = new ContentPanel();
+    leftPanel = new ContentPanel();
 
     leftPanel.setHeaderVisible(true);
     leftPanel.setHeadingHtml("<div align='center'>Utilities</div>");
     leftPanel.setAnimCollapse(true);
     leftPanel.setResize(false);
-    VBoxLayoutContainer vBoxLayoutContainer = new VBoxLayoutContainer();
-    leftPanel.add(vBoxLayoutContainer);
-
-    ToggleGroup group = new ToggleGroup();
-    selectButton = new ToggleButton("Select");
-    classButton = new ToggleButton("Class");
-    group.add(selectButton);
-    group.add(classButton);
-    group.setValue(selectButton);
-
-    vBoxLayoutContainer.add(selectButton, new BoxLayoutContainer.BoxLayoutData(new Margins(5,0,0,10)));
-    vBoxLayoutContainer.add(classButton, new BoxLayoutContainer.BoxLayoutData(new Margins(5,0,0,10)));
 
     //TODO add utilities to left panel
 
@@ -91,19 +78,15 @@ public class Uml2JavaView implements Uml2JavaController.IUml2JavaView{
     return centerLayoutContainer;
   }
 
-  @Override
-  public ToggleButton getSelectButton() {
-    return selectButton;
-  }
-
-  @Override
-  public ToggleButton getClassButton() {
-    return classButton;
-  }
 
   @Override
   public ContentPanel getRightPanel() {
     return rightPanel;
+  }
+
+  @Override
+  public ContentPanel getLeftPanel() {
+    return leftPanel;
   }
 
   @Override

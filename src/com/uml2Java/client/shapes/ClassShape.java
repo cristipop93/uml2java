@@ -20,21 +20,18 @@ import java.util.logging.Logger;
 /**
  * Created by Cristi on 2/8/2016.
  */
-public class ClassShape extends Shape implements IClassShape {
+public class ClassShape extends Shape {
   private static final int BRACKETS_SIZE = 4;
 
   private RectangleSprite rectangle;
   private PathSprite line2;
   private PathSprite line3;
   private TextSprite titleSprite;
-  private DrawComponent drawComponent;
   private List<TextSprite> attributeTextSprite;
   private List<TextSprite> methodTextSprite;
   private List<Method> methods;
   private List<Attribute> attributes;
-  private List<Link> links;
   private int originalWidth, originalHeight;
-  private double scaleFactor = 1;
   private Logger logger = Logger.getLogger(ClassShape.class.getName());
 
   public ClassShape(DrawComponent drawComponent, int x, int y, int width, int height, String title,
@@ -164,50 +161,6 @@ public class ClassShape extends Shape implements IClassShape {
     drawComponent.addSprite(line3);
   }
 
-  public void drawLinks() {
-    // establish if this class is first or not
-    // count the links on each side (N, S, E, W)
-    // establish for each side how many links are, than set for each one an offset where should be drawn
-    List<Link> NLinks = new ArrayList<Link>();
-    List<Link> SLinks = new ArrayList<Link>();
-    List<Link> ELinks = new ArrayList<Link>();
-    List<Link> WLinks = new ArrayList<Link>();
-
-    for (Link link : links) {
-      Position linkPosition = link.getLinkPosition(this);
-      if (linkPosition == Position.N)
-        NLinks.add(link);
-      else if (linkPosition == Position.S)
-        SLinks.add(link);
-      else if (linkPosition == Position.E)
-        ELinks.add(link);
-      else if (linkPosition == Position.W)
-        WLinks.add(link);
-    }
-
-    setLinkOffsets(NLinks);
-    setLinkOffsets(SLinks);
-    setLinkOffsets(ELinks);
-    setLinkOffsets(WLinks);
-
-    for(Link link : links) {
-      link.draw(drawComponent);
-    }
-  }
-
-  private void setLinkOffsets(List<Link> links) {
-    for (int i=0; i < links.size(); i++) {
-      Link link = links.get(i);
-      if (link.isFirst(this)) {
-        link.setOffsetFirst(i+1);
-        link.setTotalFirst(links.size());
-      } else {
-        link.setOffsetSecond(i+1);
-        link.setTotalSecond(links.size());
-      }
-    }
-  }
-
   public void remove() {
     drawComponent.remove(rectangle);
     drawComponent.remove(titleSprite);
@@ -292,27 +245,19 @@ public class ClassShape extends Shape implements IClassShape {
     this.y = y;
   }
 
-  @Override
   public List<Attribute> getAttributesList() {
     return attributes;
   }
 
-  @Override
   public void setAttributesList(List<Attribute> attributes) {
     this.attributes = new ArrayList<Attribute>(attributes);
   }
 
-  @Override
   public List<Method> getMethodsList() {
     return methods;
   }
 
-  @Override
   public void setMethodsList(List<Method> methods) {
     this.methods = new ArrayList<Method>(methods);
-  }
-
-  public List<Link> getLinks() {
-    return links;
   }
 }

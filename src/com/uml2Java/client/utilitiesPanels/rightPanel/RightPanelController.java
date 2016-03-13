@@ -1,15 +1,17 @@
 package com.uml2Java.client.utilitiesPanels.rightPanel;
 
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.Window;
 import com.sencha.gxt.widget.core.client.box.MessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
+import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.uml2Java.client.Uml2JavaController;
 import com.uml2Java.client.shapes.ClassShape;
-import com.uml2Java.client.shapes.IClassShape;
+import com.uml2Java.client.shapes.InterfaceShape;
 import com.uml2Java.client.shapes.Shape;
 import com.uml2Java.client.utilitiesPanels.editAttributes.EditAttributesController;
 import com.uml2Java.client.utilitiesPanels.editAttributes.EditAttributesView;
@@ -26,58 +28,71 @@ import java.util.logging.Logger;
 public class RightPanelController {
   public interface IRightPanelView {
     TextButton getApplyButton();
-
     TextButton getCancelButton();
-
     TextButton getRemoveButton();
-
     TextField getTitleField();
-
     Grid<Attribute> getAttributeGrid();
-
     TextButton getAddAttribute();
-
     TextButton getEditAttribute();
-
     TextButton getRemoveAttribute();
-
     Grid<Method> getMethodGrid();
-
     TextButton getAddMethod();
-
     TextButton getEditMethod();
-
     TextButton getRemoveMethod();
-
+    ContentPanel getAttributePanel();
+    ContentPanel getMethodPanel();
+    ContentPanel getLinkPanel();
+    AccordionLayoutContainer getAccordion();
     Widget asWidget();
   }
 
   private IRightPanelView view;
-  private IClassShape classShape;
+  private Shape shape;
   private Logger log = Logger.getLogger(RightPanelController.class.getName());
 
-  public RightPanelController(IRightPanelView view, IClassShape classShape) {
+  public RightPanelController(IRightPanelView view, Shape shape) {
     this.view = view;
-    this.classShape = classShape;
-    if (classShape != null)
-      load(classShape);
+    this.shape = shape;
+    if (shape != null)
+      load(shape);
     addListeners();
   }
 
-  public void load(IClassShape classShape) {
-    this.classShape = classShape;
-    view.getTitleField().setValue(this.classShape.getTitle());
-
-    view.getAttributeGrid().getStore().clear();
-    for (Attribute attribute : this.classShape.getAttributesList()) {
-      view.getAttributeGrid().getStore().add(attribute);
+  public void load(Shape shape) {
+    this.shape = shape;
+    if (shape instanceof ClassShape) {
+      ClassShape classShape = (ClassShape) shape;
+      view.getTitleField().setValue(classShape.getTitle());
+      view.getAttributeGrid().getStore().clear();
+      for (Attribute attribute : classShape.getAttributesList()) {
+        view.getAttributeGrid().getStore().add(attribute);
+      }
+      view.getMethodGrid().getStore().clear();
+      for (Method method : classShape.getMethodsList()) {
+        view.getMethodGrid().getStore().add(method);
+      }
+      shapeLoaded(true);
+    } else if (shape instanceof InterfaceShape) {
+      InterfaceShape interfaceShape = (InterfaceShape) shape;
+      view.getTitleField().setValue(interfaceShape.getTitle());
+      view.getMethodGrid().getStore().clear();
+      for (Method method : interfaceShape.getMethodsList()) {
+        view.getMethodGrid().getStore().add(method);
+      }
+      shapeLoaded(false);
     }
 
-    view.getMethodGrid().getStore().clear();
-    for (Method method : this.classShape.getMethodsList()) {
-      view.getMethodGrid().getStore().add(method);
-    }
+  }
 
+  private void shapeLoaded(boolean showAllPanels) {
+    if (showAllPanels) {
+      view.getAttributePanel().setEnabled(true);
+      view.getAttributePanel().expand();
+    } else {
+      view.getAttributePanel().setEnabled(false);
+      view.getAttributePanel().collapse();
+      view.getMethodPanel().expand();
+    }
   }
 
   private void addListeners() {
@@ -98,9 +113,8 @@ public class RightPanelController {
     view.getRemoveButton().addSelectHandler(new SelectEvent.SelectHandler() {
       @Override
       public void onSelect(SelectEvent event) {
-        ClassShape selectedClass = (ClassShape) classShape;
-        Uml2JavaController.getInstance().getShapes().remove(selectedClass);
-        selectedClass.remove();
+        Uml2JavaController.getInstance().getShapes().remove(shape);
+        shape.remove();
         onCancelButton();
       }
     });
@@ -192,16 +206,23 @@ public class RightPanelController {
   }
 
   private void onCancelButton() {
-    classShape = null;
+    shape = null;
     view.getTitleField().setValue("");
     view.getAttributeGrid().getStore().clear();
     view.getMethodGrid().getStore().clear();
   }
 
   private void doOnApplyButton() {
-    classShape.setTitle(view.getTitleField().getValue());
-    classShape.setAttributesList(view.getAttributeGrid().getStore().getAll());
-    classShape.setMethodsList(view.getMethodGrid().getStore().getAll());
+    if (shape instanceof ClassShape) {
+      ClassShape classShape = (ClassShape) shape;
+      classShape.setTitle(view.getTitleField().getValue());
+      classShape.setAttributesList(view.getAttributeGrid().getStore().getAll());
+      classShape.setMethodsList(view.getMethodGrid().getStore().getAll());
+    } else if (shape instanceof InterfaceShape) {
+      InterfaceShape interfaceShape = (InterfaceShape) shape;
+      interfaceShape.setTitle(view.getTitleField().getValue());
+      interfaceShape.setMethodsList(view.getMethodGrid().getStore().getAll());
+    }
 //    ((ClassShape) classShape).redraw();
     for(Shape shape : Uml2JavaController.getInstance().getShapes()) {
       shape.redraw();

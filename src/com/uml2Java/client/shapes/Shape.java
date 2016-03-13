@@ -3,6 +3,7 @@ package com.uml2Java.client.shapes;
 import com.sencha.gxt.chart.client.draw.DrawComponent;
 import com.uml2Java.shared.DataTypes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,9 +13,11 @@ public abstract class Shape {
   protected static int shapeId = 1;
   protected int id;
   protected int x, y, width, height;
+  protected double scaleFactor = 1;
   protected String title;
   protected DataTypes dataTpe;
-  //  protected List<Shape> binds;
+  protected List<Link> links;
+  protected DrawComponent drawComponent;
 
   public abstract void translateTo(int mouseX, int mouseY);
 
@@ -80,5 +83,53 @@ public abstract class Shape {
 
   public abstract void redraw();
 
-  public abstract void drawLinks();
+  public abstract void remove();
+
+  public void drawLinks() {
+    // establish if this class is first or not
+    // count the links on each side (N, S, E, W)
+    // establish for each side how many links are, than set for each one an offset where should be drawn
+    List<Link> NLinks = new ArrayList<Link>();
+    List<Link> SLinks = new ArrayList<Link>();
+    List<Link> ELinks = new ArrayList<Link>();
+    List<Link> WLinks = new ArrayList<Link>();
+
+    for (Link link : links) {
+      Position linkPosition = link.getLinkPosition(this);
+      if (linkPosition == Position.N)
+        NLinks.add(link);
+      else if (linkPosition == Position.S)
+        SLinks.add(link);
+      else if (linkPosition == Position.E)
+        ELinks.add(link);
+      else if (linkPosition == Position.W)
+        WLinks.add(link);
+    }
+
+    setLinkOffsets(NLinks);
+    setLinkOffsets(SLinks);
+    setLinkOffsets(ELinks);
+    setLinkOffsets(WLinks);
+
+    for(Link link : links) {
+      link.draw(drawComponent);
+    }
+  }
+
+  private void setLinkOffsets(List<Link> links) {
+    for (int i=0; i < links.size(); i++) {
+      Link link = links.get(i);
+      if (link.isFirst(this)) {
+        link.setOffsetFirst(i+1);
+        link.setTotalFirst(links.size());
+      } else {
+        link.setOffsetSecond(i+1);
+        link.setTotalSecond(links.size());
+      }
+    }
+  }
+
+  public List<Link> getLinks() {
+    return links;
+  }
 }

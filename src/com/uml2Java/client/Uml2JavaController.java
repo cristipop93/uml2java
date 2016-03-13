@@ -19,6 +19,8 @@ import com.uml2Java.client.login.LoginView;
 import com.uml2Java.client.shapes.*;
 import com.uml2Java.client.toolbar.ToolbarView;
 import com.uml2Java.client.uml2javaUtils.MouseState;
+import com.uml2Java.client.utilitiesPanels.leftPanel.LeftPanelController;
+import com.uml2Java.client.utilitiesPanels.leftPanel.LeftPanelView;
 import com.uml2Java.client.utilitiesPanels.rightPanel.RightPanelController;
 import com.uml2Java.client.utilitiesPanels.rightPanel.RightPanelView;
 import com.uml2Java.shared.*;
@@ -35,9 +37,8 @@ public class Uml2JavaController {
     Widget asWidget();
     DrawComponent getDrawComponent();
     CenterLayoutContainer getCenterLayoutContainer();
-    ToggleButton getSelectButton();
-    ToggleButton getClassButton();
     ContentPanel getRightPanel();
+    ContentPanel getLeftPanel();
   }
 
   private static Uml2JavaController INSTANCE;
@@ -47,6 +48,7 @@ public class Uml2JavaController {
   private HBoxLayoutContainer buttonsContainer;
   private ToolbarView toolbarView;
   private RightPanelController rightPanelController;
+  private LeftPanelController leftPanelController;
 
   private UserData currentUser;
   private MouseState mouseState = MouseState.SELECT;
@@ -95,6 +97,10 @@ public class Uml2JavaController {
     RightPanelController.IRightPanelView rightPanelView = new RightPanelView();
     rightPanelController = new RightPanelController(rightPanelView, null);
     view.getRightPanel().add(rightPanelView.asWidget());
+
+    LeftPanelController.ILeftPanelView leftPanelView = new LeftPanelView();
+    leftPanelController = new LeftPanelController(leftPanelView);
+    view.getLeftPanel().add(leftPanelView.asWidget());
     mainContainer.forceLayout();
     shapes = new ArrayList<Shape>();
     addListeners();
@@ -120,9 +126,10 @@ public class Uml2JavaController {
     ClassShape shape = new ClassShape(view.getDrawComponent(), 300, 200, 100, 65, "User", attributes, methods);
     ClassShape shape2 = new ClassShape(view.getDrawComponent(), 600, 300, 100, 65, "classExample",
         new ArrayList<Attribute>(), new ArrayList<Method>());
-    ClassShape shape3 = new ClassShape(view.getDrawComponent(), 400, 300, 100, 65, "AClass", new ArrayList<Attribute>(), new ArrayList<Method>());
-    ClassShape shape4 = new ClassShape(view.getDrawComponent(), 350, 450, 100, 65, "BClass", new ArrayList<Attribute>(), new ArrayList<Method>());
+    ClassShape shape3 = new ClassShape(view.getDrawComponent(), 600, 100, 100, 65, "AClass", new ArrayList<Attribute>(), new ArrayList<Method>());
+    ClassShape shape4 = new ClassShape(view.getDrawComponent(), 200, 450, 100, 65, "BClass", new ArrayList<Attribute>(), new ArrayList<Method>());
     ClassShape shape5 = new ClassShape(view.getDrawComponent(), 150, 100, 100, 65, "CClass", new ArrayList<Attribute>(), new ArrayList<Method>());
+    InterfaceShape shape6 = new InterfaceShape(view.getDrawComponent(), 700, 450, 100, 65, "Interface", new ArrayList<Method>());
     //    shape2.scaleTo(0.8);
     //    shape.scaleTo(0.8);
     shapes.add(shape);
@@ -130,6 +137,7 @@ public class Uml2JavaController {
     shapes.add(shape3);
     shapes.add(shape4);
     shapes.add(shape5);
+    shapes.add(shape6);
     Link link = new GeneralizationLink(shape2, shape);
     shape.getLinks().add(link);
     shape2.getLinks().add(link);
@@ -142,6 +150,9 @@ public class Uml2JavaController {
     Link link3 = new AssociationLink(shape4, shape5);
     shape4.getLinks().add(link3);
     shape5.getLinks().add(link3);
+    Link link4 = new AssociationLink(shape, shape6);
+    shape.getLinks().add(link4);
+    shape6.getLinks().add(link4);
 //    view.getDrawComponent().clearSurface();
     for (Shape shapeTemp : shapes) {
       shapeTemp.redraw();
@@ -160,7 +171,7 @@ public class Uml2JavaController {
               lastDraggedX = shape.getX();
               lastDraggedY = shape.getY();
               // populate right panel with clicked shape content
-              rightPanelController.load((IClassShape) shape);
+              rightPanelController.load( shape);
               return;
             }
           }
@@ -172,6 +183,11 @@ public class Uml2JavaController {
           tempShape.scaleTo(scaleFactor);
           shapes.add(tempShape);
           view.getDrawComponent().redrawSurface();
+        } else if (mouseState == MouseState.INTERFACE) {
+          InterfaceShape tempShape = new InterfaceShape(view.getDrawComponent(), event.getRelativeX(view.getDrawComponent().getElement()),
+              event.getRelativeY(view.getDrawComponent().getElement()), 100, 100, "", new ArrayList<Method>());
+          tempShape.scaleTo(scaleFactor);
+          shapes.add(tempShape);
         }
       }
     };
@@ -222,19 +238,6 @@ public class Uml2JavaController {
     view.getDrawComponent().addDomHandler(mouseUpHandler, MouseUpEvent.getType());
     view.getDrawComponent().addDomHandler(mouseMoveHandler, MouseMoveEvent.getType());
 
-    view.getClassButton().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
-      @Override
-      public void onValueChange(ValueChangeEvent<Boolean> event) {
-        mouseState = MouseState.CLASS;
-      }
-    });
-    view.getSelectButton().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
-      @Override
-      public void onValueChange(ValueChangeEvent<Boolean> event) {
-        mouseState = MouseState.SELECT;
-      }
-    });
-
     toolbarView.getZoomSlider().addValueChangeHandler(new ValueChangeHandler<Integer>() {
       @Override
       public void onValueChange(ValueChangeEvent<Integer> event) {
@@ -260,4 +263,11 @@ public class Uml2JavaController {
     return buttonsContainer;
   }
 
+  public MouseState getMouseState() {
+    return mouseState;
+  }
+
+  public void setMouseState(MouseState mouseState) {
+    this.mouseState = mouseState;
+  }
 }

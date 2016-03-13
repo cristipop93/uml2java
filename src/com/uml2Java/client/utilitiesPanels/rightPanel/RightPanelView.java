@@ -44,6 +44,10 @@ public class RightPanelView implements RightPanelController.IRightPanelView {
   private TextButton addMethod;
   private TextButton editMethod;
   private TextButton removeMethod;
+  private ContentPanel attributePanel;
+  private ContentPanel methodPanel;
+  private ContentPanel linkPanel;
+  private AccordionLayoutContainer accordion;
 
 
   public RightPanelView() {
@@ -102,11 +106,11 @@ public class RightPanelView implements RightPanelController.IRightPanelView {
     mainContainer.add(new FieldLabel(titleField, "Class name"),
         new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(5, 5, 10, 5)));
 
-    AccordionLayoutContainer accordion = new AccordionLayoutContainer();
+    accordion = new AccordionLayoutContainer();
     accordion.setExpandMode(AccordionLayoutContainer.ExpandMode.SINGLE_FILL);
 
     mainContainer.add(accordion, new VerticalLayoutContainer.VerticalLayoutData(1, 1));
-    ContentPanel attributePanel = new ContentPanel(appearance);
+    attributePanel = new ContentPanel(appearance);
     attributePanel.setHeadingText("Attributes");
     VerticalLayoutContainer attributesVContainer = new VerticalLayoutContainer();
     attributesVContainer
@@ -115,7 +119,7 @@ public class RightPanelView implements RightPanelController.IRightPanelView {
         new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
     attributePanel.add(attributesVContainer);
 
-    ContentPanel methodPanel = new ContentPanel(appearance);
+    methodPanel = new ContentPanel(appearance);
     methodPanel.setHeadingText("Methods");
     VerticalLayoutContainer methodsVContainer = new VerticalLayoutContainer();
     methodsVContainer.add(methodGrid, new VerticalLayoutContainer.VerticalLayoutData(1, 1, new Margins(7, 0, 0, 0)));
@@ -123,7 +127,7 @@ public class RightPanelView implements RightPanelController.IRightPanelView {
         .add(methodButtonsContainer, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
     methodPanel.add(methodsVContainer);
 
-    ContentPanel linkPanel = new ContentPanel(appearance);
+    linkPanel = new ContentPanel(appearance);
     linkPanel.setHeadingText("Links");
 
     accordion.add(attributePanel);
@@ -191,6 +195,26 @@ public class RightPanelView implements RightPanelController.IRightPanelView {
   @Override
   public TextButton getRemoveMethod() {
     return removeMethod;
+  }
+
+  @Override
+  public ContentPanel getAttributePanel() {
+    return attributePanel;
+  }
+
+  @Override
+  public ContentPanel getMethodPanel() {
+    return methodPanel;
+  }
+
+  @Override
+  public ContentPanel getLinkPanel() {
+    return linkPanel;
+  }
+
+  @Override
+  public AccordionLayoutContainer getAccordion() {
+    return null;
   }
 
   @Override
