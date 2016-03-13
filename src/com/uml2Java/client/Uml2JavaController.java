@@ -171,7 +171,8 @@ public class Uml2JavaController {
               lastDraggedX = shape.getX();
               lastDraggedY = shape.getY();
               // populate right panel with clicked shape content
-              rightPanelController.load( shape);
+              rightPanelController.load(shape);
+              log.info("nrLinks = " + shape.getLinks().size());
               return;
             }
           }

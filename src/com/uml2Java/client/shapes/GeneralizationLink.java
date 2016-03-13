@@ -70,4 +70,9 @@ public class GeneralizationLink extends Link {
       drawComponent.addSprite(triangle);
     }
   }
+
+  public void remove(DrawComponent drawComponent) {
+    drawComponent.remove(line);
+    drawComponent.remove(triangle);
+  }
 }

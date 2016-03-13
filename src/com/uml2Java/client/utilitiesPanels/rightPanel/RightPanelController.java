@@ -115,6 +115,7 @@ public class RightPanelController {
       public void onSelect(SelectEvent event) {
         Uml2JavaController.getInstance().getShapes().remove(shape);
         shape.remove();
+        shape.removeLinks();
         onCancelButton();
       }
     });

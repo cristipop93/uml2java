@@ -62,4 +62,9 @@ public class AssociationLink extends Link {
       }
     }
   }
+
+  public void remove(DrawComponent drawComponent) {
+    drawComponent.remove(sprite);
+    drawComponent.remove(textSprite);
+  }
 }

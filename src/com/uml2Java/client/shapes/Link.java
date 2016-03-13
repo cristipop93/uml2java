@@ -265,6 +265,8 @@ public abstract class Link {
 
   public abstract void draw(DrawComponent drawComponent);
 
+  public abstract void remove(DrawComponent drawComponent);
+
   public int getOffsetFirst() {
     return offsetFirst;
   }

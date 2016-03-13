@@ -4,6 +4,7 @@ import com.sencha.gxt.chart.client.draw.DrawComponent;
 import com.uml2Java.shared.DataTypes;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -131,5 +132,28 @@ public abstract class Shape {
 
   public List<Link> getLinks() {
     return links;
+  }
+
+  public void removeLinks() {
+    Iterator<Link> iterator = links.iterator();
+    while (iterator.hasNext()) {
+      Link link = iterator.next();
+      if(link.isFirst(this)) {
+        link.getSecondShape().removeLinksForShape(this);
+      } else {
+        link.getFirstShape().removeLinksForShape(this);
+      }
+      link.remove(drawComponent);
+      iterator.remove();
+    }
+  }
+
+  private void removeLinksForShape(Shape shape) {
+    Iterator<Link> iterator = links.iterator();
+    while (iterator.hasNext()) {
+      Link link = iterator.next();
+      if(link.getSecondShape().getId() == shape.getId() || link.getFirstShape().getId() == shape.getId())
+        iterator.remove();
+    }
   }
 }
