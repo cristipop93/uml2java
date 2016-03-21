@@ -227,7 +227,7 @@ public class Uml2JavaController {
           if (mouseX > 0 && mouseX < view.getDrawComponent().getOffsetWidth() && mouseY > 0 && mouseY < view
               .getDrawComponent().getOffsetHeight()) {
             clickedShape.translateTo(lastDraggedX - (lastClickX - mouseX), lastDraggedY - (lastClickY - mouseY));
-            view.getDrawComponent().redrawSurface();
+            view.getDrawComponent().redrawSurfaceForced();
           } else {
             clickedShape = null;
           }

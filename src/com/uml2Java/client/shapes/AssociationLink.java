@@ -9,6 +9,7 @@ import com.sencha.gxt.chart.client.draw.path.PathSprite;
 import com.sencha.gxt.chart.client.draw.sprite.TextSprite;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by Cristi on 3/5/2016.
@@ -21,9 +22,11 @@ public class AssociationLink extends Link {
 
   private PathSprite sprite;
   private TextSprite textSprite;
+  private Logger log = Logger.getLogger(AssociationLink.class.getName());
 
   @Override
   public void draw(DrawComponent drawComponent) {
+    log.info("draw from " + getFirstShape().title + " to " + getSecondShape().title);
     if (sprite == null) {
       sprite = new PathSprite();
     }
