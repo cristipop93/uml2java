@@ -12,7 +12,7 @@ import com.sencha.gxt.widget.core.client.form.PasswordField;
 import com.sencha.gxt.widget.core.client.form.TextField;
 import com.uml2Java.client.service.UsersService;
 import com.uml2Java.client.service.UsersServiceAsync;
-import com.uml2Java.client.uml2javaUtils.TextUtil;
+import com.uml2Java.client.domainModel.uml2javaUtils.TextUtil;
 
 /**
  * Created by Cristi on 2/5/2016.

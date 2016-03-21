@@ -2,18 +2,12 @@ package com.uml2Java.client;
 
 import com.google.gwt.core.client.EntryPoint;
 
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.core.client.util.Padding;
-import com.sencha.gxt.widget.core.client.box.MessageBox;
-import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.*;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.uml2Java.client.domainModel.UmlController;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>
@@ -38,11 +32,11 @@ public class Uml2Java implements EntryPoint {
     northPanel.setHBoxLayoutAlign(HBoxLayoutContainer.HBoxLayoutAlign.MIDDLE);
     northPanel.setStyleName("headerPanel");
     buttonsPanel.setHBoxLayoutAlign(HBoxLayoutContainer.HBoxLayoutAlign.MIDDLE);
-    buttonsPanel.setPack(BoxLayoutContainer.BoxLayoutPack.END);
+    buttonsPanel.setPack(BoxLayoutContainer.BoxLayoutPack.START);
     buttonsPanel.setHeight(50);
     buttonsPanel.setPadding(new Padding(0, 10, 0, 0));
 
-    northPanel.add(new Image(Uml2JavaController.ICONS.logo()), flex);
+    northPanel.add(new Image(MainController.ICONS.logo()));
     northPanel.add(buttonsPanel, flex2);
 
     BorderLayoutContainer mainContainer = new BorderLayoutContainer();
@@ -52,8 +46,8 @@ public class Uml2Java implements EntryPoint {
 //    mainContainer.setStyleName("");
     viewport.add(mainContainer);
 
-    Uml2JavaController.getInstance().setViews(mainContainer, buttonsPanel);
-    Uml2JavaController.getInstance().displayLoginWindow();
+    MainController.getInstance().setViews(mainContainer, buttonsPanel);
+    MainController.getInstance().displayLoginWindow();
 
 //    final TextButton button = new TextButton("Click me");
 //    final Label label = new Label();

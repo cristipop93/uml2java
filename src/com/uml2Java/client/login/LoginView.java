@@ -9,7 +9,8 @@ import com.sencha.gxt.widget.core.client.container.*;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.PasswordField;
 import com.sencha.gxt.widget.core.client.form.TextField;
-import com.uml2Java.client.Uml2JavaController;
+import com.uml2Java.client.MainController;
+import com.uml2Java.client.domainModel.UmlController;
 
 /**
  * Created by Cristi on 2/4/2016.
@@ -35,8 +36,8 @@ public class LoginView implements LoginController.ILoginView {
     /* initialize fields */
     nameField = new TextField();
     passwordField = new PasswordField();
-    loginButton = new TextButton("Login", Uml2JavaController.ICONS.login());
-    registerButton = new TextButton("Register", Uml2JavaController.ICONS.register());
+    loginButton = new TextButton("Login", MainController.ICONS.login());
+    registerButton = new TextButton("Register", MainController.ICONS.register());
     mainContainer = new BorderLayoutContainer();
     label = new Label("");
     loginFailedLabel = new FieldLabel(label);

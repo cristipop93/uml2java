@@ -3,14 +3,14 @@ package com.uml2Java.client.login.register;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.widget.core.client.button.TextButton;
-import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VBoxLayoutContainer;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.PasswordField;
 import com.sencha.gxt.widget.core.client.form.TextField;
-import com.uml2Java.client.Uml2JavaController;
+import com.uml2Java.client.MainController;
+import com.uml2Java.client.domainModel.UmlController;
 
 /**
  * Created by Cristi on 2/5/2016.
@@ -34,8 +34,8 @@ public class RegisterView implements RegisterController.IRegisterView {
     passwordField = new PasswordField();
     confirmPasswordField = new PasswordField();
     emailField = new TextField();
-    applyButton = new TextButton("Register", Uml2JavaController.ICONS.apply());
-    cancelButton = new TextButton("Cancel", Uml2JavaController.ICONS.cancel());
+    applyButton = new TextButton("Register", MainController.ICONS.apply());
+    cancelButton = new TextButton("Cancel", MainController.ICONS.cancel());
 
     mainContainer.setVBoxLayoutAlign(VBoxLayoutContainer.VBoxLayoutAlign.CENTER);
     mainContainer.add(new FieldLabel(nameField, "Username"),

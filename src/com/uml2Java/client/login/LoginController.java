@@ -11,12 +11,13 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.PasswordField;
 import com.sencha.gxt.widget.core.client.form.TextField;
-import com.uml2Java.client.Uml2JavaController;
+import com.uml2Java.client.MainController;
+import com.uml2Java.client.domainModel.UmlController;
 import com.uml2Java.client.login.register.RegisterController;
 import com.uml2Java.client.login.register.RegisterView;
 import com.uml2Java.client.service.UsersService;
 import com.uml2Java.client.service.UsersServiceAsync;
-import com.uml2Java.client.uml2javaUtils.TextUtil;
+import com.uml2Java.client.domainModel.uml2javaUtils.TextUtil;
 import com.uml2Java.shared.UserData;
 
 /**
@@ -60,7 +61,7 @@ public class LoginController {
 
       @Override
       public void onSuccess(UserData result) {
-        Uml2JavaController.getInstance().onSuccessLogin(result);
+        MainController.getInstance().onSuccessLogin(result);
         view.setErrorLabelText("logged in" + result.getId() + " " + result.getUserName() + " " + result.getPassword() + result.getEmail());
       }
     });
