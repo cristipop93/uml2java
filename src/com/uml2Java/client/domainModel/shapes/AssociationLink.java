@@ -16,8 +16,8 @@ import java.util.logging.Logger;
  */
 public class AssociationLink extends Link {
 
-  public AssociationLink(Shape firstShape, Shape secondShape) {
-    super(firstShape, secondShape);
+  public AssociationLink(UmlShape firstUmlShape, UmlShape secondUmlShape) {
+    super(firstUmlShape, secondUmlShape);
   }
 
   private PathSprite sprite;
@@ -26,7 +26,7 @@ public class AssociationLink extends Link {
 
   @Override
   public void draw(DrawComponent drawComponent) {
-    log.info("draw from " + getFirstShape().title + " to " + getSecondShape().title);
+    log.info("draw from " + getFirstUmlShape().title + " to " + getSecondUmlShape().title);
     if (sprite == null) {
       sprite = new PathSprite();
     }

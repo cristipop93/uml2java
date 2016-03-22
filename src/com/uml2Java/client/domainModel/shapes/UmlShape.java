@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Cristi on 2/10/2016.
  */
-public abstract class Shape {
+public abstract class UmlShape {
   protected static int shapeId = 1;
   protected int id;
   protected int x, y, width, height;
@@ -139,20 +139,20 @@ public abstract class Shape {
     while (iterator.hasNext()) {
       Link link = iterator.next();
       if(link.isFirst(this)) {
-        link.getSecondShape().removeLinksForShape(this);
+        link.getSecondUmlShape().removeLinksForShape(this);
       } else {
-        link.getFirstShape().removeLinksForShape(this);
+        link.getFirstUmlShape().removeLinksForShape(this);
       }
       link.remove(drawComponent);
       iterator.remove();
     }
   }
 
-  private void removeLinksForShape(Shape shape) {
+  private void removeLinksForShape(UmlShape umlShape) {
     Iterator<Link> iterator = links.iterator();
     while (iterator.hasNext()) {
       Link link = iterator.next();
-      if(link.getSecondShape().getId() == shape.getId() || link.getFirstShape().getId() == shape.getId())
+      if(link.getSecondUmlShape().getId() == umlShape.getId() || link.getFirstUmlShape().getId() == umlShape.getId())
         iterator.remove();
     }
   }

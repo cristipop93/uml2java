@@ -10,9 +10,9 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.uml2Java.client.domainModel.UmlController;
-import com.uml2Java.client.domainModel.shapes.ClassShape;
-import com.uml2Java.client.domainModel.shapes.InterfaceShape;
-import com.uml2Java.client.domainModel.shapes.Shape;
+import com.uml2Java.client.domainModel.shapes.ClassUmlShape;
+import com.uml2Java.client.domainModel.shapes.InterfaceUmlShape;
+import com.uml2Java.client.domainModel.shapes.UmlShape;
 import com.uml2Java.client.domainModel.utilitiesPanels.editAttributes.EditAttributesController;
 import com.uml2Java.client.domainModel.utilitiesPanels.editAttributes.EditAttributesView;
 import com.uml2Java.client.domainModel.utilitiesPanels.editMethods.EditMethodController;
@@ -47,21 +47,21 @@ public class RightPanelController {
   }
 
   private IRightPanelView view;
-  private Shape shape;
+  private UmlShape umlShape;
   private Logger log = Logger.getLogger(RightPanelController.class.getName());
 
-  public RightPanelController(IRightPanelView view, Shape shape) {
+  public RightPanelController(IRightPanelView view, UmlShape umlShape) {
     this.view = view;
-    this.shape = shape;
-    if (shape != null)
-      load(shape);
+    this.umlShape = umlShape;
+    if (umlShape != null)
+      load(umlShape);
     addListeners();
   }
 
-  public void load(Shape shape) {
-    this.shape = shape;
-    if (shape instanceof ClassShape) {
-      ClassShape classShape = (ClassShape) shape;
+  public void load(UmlShape umlShape) {
+    this.umlShape = umlShape;
+    if (umlShape instanceof ClassUmlShape) {
+      ClassUmlShape classShape = (ClassUmlShape) umlShape;
       view.getTitleField().setValue(classShape.getTitle());
       view.getAttributeGrid().getStore().clear();
       for (Attribute attribute : classShape.getAttributesList()) {
@@ -72,8 +72,8 @@ public class RightPanelController {
         view.getMethodGrid().getStore().add(method);
       }
       shapeLoaded(true);
-    } else if (shape instanceof InterfaceShape) {
-      InterfaceShape interfaceShape = (InterfaceShape) shape;
+    } else if (umlShape instanceof InterfaceUmlShape) {
+      InterfaceUmlShape interfaceShape = (InterfaceUmlShape) umlShape;
       view.getTitleField().setValue(interfaceShape.getTitle());
       view.getMethodGrid().getStore().clear();
       for (Method method : interfaceShape.getMethodsList()) {
@@ -113,9 +113,9 @@ public class RightPanelController {
     view.getRemoveButton().addSelectHandler(new SelectEvent.SelectHandler() {
       @Override
       public void onSelect(SelectEvent event) {
-        UmlController.getInstance().getShapes().remove(shape);
-        shape.remove();
-        shape.removeLinks();
+        UmlController.getInstance().getUmlShapes().remove(umlShape);
+        umlShape.remove();
+        umlShape.removeLinks();
         onCancelButton();
       }
     });
@@ -207,26 +207,26 @@ public class RightPanelController {
   }
 
   private void onCancelButton() {
-    shape = null;
+    umlShape = null;
     view.getTitleField().setValue("");
     view.getAttributeGrid().getStore().clear();
     view.getMethodGrid().getStore().clear();
   }
 
   private void doOnApplyButton() {
-    if (shape instanceof ClassShape) {
-      ClassShape classShape = (ClassShape) shape;
+    if (umlShape instanceof ClassUmlShape) {
+      ClassUmlShape classShape = (ClassUmlShape) umlShape;
       classShape.setTitle(view.getTitleField().getValue());
       classShape.setAttributesList(view.getAttributeGrid().getStore().getAll());
       classShape.setMethodsList(view.getMethodGrid().getStore().getAll());
-    } else if (shape instanceof InterfaceShape) {
-      InterfaceShape interfaceShape = (InterfaceShape) shape;
+    } else if (umlShape instanceof InterfaceUmlShape) {
+      InterfaceUmlShape interfaceShape = (InterfaceUmlShape) umlShape;
       interfaceShape.setTitle(view.getTitleField().getValue());
       interfaceShape.setMethodsList(view.getMethodGrid().getStore().getAll());
     }
-//    ((ClassShape) classShape).redraw();
-    for(Shape shape : UmlController.getInstance().getShapes()) {
-      shape.redraw();
+//    ((ClassUmlShape) classShape).redraw();
+    for(UmlShape umlShape : UmlController.getInstance().getUmlShapes()) {
+      umlShape.redraw();
     }
   }
 

@@ -12,8 +12,8 @@ import com.sencha.gxt.widget.core.client.form.ComboBox;
 import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.uml2Java.client.domainModel.UmlController;
-import com.uml2Java.client.domainModel.shapes.ClassShape;
-import com.uml2Java.client.domainModel.shapes.Shape;
+import com.uml2Java.client.domainModel.shapes.ClassUmlShape;
+import com.uml2Java.client.domainModel.shapes.UmlShape;
 import com.uml2Java.client.domainModel.uml2javaUtils.TextUtil;
 import com.uml2Java.client.domainModel.utilitiesPanels.editAttributes.EditAttributesController;
 import com.uml2Java.client.domainModel.utilitiesPanels.editAttributes.EditAttributesView;
@@ -77,10 +77,10 @@ public class EditMethodController {
     for (PrimitiveDataTypes dataType : PrimitiveDataTypes.values()) {
       view.getDataTypesComboBox().getStore().add(dataType);
     }
-    List<Shape> shapes = UmlController.getInstance().getShapes();
-    for (Shape shape : shapes) {
-      if (shape instanceof ClassShape) {
-        view.getDataTypesComboBox().getStore().add(shape.getDataTpe());
+    List<UmlShape> umlShapes = UmlController.getInstance().getUmlShapes();
+    for (UmlShape umlShape : umlShapes) {
+      if (umlShape instanceof ClassUmlShape) {
+        view.getDataTypesComboBox().getStore().add(umlShape.getDataTpe());
       }
     }
 

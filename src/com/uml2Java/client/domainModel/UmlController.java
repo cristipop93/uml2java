@@ -51,8 +51,8 @@ public class UmlController {
   private int lastClickX, lastClickY;
   private int lastDraggedX, lastDraggedY;
   private double scaleFactor = 1; // TODO load from users saved
-  private List<Shape> shapes;
-  private Shape clickedShape;
+  private List<UmlShape> umlShapes;
+  private UmlShape clickedUmlShape;
   private static Logger log = Logger.getLogger(UmlController.class.getName());
 
   public UmlController() {
@@ -82,7 +82,7 @@ public class UmlController {
     LeftPanelController.ILeftPanelView leftPanelView = new LeftPanelView();
     leftPanelController = new LeftPanelController(leftPanelView);
     view.getLeftPanel().add(leftPanelView.asWidget());
-    shapes = new ArrayList<Shape>();
+    umlShapes = new ArrayList<UmlShape>();
     addListeners();
   }
 
@@ -103,21 +103,21 @@ public class UmlController {
 //    user1.setIsStatic(true);
     user1.setIsFinal(true);
     attributes.add(user1);
-    ClassShape shape = new ClassShape(view.getDrawComponent(), 300, 200, 100, 65, "User", attributes, methods);
-    ClassShape shape2 = new ClassShape(view.getDrawComponent(), 600, 300, 100, 65, "classExample",
+    ClassUmlShape shape = new ClassUmlShape(view.getDrawComponent(), 300, 200, 100, 65, "User", attributes, methods);
+    ClassUmlShape shape2 = new ClassUmlShape(view.getDrawComponent(), 600, 300, 100, 65, "classExample",
         new ArrayList<Attribute>(), new ArrayList<Method>());
-    ClassShape shape3 = new ClassShape(view.getDrawComponent(), 600, 100, 100, 65, "AClass", new ArrayList<Attribute>(), new ArrayList<Method>());
-    ClassShape shape4 = new ClassShape(view.getDrawComponent(), 200, 450, 100, 65, "BClass", new ArrayList<Attribute>(), new ArrayList<Method>());
-    ClassShape shape5 = new ClassShape(view.getDrawComponent(), 150, 100, 100, 65, "CClass", new ArrayList<Attribute>(), new ArrayList<Method>());
-    InterfaceShape shape6 = new InterfaceShape(view.getDrawComponent(), 700, 450, 100, 65, "Interface", new ArrayList<Method>());
+    ClassUmlShape shape3 = new ClassUmlShape(view.getDrawComponent(), 600, 100, 100, 65, "AClass", new ArrayList<Attribute>(), new ArrayList<Method>());
+    ClassUmlShape shape4 = new ClassUmlShape(view.getDrawComponent(), 200, 450, 100, 65, "BClass", new ArrayList<Attribute>(), new ArrayList<Method>());
+    ClassUmlShape shape5 = new ClassUmlShape(view.getDrawComponent(), 150, 100, 100, 65, "CClass", new ArrayList<Attribute>(), new ArrayList<Method>());
+    InterfaceUmlShape shape6 = new InterfaceUmlShape(view.getDrawComponent(), 700, 450, 100, 65, "Interface", new ArrayList<Method>());
     //    shape2.scaleTo(0.8);
     //    shape.scaleTo(0.8);
-    shapes.add(shape);
-    shapes.add(shape2);
-    shapes.add(shape3);
-    shapes.add(shape4);
-    shapes.add(shape5);
-    shapes.add(shape6);
+    umlShapes.add(shape);
+    umlShapes.add(shape2);
+    umlShapes.add(shape3);
+    umlShapes.add(shape4);
+    umlShapes.add(shape5);
+    umlShapes.add(shape6);
     Link link = new GeneralizationLink(shape2, shape);
     shape.getLinks().add(link);
     shape2.getLinks().add(link);
@@ -134,18 +134,18 @@ public class UmlController {
     shape.getLinks().add(link4);
     shape6.getLinks().add(link4);
 //    view.getDrawComponent().clearSurface();
-    for (Shape shapeTemp : shapes) {
-      shapeTemp.redraw();
+    for (UmlShape umlShapeTemp : umlShapes) {
+      umlShapeTemp.redraw();
     }
     view.getDrawComponent().redrawSurface();
     MouseDownHandler mouseDownHandler = new MouseDownHandler() {
       @Override
       public void onMouseDown(MouseDownEvent event) {
         if (mouseState == MouseState.SELECT) {
-          for (Shape shape : shapes) {
+          for (UmlShape shape : umlShapes) {
             if (shape.canBeDragged(event.getRelativeX(view.getDrawComponent().getElement()),
                 event.getRelativeY(view.getDrawComponent().getElement()))) {
-              clickedShape = shape;
+              clickedUmlShape = shape;
               lastClickX = event.getRelativeX(view.getDrawComponent().getElement());
               lastClickY = event.getRelativeY(view.getDrawComponent().getElement());
               lastDraggedX = shape.getX();
@@ -157,26 +157,26 @@ public class UmlController {
             }
           }
         } else if (mouseState == MouseState.CLASS) {
-          ClassShape tempShape = new ClassShape(view.getDrawComponent(),
+          ClassUmlShape tempShape = new ClassUmlShape(view.getDrawComponent(),
               event.getRelativeX(view.getDrawComponent().getElement()),
               event.getRelativeY(view.getDrawComponent().getElement()), 100, 100, "", new ArrayList<Attribute>(),
               new ArrayList<Method>());
           tempShape.scaleTo(scaleFactor);
-          shapes.add(tempShape);
+          umlShapes.add(tempShape);
           view.getDrawComponent().redrawSurface();
         } else if (mouseState == MouseState.INTERFACE) {
-          InterfaceShape tempShape = new InterfaceShape(view.getDrawComponent(), event.getRelativeX(view.getDrawComponent().getElement()),
+          InterfaceUmlShape tempShape = new InterfaceUmlShape(view.getDrawComponent(), event.getRelativeX(view.getDrawComponent().getElement()),
               event.getRelativeY(view.getDrawComponent().getElement()), 100, 100, "", new ArrayList<Method>());
           tempShape.scaleTo(scaleFactor);
-          shapes.add(tempShape);
+          umlShapes.add(tempShape);
         }
       }
     };
     MouseUpHandler mouseUpHandler = new MouseUpHandler() {
       @Override
       public void onMouseUp(MouseUpEvent event) {
-        clickedShape = null;
-        for (Shape shape1 : shapes)
+        clickedUmlShape = null;
+        for (UmlShape shape1 : umlShapes)
           shape1.drawLinks();
         view.getDrawComponent().redrawSurface();
       }
@@ -186,9 +186,9 @@ public class UmlController {
       @Override
       public void onMouseMove(MouseMoveEvent event) {
         if (mouseState == MouseState.SELECT) {
-          if (clickedShape == null) {
+          if (clickedUmlShape == null) {
             boolean found = false;
-            for (Shape shape : shapes) {
+            for (UmlShape shape : umlShapes) {
               if (shape.canBeDragged(event.getRelativeX(view.getDrawComponent().getElement()),
                   event.getRelativeY(view.getDrawComponent().getElement()))) {
                 DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "hand");
@@ -201,15 +201,15 @@ public class UmlController {
             }
           }
         }
-        if (clickedShape != null) {
+        if (clickedUmlShape != null) {
           int mouseX = event.getRelativeX(view.getDrawComponent().getElement());
           int mouseY = event.getRelativeY(view.getDrawComponent().getElement());
           if (mouseX > 0 && mouseX < view.getDrawComponent().getOffsetWidth() && mouseY > 0 && mouseY < view
               .getDrawComponent().getOffsetHeight()) {
-            clickedShape.translateTo(lastDraggedX - (lastClickX - mouseX), lastDraggedY - (lastClickY - mouseY));
+            clickedUmlShape.translateTo(lastDraggedX - (lastClickX - mouseX), lastDraggedY - (lastClickY - mouseY));
             view.getDrawComponent().redrawSurfaceForced();
           } else {
-            clickedShape = null;
+            clickedUmlShape = null;
           }
         }
       }
@@ -224,16 +224,16 @@ public class UmlController {
       public void onValueChange(ValueChangeEvent<Integer> event) {
         scaleFactor = (double) event.getValue() / 100d;
         log.info(scaleFactor + "");
-        for (Shape shape : shapes) {
-          shape.scaleTo(scaleFactor);
+        for (UmlShape umlShape : umlShapes) {
+          umlShape.scaleTo(scaleFactor);
         }
         view.getDrawComponent().redrawSurface();
       }
     });
   }
 
-  public List<Shape> getShapes() {
-    return shapes;
+  public List<UmlShape> getUmlShapes() {
+    return umlShapes;
   }
 
   public BorderLayoutContainer getMainContainer() {

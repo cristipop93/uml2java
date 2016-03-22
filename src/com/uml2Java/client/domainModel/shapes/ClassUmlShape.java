@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 /**
  * Created by Cristi on 2/8/2016.
  */
-public class ClassShape extends Shape {
+public class ClassUmlShape extends UmlShape {
   private static final int BRACKETS_SIZE = 4;
 
   private RectangleSprite rectangle;
@@ -32,9 +32,9 @@ public class ClassShape extends Shape {
   private List<Method> methods;
   private List<Attribute> attributes;
   private int originalWidth, originalHeight;
-  private Logger logger = Logger.getLogger(ClassShape.class.getName());
+  private Logger logger = Logger.getLogger(ClassUmlShape.class.getName());
 
-  public ClassShape(DrawComponent drawComponent, int x, int y, int width, int height, String title,
+  public ClassUmlShape(DrawComponent drawComponent, int x, int y, int width, int height, String title,
       List<Attribute> attribs, List<Method> methods) {
     this.id = shapeId++;
     this.x = x;

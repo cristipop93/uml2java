@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by Cristi on 3/13/2016.
  */
-public class InterfaceShape extends Shape {
+public class InterfaceUmlShape extends UmlShape {
   private static final int BRACKETS_SIZE = 4;
   private List<Method> methods;
   private List<TextSprite> methodTextSprite;
@@ -28,7 +28,8 @@ public class InterfaceShape extends Shape {
   private TextSprite titleSprite;
   private PathSprite line2;
 
-  public InterfaceShape(DrawComponent drawComponent, int x, int y, int width, int height, String title, List<Method> methods) {
+  public InterfaceUmlShape(DrawComponent drawComponent, int x, int y, int width, int height, String title,
+      List<Method> methods) {
     this.id = shapeId++;
     this.x = x;
     this.y = y;

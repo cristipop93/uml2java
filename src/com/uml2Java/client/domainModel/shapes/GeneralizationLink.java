@@ -19,8 +19,8 @@ public class GeneralizationLink extends Link {
   private static final int height = 15;
 
 
-  public GeneralizationLink(Shape firstShape, Shape secondShape) {
-    super(firstShape, secondShape);
+  public GeneralizationLink(UmlShape firstUmlShape, UmlShape secondUmlShape) {
+    super(firstUmlShape, secondUmlShape);
   }
 
   @Override

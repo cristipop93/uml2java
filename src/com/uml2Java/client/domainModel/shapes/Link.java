@@ -9,32 +9,32 @@ import java.util.List;
  * Created by Cristi on 3/5/2016.
  */
 public abstract class Link {
-  private Shape firstShape, secondShape;
+  private UmlShape firstUmlShape, secondUmlShape;
   private int offsetFirst, totalFirst;
   private int offsetSecond, totalSecond; //offset >= 1, total >=offset
 
-  public Link(Shape firstShape, Shape secondShape) {
-    this.firstShape = firstShape;
-    this.secondShape = secondShape;
+  public Link(UmlShape firstUmlShape, UmlShape secondUmlShape) {
+    this.firstUmlShape = firstUmlShape;
+    this.secondUmlShape = secondUmlShape;
   }
 
   // Establish where the link is relative to the given shape
-  public Position getLinkPosition(Shape relativeToShape) {
+  public Position getLinkPosition(UmlShape relativeToUmlShape) {
     boolean isFirst = false;
-    if(firstShape.getId() == relativeToShape.getId())
+    if(firstUmlShape.getId() == relativeToUmlShape.getId())
       isFirst = true;
 
     Position firstShapePosition = Position.HORV;
     Position secondShapePosition = Position.HORV;
 
-    int fx1 = firstShape.getX();
-    int fy1 = firstShape.getY();
-    int fx2 = fx1 + firstShape.getWidth();
-    int fy2 = fy1 + firstShape.getHeight();
-    int sx1 = secondShape.getX();
-    int sy1 = secondShape.getY();
-    int sx2 = sx1 + secondShape.getWidth();
-    int sy2 = sy1 + secondShape.getHeight();
+    int fx1 = firstUmlShape.getX();
+    int fy1 = firstUmlShape.getY();
+    int fx2 = fx1 + firstUmlShape.getWidth();
+    int fy2 = fy1 + firstUmlShape.getHeight();
+    int sx1 = secondUmlShape.getX();
+    int sy1 = secondUmlShape.getY();
+    int sx2 = sx1 + secondUmlShape.getWidth();
+    int sy2 = sy1 + secondUmlShape.getHeight();
 
     /** horizontal intersection fx1 <= sx1 <= fx2 (I) */
     if (sx1 >= fx1 && sx1 <= fx2) {
@@ -122,18 +122,18 @@ public abstract class Link {
   }
 
   public List<Point> getLinesPoints() {
-    return getLinesPoints(firstShape, secondShape);
+    return getLinesPoints(firstUmlShape, secondUmlShape);
   }
 
-  public List<Point> getLinesPoints(Shape firstShape, Shape secondShape) {
-    int fx1 = firstShape.getX();
-    int fy1 = firstShape.getY();
-    int fx2 = fx1 + firstShape.getWidth();
-    int fy2 = fy1 + firstShape.getHeight();
-    int sx1 = secondShape.getX();
-    int sy1 = secondShape.getY();
-    int sx2 = sx1 + secondShape.getWidth();
-    int sy2 = sy1 + secondShape.getHeight();
+  public List<Point> getLinesPoints(UmlShape firstUmlShape, UmlShape secondUmlShape) {
+    int fx1 = firstUmlShape.getX();
+    int fy1 = firstUmlShape.getY();
+    int fx2 = fx1 + firstUmlShape.getWidth();
+    int fy2 = fy1 + firstUmlShape.getHeight();
+    int sx1 = secondUmlShape.getX();
+    int sy1 = secondUmlShape.getY();
+    int sx2 = sx1 + secondUmlShape.getWidth();
+    int sy2 = sy1 + secondUmlShape.getHeight();
 
     List<Point> result = new ArrayList<Point>();
 
@@ -255,12 +255,12 @@ public abstract class Link {
     return result;
   }
 
-  public Shape getFirstShape() {
-    return firstShape;
+  public UmlShape getFirstUmlShape() {
+    return firstUmlShape;
   }
 
-  public Shape getSecondShape() {
-    return secondShape;
+  public UmlShape getSecondUmlShape() {
+    return secondUmlShape;
   }
 
   public abstract void draw(DrawComponent drawComponent);
@@ -299,7 +299,7 @@ public abstract class Link {
     this.totalSecond = totalSecond;
   }
 
-  public boolean isFirst(Shape shape) {
-    return firstShape.getId() == shape.getId();
+  public boolean isFirst(UmlShape umlShape) {
+    return firstUmlShape.getId() == umlShape.getId();
   }
 }
