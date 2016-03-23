@@ -26,7 +26,7 @@ public class AssociationLink extends Link {
 
   @Override
   public void draw(DrawComponent drawComponent) {
-    log.info("draw from " + getFirstUmlShape().title + " to " + getSecondUmlShape().title);
+//    log.info("draw from " + getFirstUmlShape().title + " to " + getSecondUmlShape().title);
     if (sprite == null) {
       sprite = new PathSprite();
     }

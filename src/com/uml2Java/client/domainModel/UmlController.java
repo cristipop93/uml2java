@@ -13,9 +13,9 @@ import com.sencha.gxt.widget.core.client.container.CenterLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer;
 import com.uml2Java.client.domainModel.shapes.*;
 import com.uml2Java.client.toolbar.ToolbarView;
-import com.uml2Java.client.domainModel.uml2javaUtils.MouseState;
-import com.uml2Java.client.domainModel.utilitiesPanels.leftPanel.LeftPanelController;
-import com.uml2Java.client.domainModel.utilitiesPanels.leftPanel.LeftPanelView;
+import com.uml2Java.client.domainModel.uml2javaUtils.DomainMouseState;
+import com.uml2Java.client.domainModel.utilitiesPanels.leftPanel.LeftDomainPanelController;
+import com.uml2Java.client.domainModel.utilitiesPanels.leftPanel.LeftDomainPanelView;
 import com.uml2Java.client.domainModel.utilitiesPanels.rightPanel.RightPanelController;
 import com.uml2Java.client.domainModel.utilitiesPanels.rightPanel.RightPanelView;
 import com.uml2Java.shared.*;
@@ -42,10 +42,10 @@ public class UmlController {
   private HBoxLayoutContainer buttonsContainer;
   private ToolbarView toolbarView;
   private RightPanelController rightPanelController;
-  private LeftPanelController leftPanelController;
+  private LeftDomainPanelController leftDomainPanelController;
 
   private UserData currentUser;
-  private MouseState mouseState = MouseState.SELECT;
+  private DomainMouseState domainMouseState = DomainMouseState.SELECT;
   private static IUmlView view;
 
   private int lastClickX, lastClickY;
@@ -79,8 +79,8 @@ public class UmlController {
     rightPanelController = new RightPanelController(rightPanelView, null);
     view.getRightPanel().add(rightPanelView.asWidget());
 
-    LeftPanelController.ILeftPanelView leftPanelView = new LeftPanelView();
-    leftPanelController = new LeftPanelController(leftPanelView);
+    LeftDomainPanelController.ILeftPanelView leftPanelView = new LeftDomainPanelView();
+    leftDomainPanelController = new LeftDomainPanelController(leftPanelView);
     view.getLeftPanel().add(leftPanelView.asWidget());
     umlShapes = new ArrayList<UmlShape>();
     addListeners();
@@ -141,7 +141,7 @@ public class UmlController {
     MouseDownHandler mouseDownHandler = new MouseDownHandler() {
       @Override
       public void onMouseDown(MouseDownEvent event) {
-        if (mouseState == MouseState.SELECT) {
+        if (domainMouseState == DomainMouseState.SELECT) {
           for (UmlShape shape : umlShapes) {
             if (shape.canBeDragged(event.getRelativeX(view.getDrawComponent().getElement()),
                 event.getRelativeY(view.getDrawComponent().getElement()))) {
@@ -152,11 +152,11 @@ public class UmlController {
               lastDraggedY = shape.getY();
               // populate right panel with clicked shape content
               rightPanelController.load(shape);
-              log.info("nrLinks = " + shape.getLinks().size());
+//              log.info("nrLinks = " + shape.getLinks().size());
               return;
             }
           }
-        } else if (mouseState == MouseState.CLASS) {
+        } else if (domainMouseState == DomainMouseState.CLASS) {
           ClassUmlShape tempShape = new ClassUmlShape(view.getDrawComponent(),
               event.getRelativeX(view.getDrawComponent().getElement()),
               event.getRelativeY(view.getDrawComponent().getElement()), 100, 100, "", new ArrayList<Attribute>(),
@@ -164,7 +164,7 @@ public class UmlController {
           tempShape.scaleTo(scaleFactor);
           umlShapes.add(tempShape);
           view.getDrawComponent().redrawSurface();
-        } else if (mouseState == MouseState.INTERFACE) {
+        } else if (domainMouseState == DomainMouseState.INTERFACE) {
           InterfaceUmlShape tempShape = new InterfaceUmlShape(view.getDrawComponent(), event.getRelativeX(view.getDrawComponent().getElement()),
               event.getRelativeY(view.getDrawComponent().getElement()), 100, 100, "", new ArrayList<Method>());
           tempShape.scaleTo(scaleFactor);
@@ -185,7 +185,7 @@ public class UmlController {
     MouseMoveHandler mouseMoveHandler = new MouseMoveHandler() {
       @Override
       public void onMouseMove(MouseMoveEvent event) {
-        if (mouseState == MouseState.SELECT) {
+        if (domainMouseState == DomainMouseState.SELECT) {
           if (clickedUmlShape == null) {
             boolean found = false;
             for (UmlShape shape : umlShapes) {
@@ -244,12 +244,12 @@ public class UmlController {
     return buttonsContainer;
   }
 
-  public MouseState getMouseState() {
-    return mouseState;
+  public DomainMouseState getDomainMouseState() {
+    return domainMouseState;
   }
 
-  public void setMouseState(MouseState mouseState) {
-    this.mouseState = mouseState;
+  public void setDomainMouseState(DomainMouseState domainMouseState) {
+    this.domainMouseState = domainMouseState;
   }
 
   public static IUmlView getView() {

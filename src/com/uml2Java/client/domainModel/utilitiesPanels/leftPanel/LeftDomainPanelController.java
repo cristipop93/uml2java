@@ -5,12 +5,12 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.button.ToggleButton;
 import com.uml2Java.client.domainModel.UmlController;
-import com.uml2Java.client.domainModel.uml2javaUtils.MouseState;
+import com.uml2Java.client.domainModel.uml2javaUtils.DomainMouseState;
 
 /**
  * Created by Cristi on 3/13/2016.
  */
-public class LeftPanelController {
+public class LeftDomainPanelController {
   public interface ILeftPanelView {
     Widget asWidget();
     ToggleButton getSelectButton();
@@ -19,7 +19,7 @@ public class LeftPanelController {
   }
   ILeftPanelView view;
 
-  public LeftPanelController(ILeftPanelView view) {
+  public LeftDomainPanelController(ILeftPanelView view) {
     this.view = view;
     addListeners();
   }
@@ -28,19 +28,19 @@ public class LeftPanelController {
     view.getSelectButton().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
       @Override
       public void onValueChange(ValueChangeEvent<Boolean> event) {
-        UmlController.getInstance().setMouseState(MouseState.SELECT);
+        UmlController.getInstance().setDomainMouseState(DomainMouseState.SELECT);
       }
     });
     view.getClassButton().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
       @Override
       public void onValueChange(ValueChangeEvent<Boolean> event) {
-        UmlController.getInstance().setMouseState(MouseState.CLASS);
+        UmlController.getInstance().setDomainMouseState(DomainMouseState.CLASS);
       }
     });
     view.getInterfaceButton().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
       @Override
       public void onValueChange(ValueChangeEvent<Boolean> event) {
-        UmlController.getInstance().setMouseState(MouseState.INTERFACE);
+        UmlController.getInstance().setDomainMouseState(DomainMouseState.INTERFACE);
       }
     });
   }

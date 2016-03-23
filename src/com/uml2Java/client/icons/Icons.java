@@ -42,4 +42,7 @@ public interface Icons extends ClientBundle {
   @ClientBundle.Source("largeClass.jpg")
   ImageResource largeClass();
 
+  @ClientBundle.Source("home.png")
+  ImageResource home();
+
 }

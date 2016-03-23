@@ -9,12 +9,12 @@ import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 /**
  * Created by Cristi on 3/13/2016.
  */
-public class LeftPanelView implements LeftPanelController.ILeftPanelView {
+public class LeftDomainPanelView implements LeftDomainPanelController.ILeftPanelView {
   private ToggleButton selectButton;
   private ToggleButton classButton;
   private ToggleButton interfaceButton;
 
-  public LeftPanelView() {
+  public LeftDomainPanelView() {
     initGUI();
   }
 
