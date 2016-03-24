@@ -32,6 +32,7 @@ public class GeneralizationLink extends Link {
       triangle = new PathSprite();
     }
     line.clearCommands();
+    line.setStrokeWidth(0.7);
     triangle.clearCommands();
     List<Point> points = getLinesPoints();
     if (points.size() >= 2) {

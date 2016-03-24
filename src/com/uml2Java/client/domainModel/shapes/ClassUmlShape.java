@@ -62,8 +62,8 @@ public class ClassUmlShape extends UmlShape {
     rectangle.setHeight(height);
 
     rectangle.setStroke(new Color("#000"));
-    rectangle.setStrokeWidth(2);
-    rectangle.setFill(new Color("#fc0"));
+    rectangle.setStrokeWidth(0.5);
+    rectangle.setFill(new Color("#EB0"));
     rectangle.setFillOpacity(0.25);
     rectangle.setRadius(6);
 
@@ -78,6 +78,7 @@ public class ClassUmlShape extends UmlShape {
     line2.addCommand(new MoveTo(0, 0));
     line2.addCommand(new LineTo(width, 0));
     line2.setStroke(new Color("#000"));
+    line2.setStrokeWidth(0.5);
   }
 
   private void translateTextAndLine() {
@@ -134,6 +135,7 @@ public class ClassUmlShape extends UmlShape {
     line3.addCommand(new MoveTo(0, 0));
     line3.addCommand(new LineTo(width, 0));
     line3.setStroke(new Color("#000"));
+    line3.setStrokeWidth(0.5);
 
     for (Method method : methods) {
       TextSprite methodText = new TextSprite();

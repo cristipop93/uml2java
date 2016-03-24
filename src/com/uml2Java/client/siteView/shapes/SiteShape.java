@@ -2,10 +2,12 @@ package com.uml2Java.client.siteView.shapes;
 
 import com.sencha.gxt.chart.client.draw.DrawComponent;
 
+import java.util.logging.Logger;
+
 /**
  * Created by Cristi on 3/22/2016.
  */
-public abstract class SiteShapes {
+public abstract class SiteShape {
   protected static int shapeId = 1;
   protected int id;
   protected int x, y, width, height;
@@ -13,6 +15,7 @@ public abstract class SiteShapes {
   protected String title;
 //  protected List<Link> links;
   protected DrawComponent drawComponent;
+  protected Logger log = Logger.getLogger(SiteShape.class.getName());
 
   public abstract void translateTo(int mouseX, int mouseY);
 

@@ -1,7 +1,6 @@
 package com.uml2Java.client.siteView.utilitiesPanels.leftPanel;
 
 import com.google.gwt.user.client.ui.Widget;
-import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.button.ToggleButton;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.uml2Java.client.siteView.SiteViewController;
@@ -14,6 +13,7 @@ public class LeftSitePanelController {
   public interface ILeftSitePanelView {
     ToggleButton getSelectButton();
     ToggleButton getPageButton();
+    ToggleButton getSimpleListButton();
     Widget asWidget();
   }
   ILeftSitePanelView view;
@@ -35,6 +35,13 @@ public class LeftSitePanelController {
       @Override
       public void onSelect(SelectEvent event) {
         SiteViewController.getInstance().setSiteMouseState(SiteMouseState.PAGE);
+      }
+    });
+
+    view.getSimpleListButton().addSelectHandler(new SelectEvent.SelectHandler() {
+      @Override
+      public void onSelect(SelectEvent event) {
+        SiteViewController.getInstance().setSiteMouseState(SiteMouseState.SIMPLE_LIST);
       }
     });
   }

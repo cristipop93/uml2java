@@ -45,4 +45,6 @@ public interface Icons extends ClientBundle {
   @ClientBundle.Source("home.png")
   ImageResource home();
 
+  @ClientBundle.Source("simpleList.png")
+  ImageResource simpleList();
 }

@@ -34,6 +34,7 @@ public class AssociationLink extends Link {
       textSprite = new TextSprite();
     }
     sprite.clearCommands();
+    sprite.setStrokeWidth(0.7);
 
     List<Point> points = getLinesPoints();
     if (points.size() >= 2) {

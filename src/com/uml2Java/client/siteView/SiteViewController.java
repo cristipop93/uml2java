@@ -11,7 +11,8 @@ import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer;
 import com.uml2Java.client.siteView.shapes.PageShape;
-import com.uml2Java.client.siteView.shapes.SiteShapes;
+import com.uml2Java.client.siteView.shapes.SimpleListShape;
+import com.uml2Java.client.siteView.shapes.SiteShape;
 import com.uml2Java.client.siteView.siteUtils.SiteMouseState;
 import com.uml2Java.client.siteView.utilitiesPanels.leftPanel.LeftSitePanelController;
 import com.uml2Java.client.siteView.utilitiesPanels.leftPanel.LeftSiteView;
@@ -36,9 +37,9 @@ public class SiteViewController {
   private SiteMouseState siteMouseState = SiteMouseState.SELECT;
   private BorderLayoutContainer mainContainer;
   private HBoxLayoutContainer buttonsContainer;
-  private List<SiteShapes> siteShapes;
+  private List<SiteShape> siteShapes;
   private ToolbarView toolbarView;
-  private SiteShapes clickedShape = null;
+  private SiteShape clickedShape = null;
   private int lastClickX, lastClickY;
   private int lastDraggedX, lastDraggedY;
   private double scaleFactor = 1; // TODO load from users saved
@@ -64,7 +65,7 @@ public class SiteViewController {
     LeftSitePanelController.ILeftSitePanelView leftSitePanelView = new LeftSiteView();
     LeftSitePanelController leftSitePanelController = new LeftSitePanelController(leftSitePanelView);
     view.getLeftPanel().add(leftSitePanelView.asWidget());
-    siteShapes = new ArrayList<SiteShapes>();
+    siteShapes = new ArrayList<SiteShape>();
     addListeners();
   }
 
@@ -76,7 +77,7 @@ public class SiteViewController {
       @Override
       public void onMouseDown(MouseDownEvent event) {
         if (siteMouseState == SiteMouseState.SELECT) {
-          for (SiteShapes shape : siteShapes) {
+          for (SiteShape shape : siteShapes) {
             if (shape.canBeDragged(event.getRelativeX(view.getDrawComponent().getElement()),
                 event.getRelativeY(view.getDrawComponent().getElement()))) {
               clickedShape = shape;
@@ -90,12 +91,9 @@ public class SiteViewController {
             }
           }
         } else if (siteMouseState == SiteMouseState.PAGE) {
-          PageShape tempShape = new PageShape(view.getDrawComponent(),
-              event.getRelativeX(view.getDrawComponent().getElement()),
-              event.getRelativeY(view.getDrawComponent().getElement()), 100, 100, "");
-          tempShape.scaleTo(scaleFactor);
-          siteShapes.add(tempShape);
-          view.getDrawComponent().redrawSurface();
+          addPage(event);
+        } else if (siteMouseState == SiteMouseState.SIMPLE_LIST) {
+          addSimpleList(event);
         }
       }
     };
@@ -106,7 +104,7 @@ public class SiteViewController {
         if (siteMouseState == SiteMouseState.SELECT) {
           if (clickedShape == null) {
             boolean found = false;
-            for (SiteShapes shape : siteShapes) {
+            for (SiteShape shape : siteShapes) {
               if (shape.canBeDragged(event.getRelativeX(view.getDrawComponent().getElement()),
                   event.getRelativeY(view.getDrawComponent().getElement()))) {
                 DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "hand");
@@ -149,13 +147,30 @@ public class SiteViewController {
       public void onValueChange(ValueChangeEvent<Integer> event) {
         scaleFactor = (double) event.getValue() / 100d;
         log.info(scaleFactor + "");
-        for (SiteShapes siteShape : siteShapes) {
+        for (SiteShape siteShape : siteShapes) {
           siteShape.scaleTo(scaleFactor);
         }
         view.getDrawComponent().redrawSurface();
       }
     });
 
+  }
+
+  private void addPage(MouseDownEvent event) {
+    PageShape tempShape = new PageShape(view.getDrawComponent(),
+        event.getRelativeX(view.getDrawComponent().getElement()),
+        event.getRelativeY(view.getDrawComponent().getElement()), 160, 150, "");
+    tempShape.scaleTo(scaleFactor);
+    siteShapes.add(tempShape);
+    view.getDrawComponent().redrawSurface();
+  }
+
+  private void addSimpleList(MouseDownEvent event) {
+    SimpleListShape tempShape = new SimpleListShape(view.getDrawComponent(), event.getRelativeX(view.getDrawComponent().getElement()),
+        event.getRelativeY(view.getDrawComponent().getElement()), 80, 90, "", "");
+    tempShape.scaleTo(scaleFactor);
+    siteShapes.add(tempShape);
+    view.getDrawComponent().redrawSurface();
   }
 
   public static ISiteView getView() {
