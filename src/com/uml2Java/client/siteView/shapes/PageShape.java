@@ -21,6 +21,7 @@ public class PageShape extends SiteShape {
   private PathSprite line;
   private int originalHeight;
   private int originalWidth;
+  private static int shapeId = 1;
 
   public PageShape(DrawComponent drawComponent, int x, int y, int width, int height, String title) {
     this.id = shapeId++;
@@ -127,5 +128,10 @@ public class PageShape extends SiteShape {
     if(id == 1) {
       drawComponent.remove(imageSprite);
     }
+  }
+
+  @Override
+  public int getId() {
+    return shapeId;
   }
 }

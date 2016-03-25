@@ -23,6 +23,7 @@ public class SimpleListShape extends SiteShape {
   private int originalHeight;
   private int originalWidth;
   private String dataType;
+  private static int shapeId = 1;
 
   public SimpleListShape(DrawComponent drawComponent, int x, int y, int width, int height, String title,
       String dataType) {
@@ -133,5 +134,10 @@ public class SimpleListShape extends SiteShape {
     drawComponent.remove(line);
     drawComponent.remove(imageSprite);
     drawComponent.remove(dataTypeSprite);
+  }
+
+  @Override
+  public int getId() {
+    return shapeId;
   }
 }

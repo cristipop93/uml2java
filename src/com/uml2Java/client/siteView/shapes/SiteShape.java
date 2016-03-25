@@ -8,7 +8,6 @@ import java.util.logging.Logger;
  * Created by Cristi on 3/22/2016.
  */
 public abstract class SiteShape {
-  protected static int shapeId = 1;
   protected int id;
   protected int x, y, width, height;
   protected double scaleFactor = 1;
@@ -24,13 +23,7 @@ public abstract class SiteShape {
         mouseY >= y && mouseY <= y + height;
   }
 
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
+  public abstract int getId();
 
   public int getX() {
     return x;
