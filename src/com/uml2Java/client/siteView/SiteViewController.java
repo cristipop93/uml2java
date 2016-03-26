@@ -10,9 +10,7 @@ import com.sencha.gxt.chart.client.draw.DrawComponent;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer;
-import com.uml2Java.client.siteView.shapes.PageShape;
-import com.uml2Java.client.siteView.shapes.SimpleListShape;
-import com.uml2Java.client.siteView.shapes.SiteShape;
+import com.uml2Java.client.siteView.shapes.*;
 import com.uml2Java.client.siteView.siteUtils.SiteMouseState;
 import com.uml2Java.client.siteView.utilitiesPanels.leftPanel.LeftSitePanelController;
 import com.uml2Java.client.siteView.utilitiesPanels.leftPanel.LeftSiteView;
@@ -94,6 +92,10 @@ public class SiteViewController {
           addPage(event);
         } else if (siteMouseState == SiteMouseState.SIMPLE_LIST) {
           addSimpleList(event);
+        } else if (siteMouseState == SiteMouseState.FORM) {
+          addForm(event);
+        } else if (siteMouseState == SiteMouseState.DETAILS) {
+          addDetails(event);
         }
       }
     };
@@ -167,6 +169,22 @@ public class SiteViewController {
 
   private void addSimpleList(MouseDownEvent event) {
     SimpleListShape tempShape = new SimpleListShape(view.getDrawComponent(), event.getRelativeX(view.getDrawComponent().getElement()),
+        event.getRelativeY(view.getDrawComponent().getElement()), 80, 90, "", "");
+    tempShape.scaleTo(scaleFactor);
+    siteShapes.add(tempShape);
+    view.getDrawComponent().redrawSurface();
+  }
+
+  private void addForm(MouseDownEvent event) {
+    FormShape tempShape = new FormShape(view.getDrawComponent(), event.getRelativeX(view.getDrawComponent().getElement()),
+        event.getRelativeY(view.getDrawComponent().getElement()), 80, 90, "", "");
+    tempShape.scaleTo(scaleFactor);
+    siteShapes.add(tempShape);
+    view.getDrawComponent().redrawSurface();
+  }
+
+  private void addDetails(MouseDownEvent event) {
+    DetailsShape tempShape = new DetailsShape(view.getDrawComponent(), event.getRelativeX(view.getDrawComponent().getElement()),
         event.getRelativeY(view.getDrawComponent().getElement()), 80, 90, "", "");
     tempShape.scaleTo(scaleFactor);
     siteShapes.add(tempShape);

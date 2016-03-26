@@ -12,12 +12,12 @@ import com.sencha.gxt.chart.client.draw.sprite.TextSprite;
 import com.uml2Java.client.MainController;
 
 /**
- * Created by Cristi on 3/24/2016.
+ * Created by Cristi on 3/25/2016.
  */
-public class SimpleListShape extends ViewComponentShape {
+public class FormShape extends ViewComponentShape{
   private static int shapeId = 1;
 
-  public SimpleListShape(DrawComponent drawComponent, int x, int y, int width, int height, String title,
+  public FormShape(DrawComponent drawComponent, int x, int y, int width, int height, String title,
       String dataType) {
     this.id = shapeId++;
     this.x = x;
@@ -26,7 +26,7 @@ public class SimpleListShape extends ViewComponentShape {
     this.height = height;
     this.drawComponent = drawComponent;
     if (title == null || title.isEmpty()) {
-      title = "SimpleList" + id;
+      title = "Form" + id;
     }
     if (dataType == null || dataType.isEmpty()) {
       dataType = "<Data Type>";
@@ -34,10 +34,9 @@ public class SimpleListShape extends ViewComponentShape {
     this.title = title;
     this.dataType = dataType;
     draw();
-    imageSprite.setResource(MainController.ICONS.simpleList());
-    imageResource = MainController.ICONS.simpleList();
+    imageSprite.setResource(MainController.ICONS.form());
+    imageResource = MainController.ICONS.form();
   }
-
 
   @Override
   public int getId() {
