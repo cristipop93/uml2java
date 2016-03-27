@@ -23,8 +23,17 @@ public abstract class ViewComponentShape extends SiteShape {
   protected int originalWidth;
   protected String dataType;
   protected ImageResource imageResource = null;
+  protected PageShape parentShape = null;
 
   protected void draw() {
+    int max = this.width;
+    if (title.length() * 7 + 20 > max) {
+      max = title.length() * 7 + 20;
+    }
+    if (dataType.length() * 7 + 20 > max) {
+      max = dataType.length() * 7 + 20;
+    }
+    this.width = max;
     this.originalHeight = height;
     this.originalWidth = width;
     rectangle = new RectangleSprite();
@@ -80,6 +89,10 @@ public abstract class ViewComponentShape extends SiteShape {
 
   @Override
   public void translateTo(int mouseX, int mouseY) {
+    if (mouseX <= parentShape.getX() + 20 * scaleFactor)
+      mouseX = (int) (parentShape.getX() + 20 * scaleFactor);
+    if (mouseY <= parentShape.getY() + 35 * scaleFactor)
+      mouseY = (int) (parentShape.getY() + 35 * scaleFactor);
     this.x = mouseX;
     this.y = mouseY;
     rectangle.setTranslation(x, y);
@@ -87,6 +100,7 @@ public abstract class ViewComponentShape extends SiteShape {
     titleSprite.setTranslation(x + 10 * scaleFactor, y + 5 * scaleFactor);
     imageSprite.setTranslation(x + width / 2 - 16 * scaleFactor, height / 2 + y + 5 * scaleFactor);
     dataTypeSprite.setTranslation(x + 10 * scaleFactor, y + 30 * scaleFactor);
+    parentShape.resize();
   }
 
   @Override
@@ -117,5 +131,15 @@ public abstract class ViewComponentShape extends SiteShape {
     drawComponent.remove(line);
     drawComponent.remove(imageSprite);
     drawComponent.remove(dataTypeSprite);
+  }
+
+  public void translateToParentsCoords(int x, int y) {
+    this.x = x;
+    this.y = y;
+    rectangle.setTranslation(x, y);
+    line.setTranslation(x, y + 25 * scaleFactor);
+    titleSprite.setTranslation(x + 10 * scaleFactor, y + 5 * scaleFactor);
+    imageSprite.setTranslation(x + width / 2 - 16 * scaleFactor, height / 2 + y + 5 * scaleFactor);
+    dataTypeSprite.setTranslation(x + 10 * scaleFactor, y + 30 * scaleFactor);
   }
 }

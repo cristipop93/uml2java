@@ -11,6 +11,9 @@ import com.sencha.gxt.chart.client.draw.sprite.RectangleSprite;
 import com.sencha.gxt.chart.client.draw.sprite.TextSprite;
 import com.uml2Java.client.MainController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Cristi on 3/22/2016.
  */
@@ -22,6 +25,7 @@ public class PageShape extends SiteShape {
   private int originalHeight;
   private int originalWidth;
   private static int shapeId = 1;
+  private List<ViewComponentShape> components;
 
   public PageShape(DrawComponent drawComponent, int x, int y, int width, int height, String title) {
     this.id = shapeId++;
@@ -34,10 +38,16 @@ public class PageShape extends SiteShape {
       title = "Page" + id;
     }
     this.title = title;
+    this.components = new ArrayList<ViewComponentShape>();
     draw();
   }
 
   private void draw() {
+    int max = this.width;
+    if ( (title.length() * 7 + 10) * scaleFactor > max) {
+      max = (int) ((title.length() * 7 + 10) * scaleFactor);
+    }
+    this.width = max;
     this.originalHeight = height;
     this.originalWidth = width;
     rectangle = new RectangleSprite();
@@ -85,6 +95,8 @@ public class PageShape extends SiteShape {
 
   @Override
   public void translateTo(int mouseX, int mouseY) {
+    int sx = x;
+    int sy = y;
     this.x = mouseX;
     this.y = mouseY;
     rectangle.setTranslation(x, y);
@@ -95,6 +107,10 @@ public class PageShape extends SiteShape {
       titleSprite.setTranslation(x + 26 * scaleFactor, y + 5 * scaleFactor);
     } else {
       titleSprite.setTranslation(x + 10 * scaleFactor, y + 5 * scaleFactor);
+    }
+    // translate it's components
+    for (ViewComponentShape componentShape : components) {
+      componentShape.translateToParentsCoords(x + componentShape.getX() - sx, y + componentShape.getY() - sy);
     }
   }
 
@@ -115,8 +131,37 @@ public class PageShape extends SiteShape {
 
   @Override
   public void redraw() {
-    remove();
-    draw();
+    rectangle.setX(0);
+    rectangle.setY(0);
+    rectangle.setWidth(width);
+    rectangle.setHeight(height);
+
+    rectangle.setStroke(new Color("#000"));
+    rectangle.setStrokeWidth(0.5);
+    rectangle.setFill(new Color("#CFF"));
+    rectangle.setFillOpacity(0.25);
+
+    if (id == 1) {
+      imageSprite.setX(0);
+      imageSprite.setY(0);
+    }
+
+    titleSprite.setText(title);
+    titleSprite.setFontSize(12);
+    titleSprite.setFont("Times New Roman");
+    titleSprite.setX(0);
+    titleSprite.setY(0);
+    titleSprite.setFill(RGB.BLACK);
+    line.clearCommands();
+    line.addCommand(new MoveTo(0, 0));
+    line.addCommand(new LineTo(width, 0));
+    line.setStroke(new Color("#000"));
+    line.setStrokeWidth(0.5);
+
+    scaleTo(scaleFactor);
+//    log.info("pageShape redraw");
+//    remove();
+//    draw();
     drawComponent.redrawSurface();
   }
 
@@ -133,5 +178,31 @@ public class PageShape extends SiteShape {
   @Override
   public int getId() {
     return shapeId;
+  }
+
+  public void resize() {
+    int maxX = 0, maxY = 0;
+    for (ViewComponentShape component : components) {
+      if (component.getX() + component.getWidth() > maxX) {
+        maxX = component.getX() + component.getWidth();
+      }
+      if (component.getY() + component.getHeight() > maxY) {
+        maxY = component.getY() + component.getHeight();
+      }
+    }
+
+    int max = (int) (maxX - x + 20 * scaleFactor);
+    if ( (title.length() * 7 + 10) * scaleFactor > max) {
+      max = (int) ((title.length() * 7 + 10) * scaleFactor);
+    }
+    this.width = max;
+    this.height = (int) (maxY - y + 10 * scaleFactor);
+    this.originalWidth = width;
+    this.originalHeight = height;
+    redraw();
+  }
+
+  public List<ViewComponentShape> getComponents() {
+    return components;
   }
 }

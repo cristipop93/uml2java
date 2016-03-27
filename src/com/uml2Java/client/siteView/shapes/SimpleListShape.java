@@ -18,7 +18,7 @@ public class SimpleListShape extends ViewComponentShape {
   private static int shapeId = 1;
 
   public SimpleListShape(DrawComponent drawComponent, int x, int y, int width, int height, String title,
-      String dataType) {
+      String dataType, PageShape parent) {
     this.id = shapeId++;
     this.x = x;
     this.y = y;
@@ -33,6 +33,8 @@ public class SimpleListShape extends ViewComponentShape {
     }
     this.title = title;
     this.dataType = dataType;
+    this.parentShape = parent;
+    parent.getComponents().add(this);
     draw();
     imageSprite.setResource(MainController.ICONS.simpleList());
     imageResource = MainController.ICONS.simpleList();

@@ -17,8 +17,8 @@ import com.uml2Java.client.MainController;
 public class FormShape extends ViewComponentShape{
   private static int shapeId = 1;
 
-  public FormShape(DrawComponent drawComponent, int x, int y, int width, int height, String title,
-      String dataType) {
+  public FormShape(DrawComponent drawComponent, int x, int y, int width, int height, String title, String dataType,
+      PageShape parent) {
     this.id = shapeId++;
     this.x = x;
     this.y = y;
@@ -33,6 +33,8 @@ public class FormShape extends ViewComponentShape{
     }
     this.title = title;
     this.dataType = dataType;
+    this.parentShape = parent;
+    parent.getComponents().add(this);
     draw();
     imageSprite.setResource(MainController.ICONS.form());
     imageResource = MainController.ICONS.form();

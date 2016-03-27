@@ -75,27 +75,47 @@ public class SiteViewController {
       @Override
       public void onMouseDown(MouseDownEvent event) {
         if (siteMouseState == SiteMouseState.SELECT) {
+          int minArea = 20000 * 10000;
           for (SiteShape shape : siteShapes) {
             if (shape.canBeDragged(event.getRelativeX(view.getDrawComponent().getElement()),
                 event.getRelativeY(view.getDrawComponent().getElement()))) {
-              clickedShape = shape;
-              lastClickX = event.getRelativeX(view.getDrawComponent().getElement());
-              lastClickY = event.getRelativeY(view.getDrawComponent().getElement());
-              lastDraggedX = shape.getX();
-              lastDraggedY = shape.getY();
+              if (shape.getWidth() * shape.getHeight() < minArea) {
+                minArea = shape.getWidth() * shape.getHeight();
+                clickedShape = shape;
+                lastClickX = event.getRelativeX(view.getDrawComponent().getElement());
+                lastClickY = event.getRelativeY(view.getDrawComponent().getElement());
+                lastDraggedX = shape.getX();
+                lastDraggedY = shape.getY();
+              }
               //TODO display popup with info about that shape
-
-              return;
             }
           }
-        } else if (siteMouseState == SiteMouseState.PAGE) {
+          return;
+        }
+        if (siteMouseState == SiteMouseState.PAGE) {
           addPage(event);
-        } else if (siteMouseState == SiteMouseState.SIMPLE_LIST) {
-          addSimpleList(event);
+          return;
+        }
+        //  adding a component
+        PageShape hoveredPage = null;
+        for (SiteShape shape : siteShapes) {
+          if (shape instanceof PageShape && shape.canBeDragged(event.getRelativeX(view.getDrawComponent().getElement()),
+              event.getRelativeY(view.getDrawComponent().getElement()))) {
+            DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "hand");
+            hoveredPage = (PageShape) shape;
+            break;
+          }
+        }
+
+        if (siteMouseState == SiteMouseState.SIMPLE_LIST) {
+          if (hoveredPage != null)
+            addSimpleList(event, hoveredPage);
         } else if (siteMouseState == SiteMouseState.FORM) {
-          addForm(event);
+          if (hoveredPage != null)
+            addForm(event, hoveredPage);
         } else if (siteMouseState == SiteMouseState.DETAILS) {
-          addDetails(event);
+          if (hoveredPage != null)
+            addDetails(event, hoveredPage);
         }
       }
     };
@@ -118,6 +138,21 @@ public class SiteViewController {
               DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "default");
             }
           }
+        } else if (siteMouseState == SiteMouseState.SIMPLE_LIST || siteMouseState == SiteMouseState.FORM || siteMouseState == SiteMouseState.DETAILS) {
+          boolean found = false;
+          for (SiteShape shape : siteShapes) {
+            if (shape instanceof PageShape && shape.canBeDragged(event.getRelativeX(view.getDrawComponent().getElement()),
+                event.getRelativeY(view.getDrawComponent().getElement()))) {
+              DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "hand");
+              found = true;
+              break;
+            }
+          }
+          if (!found) {
+            DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "no-drop");
+          }
+        } else {
+          DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "default");
         }
         if (clickedShape != null) {
           int mouseX = event.getRelativeX(view.getDrawComponent().getElement());
@@ -167,25 +202,25 @@ public class SiteViewController {
     view.getDrawComponent().redrawSurface();
   }
 
-  private void addSimpleList(MouseDownEvent event) {
+  private void addSimpleList(MouseDownEvent event, PageShape parent) {
     SimpleListShape tempShape = new SimpleListShape(view.getDrawComponent(), event.getRelativeX(view.getDrawComponent().getElement()),
-        event.getRelativeY(view.getDrawComponent().getElement()), 80, 90, "", "");
+        event.getRelativeY(view.getDrawComponent().getElement()), 80, 90, "", "", parent);
     tempShape.scaleTo(scaleFactor);
     siteShapes.add(tempShape);
     view.getDrawComponent().redrawSurface();
   }
 
-  private void addForm(MouseDownEvent event) {
+  private void addForm(MouseDownEvent event, PageShape parent) {
     FormShape tempShape = new FormShape(view.getDrawComponent(), event.getRelativeX(view.getDrawComponent().getElement()),
-        event.getRelativeY(view.getDrawComponent().getElement()), 80, 90, "", "");
+        event.getRelativeY(view.getDrawComponent().getElement()), 80, 90, "", "", parent);
     tempShape.scaleTo(scaleFactor);
     siteShapes.add(tempShape);
     view.getDrawComponent().redrawSurface();
   }
 
-  private void addDetails(MouseDownEvent event) {
+  private void addDetails(MouseDownEvent event, PageShape parent) {
     DetailsShape tempShape = new DetailsShape(view.getDrawComponent(), event.getRelativeX(view.getDrawComponent().getElement()),
-        event.getRelativeY(view.getDrawComponent().getElement()), 80, 90, "", "");
+        event.getRelativeY(view.getDrawComponent().getElement()), 80, 90, "", "", parent);
     tempShape.scaleTo(scaleFactor);
     siteShapes.add(tempShape);
     view.getDrawComponent().redrawSurface();
