@@ -36,11 +36,11 @@ public interface Icons extends ClientBundle {
   @ClientBundle.Source("add.png")
   ImageResource add();
 
-  @ClientBundle.Source("smallClass.jpg")
-  ImageResource smallClass();
+  @ClientBundle.Source("zoomOut.png")
+  ImageResource zoomOut();
 
-  @ClientBundle.Source("largeClass.jpg")
-  ImageResource largeClass();
+  @ClientBundle.Source("zoomIn.png")
+  ImageResource zoomIn();
 
   @ClientBundle.Source("home.png")
   ImageResource home();
@@ -53,4 +53,10 @@ public interface Icons extends ClientBundle {
 
   @ClientBundle.Source("details.png")
   ImageResource details();
+
+  @ClientBundle.Source("select.png")
+  ImageResource select();
+
+  @ClientBundle.Source("page.png")
+  ImageResource page();
 }

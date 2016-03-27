@@ -6,6 +6,7 @@ import com.sencha.gxt.core.client.util.ToggleGroup;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.button.ToggleButton;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.uml2Java.client.MainController;
 
 /**
  * Created by Cristi on 3/22/2016.
@@ -24,16 +25,26 @@ public class LeftSiteView implements LeftSitePanelController.ILeftSitePanelView 
 
   private void initGUI() {
     mainContainer = new VerticalLayoutContainer();
-    selectButton = new ToggleButton("Select");
+    selectButton = new ToggleButton();
+    selectButton.setIcon(MainController.ICONS.select());
+    selectButton.setToolTip("Select");
     selectButton.setAllowDepress(false);
-    pageButton = new ToggleButton("Page");
+    pageButton = new ToggleButton();
     pageButton.setAllowDepress(false);
-    simpleListButton = new ToggleButton("Simple List");
+    pageButton.setIcon(MainController.ICONS.page());
+    pageButton.setToolTip("Page");
+    simpleListButton = new ToggleButton();
     simpleListButton.setAllowDepress(false);
-    formButton = new ToggleButton("Form");
+    simpleListButton.setIcon(MainController.ICONS.simpleList());
+    simpleListButton.setToolTip("Simple List");
+    formButton = new ToggleButton();
     formButton.setAllowDepress(false);
-    detailsButton = new ToggleButton("Details");
+    formButton.setIcon(MainController.ICONS.form());
+    formButton.setToolTip("Form");
+    detailsButton = new ToggleButton();
     detailsButton.setAllowDepress(false);
+    detailsButton.setIcon(MainController.ICONS.details());
+    detailsButton.setToolTip("Details");
     ToggleGroup group = new ToggleGroup();
     group.add(selectButton);
     group.add(pageButton);

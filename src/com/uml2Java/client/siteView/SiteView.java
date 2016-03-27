@@ -28,11 +28,11 @@ public class SiteView implements SiteViewController.ISiteView {
     leftPanel.setBorders(false);
     leftPanel.setBodyBorder(false);
 
-    BorderLayoutContainer.BorderLayoutData layoutData = new BorderLayoutContainer.BorderLayoutData(70);
+    BorderLayoutContainer.BorderLayoutData layoutData = new BorderLayoutContainer.BorderLayoutData(50);
     layoutData.setSplit(false);
     layoutData.setCollapsible(false);
     layoutData.setCollapseMini(false);
-    layoutData.setMaxSize(150);
+    layoutData.setMaxSize(160);
     layoutData.setMinSize(50);
     layoutData.setMargins(new Margins(0, 5, 0, 0));
     mainContainer.setWestWidget(leftPanel, layoutData);
