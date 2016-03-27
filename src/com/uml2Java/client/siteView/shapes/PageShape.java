@@ -190,13 +190,14 @@ public class PageShape extends SiteShape {
         maxY = component.getY() + component.getHeight();
       }
     }
-
     int max = (int) (maxX - x + 20 * scaleFactor);
     if ( (title.length() * 7 + 10) * scaleFactor > max) {
       max = (int) ((title.length() * 7 + 10) * scaleFactor);
     }
     this.width = max;
     this.height = (int) (maxY - y + 10 * scaleFactor);
+    this.width = (int) (width / scaleFactor);
+    this.height = (int)(height / scaleFactor);
     this.originalWidth = width;
     this.originalHeight = height;
     redraw();
