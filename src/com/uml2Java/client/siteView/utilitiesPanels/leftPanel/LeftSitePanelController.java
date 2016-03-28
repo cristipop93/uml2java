@@ -16,6 +16,7 @@ public class LeftSitePanelController {
     ToggleButton getSimpleListButton();
     ToggleButton getFormButton();
     ToggleButton getDetailsButton();
+    ToggleButton getActionButton();
     Widget asWidget();
   }
   ILeftSitePanelView view;
@@ -58,6 +59,13 @@ public class LeftSitePanelController {
       @Override
       public void onSelect(SelectEvent event) {
         SiteViewController.getInstance().setSiteMouseState(SiteMouseState.DETAILS);
+      }
+    });
+
+    view.getActionButton().addSelectHandler(new SelectEvent.SelectHandler() {
+      @Override
+      public void onSelect(SelectEvent event) {
+        SiteViewController.getInstance().setSiteMouseState(SiteMouseState.ACTION);
       }
     });
   }

@@ -110,7 +110,9 @@ public abstract class ViewComponentShape extends SiteShape {
 
     this.scaleFactor = scaleFactor;
     rectangle.setScaling(scaleFactor);
+    rectangle.setStrokeWidth(0.5);
     line.setScaling(scaleFactor);
+    line.setStrokeWidth(0.5);
     titleSprite.setScaling(scaleFactor);
     imageSprite.setScaling(scaleFactor);
     dataTypeSprite.setScaling(scaleFactor);

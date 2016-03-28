@@ -96,6 +96,10 @@ public class SiteViewController {
           addPage(event);
           return;
         }
+        if (siteMouseState == SiteMouseState.ACTION) {
+          addAction(event);
+          return;
+        }
         //  adding a component
         PageShape hoveredPage = null;
         for (SiteShape shape : siteShapes) {
@@ -196,7 +200,15 @@ public class SiteViewController {
   private void addPage(MouseDownEvent event) {
     PageShape tempShape = new PageShape(view.getDrawComponent(),
         event.getRelativeX(view.getDrawComponent().getElement()),
-        event.getRelativeY(view.getDrawComponent().getElement()), 160, 150, "");
+        event.getRelativeY(view.getDrawComponent().getElement()), 120, 110, "");
+    tempShape.scaleTo(scaleFactor);
+    siteShapes.add(tempShape);
+    view.getDrawComponent().redrawSurface();
+  }
+
+  private void addAction(MouseDownEvent event) {
+    ActionShape tempShape = new ActionShape(view.getDrawComponent(), event.getRelativeX(view.getDrawComponent().getElement()),
+        event.getRelativeY(view.getDrawComponent().getElement()), 140, 80, "");
     tempShape.scaleTo(scaleFactor);
     siteShapes.add(tempShape);
     view.getDrawComponent().redrawSurface();
