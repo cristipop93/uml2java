@@ -31,7 +31,6 @@ public class ActionShape extends SiteShape{
     this.title = title;
     path = new PathSprite();
     titleSprite = new TextSprite();
-    titleSprite = new TextSprite();
     draw();
   }
 

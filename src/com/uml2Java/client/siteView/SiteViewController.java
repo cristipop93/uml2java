@@ -208,7 +208,7 @@ public class SiteViewController {
 
   private void addAction(MouseDownEvent event) {
     ActionShape tempShape = new ActionShape(view.getDrawComponent(), event.getRelativeX(view.getDrawComponent().getElement()),
-        event.getRelativeY(view.getDrawComponent().getElement()), 140, 80, "");
+        event.getRelativeY(view.getDrawComponent().getElement()), 80, 60, "");
     tempShape.scaleTo(scaleFactor);
     siteShapes.add(tempShape);
     view.getDrawComponent().redrawSurface();
