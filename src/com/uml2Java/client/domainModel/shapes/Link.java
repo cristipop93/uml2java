@@ -1,6 +1,7 @@
 package com.uml2Java.client.domainModel.shapes;
 
 import com.sencha.gxt.chart.client.draw.DrawComponent;
+import com.uml2Java.client.domainModel.uml2javaUtils.Point;
 
 import java.util.ArrayList;
 import java.util.List;

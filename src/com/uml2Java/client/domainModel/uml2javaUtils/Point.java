@@ -1,4 +1,6 @@
-package com.uml2Java.client.domainModel.shapes;
+package com.uml2Java.client.domainModel.uml2javaUtils;
+
+import com.uml2Java.client.domainModel.shapes.Position;
 
 /**
  * Created by Cristi on 3/5/2016.
@@ -24,5 +26,9 @@ public class Point {
 
   public Position getPosition() {
     return position;
+  }
+
+  public void setPosition(Position position) {
+    this.position = position;
   }
 }

@@ -5,6 +5,7 @@ import com.sencha.gxt.chart.client.draw.DrawComponent;
 import com.sencha.gxt.chart.client.draw.path.LineTo;
 import com.sencha.gxt.chart.client.draw.path.MoveTo;
 import com.sencha.gxt.chart.client.draw.path.PathSprite;
+import com.uml2Java.client.domainModel.uml2javaUtils.Point;
 
 import java.util.List;
 

@@ -2,6 +2,8 @@ package com.uml2Java.client.siteView.shapes;
 
 import com.sencha.gxt.chart.client.draw.DrawComponent;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -12,9 +14,9 @@ public abstract class SiteShape {
   protected int x, y, width, height;
   protected double scaleFactor = 1;
   protected String title;
-//  protected List<Link> links;
   protected DrawComponent drawComponent;
   protected Logger log = Logger.getLogger(SiteShape.class.getName());
+  protected List<Flow> flows = new ArrayList<Flow>();
 
   public abstract void translateTo(int mouseX, int mouseY);
 
@@ -70,4 +72,14 @@ public abstract class SiteShape {
   public abstract void redraw();
 
   public abstract void remove();
+
+  protected void drawFlows() {
+    for(Flow flow : flows) {
+      flow.draw(drawComponent);
+    }
+  }
+
+  public List<Flow> getFlows() {
+    return flows;
+  }
 }

@@ -68,9 +68,19 @@ public class SiteViewController {
   }
 
   private void addListeners() {
-//    PageShape page1 = new PageShape(view.getDrawComponent(), 200, 200, 200, 90, "");
+    PageShape page1 = new PageShape(view.getDrawComponent(), 200, 200, 200, 90, "");
+    PageShape page2 = new PageShape(view.getDrawComponent(), 400, 500, 200, 90, "");
+    ViewComponentShape list1 = new SimpleListShape(view.getDrawComponent(), 100, 100, 80, 90, "", "", page1);
 //    log.info("page1: " + page1.getId());
-//    siteShapes.add(page1);
+    Flow flow1 = new NavigationFlow(page1, page2);
+    page1.getFlows().add(flow1);
+    page2.getFlows().add(flow1);
+    Flow flow2 = new NavigationFlow(page2, list1);
+    page2.getFlows().add(flow2);
+    list1.getFlows().add(flow2);
+    siteShapes.add(page1);
+    siteShapes.add(page2);
+    siteShapes.add(list1);
     MouseDownHandler mouseDownHandler = new MouseDownHandler() {
       @Override
       public void onMouseDown(MouseDownEvent event) {

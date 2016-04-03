@@ -112,6 +112,8 @@ public class PageShape extends SiteShape {
     for (ViewComponentShape componentShape : components) {
       componentShape.translateToParentsCoords(x + componentShape.getX() - sx, y + componentShape.getY() - sy);
     }
+
+    drawFlows();
   }
 
   @Override

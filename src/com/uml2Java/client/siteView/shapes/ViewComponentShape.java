@@ -101,6 +101,8 @@ public abstract class ViewComponentShape extends SiteShape {
     imageSprite.setTranslation(x + width / 2 - 16 * scaleFactor, height / 2 + y + 5 * scaleFactor);
     dataTypeSprite.setTranslation(x + 10 * scaleFactor, y + 30 * scaleFactor);
     parentShape.resize();
+
+    drawFlows();
   }
 
   @Override
@@ -143,5 +145,7 @@ public abstract class ViewComponentShape extends SiteShape {
     titleSprite.setTranslation(x + 10 * scaleFactor, y + 5 * scaleFactor);
     imageSprite.setTranslation(x + width / 2 - 16 * scaleFactor, height / 2 + y + 5 * scaleFactor);
     dataTypeSprite.setTranslation(x + 10 * scaleFactor, y + 30 * scaleFactor);
+
+    drawFlows();
   }
 }

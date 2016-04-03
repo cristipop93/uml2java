@@ -73,6 +73,8 @@ public class ActionShape extends SiteShape{
     path.setTranslation(x, y);
     titleSprite
         .setTranslation(x + (width - (title.length() * 7) * scaleFactor) / 2, y + height / 2 - 7 * scaleFactor);
+
+    drawFlows();
   }
 
   @Override
