@@ -73,13 +73,18 @@ public abstract class SiteShape {
 
   public abstract void remove();
 
-  protected void drawFlows() {
+  protected void drawFlows(double scaleFactor) {
     for(Flow flow : flows) {
-      flow.draw(drawComponent);
+      flow.draw(drawComponent, scaleFactor);
     }
   }
 
   public List<Flow> getFlows() {
     return flows;
+  }
+
+  public void addFlow(Flow flow) {
+    this.flows.add(flow);
+    drawFlows(scaleFactor);
   }
 }

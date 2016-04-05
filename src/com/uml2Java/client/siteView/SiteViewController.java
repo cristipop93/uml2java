@@ -73,11 +73,11 @@ public class SiteViewController {
     ViewComponentShape list1 = new SimpleListShape(view.getDrawComponent(), 100, 100, 80, 90, "", "", page1);
 //    log.info("page1: " + page1.getId());
     Flow flow1 = new NavigationFlow(page1, page2);
-    page1.getFlows().add(flow1);
-    page2.getFlows().add(flow1);
+    page1.addFlow(flow1);
+    page2.addFlow(flow1);
     Flow flow2 = new NavigationFlow(page2, list1);
-    page2.getFlows().add(flow2);
-    list1.getFlows().add(flow2);
+    page2.addFlow(flow2);
+    list1.addFlow(flow2);
     siteShapes.add(page1);
     siteShapes.add(page2);
     siteShapes.add(list1);
@@ -174,7 +174,7 @@ public class SiteViewController {
           if (mouseX > 0 && mouseX < view.getDrawComponent().getOffsetWidth() && mouseY > 0 && mouseY < view
               .getDrawComponent().getOffsetHeight()) {
             clickedShape.translateTo(lastDraggedX - (lastClickX - mouseX), lastDraggedY - (lastClickY - mouseY));
-            view.getDrawComponent().redrawSurfaceForced();
+//            view.getDrawComponent().redrawSurfaceForced();
           } else {
             clickedShape = null;
           }
@@ -201,7 +201,7 @@ public class SiteViewController {
         for (SiteShape siteShape : siteShapes) {
           siteShape.scaleTo(scaleFactor);
         }
-        view.getDrawComponent().redrawSurface();
+//        view.getDrawComponent().redrawSurface();
       }
     });
 
@@ -213,7 +213,7 @@ public class SiteViewController {
         event.getRelativeY(view.getDrawComponent().getElement()), 120, 110, "");
     tempShape.scaleTo(scaleFactor);
     siteShapes.add(tempShape);
-    view.getDrawComponent().redrawSurface();
+//    view.getDrawComponent().redrawSurface();
   }
 
   private void addAction(MouseDownEvent event) {
@@ -221,7 +221,7 @@ public class SiteViewController {
         event.getRelativeY(view.getDrawComponent().getElement()), 80, 60, "");
     tempShape.scaleTo(scaleFactor);
     siteShapes.add(tempShape);
-    view.getDrawComponent().redrawSurface();
+//    view.getDrawComponent().redrawSurface();
   }
 
   private void addSimpleList(MouseDownEvent event, PageShape parent) {
@@ -229,7 +229,7 @@ public class SiteViewController {
         event.getRelativeY(view.getDrawComponent().getElement()), 80, 90, "", "", parent);
     tempShape.scaleTo(scaleFactor);
     siteShapes.add(tempShape);
-    view.getDrawComponent().redrawSurface();
+//    view.getDrawComponent().redrawSurface();
   }
 
   private void addForm(MouseDownEvent event, PageShape parent) {
@@ -237,7 +237,7 @@ public class SiteViewController {
         event.getRelativeY(view.getDrawComponent().getElement()), 80, 90, "", "", parent);
     tempShape.scaleTo(scaleFactor);
     siteShapes.add(tempShape);
-    view.getDrawComponent().redrawSurface();
+//    view.getDrawComponent().redrawSurface();
   }
 
   private void addDetails(MouseDownEvent event, PageShape parent) {
@@ -245,7 +245,7 @@ public class SiteViewController {
         event.getRelativeY(view.getDrawComponent().getElement()), 80, 90, "", "", parent);
     tempShape.scaleTo(scaleFactor);
     siteShapes.add(tempShape);
-    view.getDrawComponent().redrawSurface();
+//    view.getDrawComponent().redrawSurface();
   }
 
   public static ISiteView getView() {

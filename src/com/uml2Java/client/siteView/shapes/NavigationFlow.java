@@ -24,13 +24,15 @@ public class NavigationFlow extends Flow {
   }
 
   @Override
-  public void draw(DrawComponent drawComponent) {
+  public void draw(DrawComponent drawComponent, double scaleFactor) {
     if (line == null) {
       line = new PathSprite();
     }
     if (triangle == null) {
       triangle = new PathSprite();
     }
+    int halfWidth =(int) (this.halfWidth * scaleFactor);
+    int height = (int) (this.height * scaleFactor);
     line.clearCommands();
     line.setStrokeWidth(0.7);
     triangle.clearCommands();
@@ -39,33 +41,42 @@ public class NavigationFlow extends Flow {
       return;
     Point point1 = points.get(0);
     Point point2 = points.get(1);
-    line.addCommand(new MoveTo(point1.getX(), point1.getY()));
-    line.addCommand(new LineTo(point2.getX(), point2.getY()));
-    line.setStroke(new Color("#000"));
-    drawComponent.addSprite(line);
+
     if (point1.getPosition() == Position.N) {
       triangle.addCommand(new MoveTo(point1.getX() - halfWidth, point1.getY() - height));
       triangle.addCommand(new LineTo(point1.getX() + halfWidth, point1.getY() - height));
       triangle.addCommand(new LineTo(point1.getX(), point1.getY()));
       triangle.addCommand(new LineTo(point1.getX() - halfWidth, point1.getY() - height));
+      line.addCommand(new MoveTo(point1.getX(), point1.getY() - height));
     } else if (point1.getPosition() == Position.S) {
       triangle.addCommand(new MoveTo(point1.getX() - halfWidth, point1.getY() + height));
       triangle.addCommand(new LineTo(point1.getX() + halfWidth, point1.getY() + height));
       triangle.addCommand(new LineTo(point1.getX(), point1.getY()));
       triangle.addCommand(new LineTo(point1.getX() - halfWidth, point1.getY() + height));
+      line.addCommand(new MoveTo(point1.getX(), point1.getY() + height));
     } else if (point1.getPosition() == Position.E) {
       triangle.addCommand(new MoveTo(point1.getX() + height, point1.getY() - halfWidth));
       triangle.addCommand(new LineTo(point1.getX() + height, point1.getY() + halfWidth));
       triangle.addCommand(new LineTo(point1.getX(), point1.getY()));
       triangle.addCommand(new LineTo(point1.getX() + height, point1.getY() - halfWidth));
+      line.addCommand(new MoveTo(point1.getX() + height, point1.getY()));
     } else if (point1.getPosition() == Position.W) {
       triangle.addCommand(new MoveTo(point1.getX() - height, point1.getY() - halfWidth));
       triangle.addCommand(new LineTo(point1.getX() - height, point1.getY() + halfWidth));
       triangle.addCommand(new LineTo(point1.getX(), point1.getY()));
       triangle.addCommand(new LineTo(point1.getX() - height, point1.getY() - halfWidth));
+      line.addCommand(new MoveTo(point1.getX() - height, point1.getY()));
     }
+
+    line.addCommand(new LineTo(point2.getX(), point2.getY()));
+    line.setStroke(new Color("#000"));
+    line.setStrokeWidth(0.5);
+
+    drawComponent.addSprite(line);
     drawComponent.addSprite(triangle);
 
+    line.redraw();
+    triangle.redraw();
   }
 
   @Override

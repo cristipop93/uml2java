@@ -113,7 +113,7 @@ public abstract class Flow {
     return secondShape;
   }
 
-  public abstract void draw(DrawComponent drawComponent);
+  public abstract void draw(DrawComponent drawComponent, double scaleFactor);
 
   public abstract void remove(DrawComponent drawComponent);
 }

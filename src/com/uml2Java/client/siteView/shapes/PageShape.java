@@ -113,7 +113,14 @@ public class PageShape extends SiteShape {
       componentShape.translateToParentsCoords(x + componentShape.getX() - sx, y + componentShape.getY() - sy);
     }
 
-    drawFlows();
+    rectangle.redraw();
+    line.redraw();
+    if (id == 1) {
+      imageSprite.redraw();
+    }
+    titleSprite.redraw();
+
+    drawFlows(scaleFactor);
   }
 
   @Override
@@ -164,7 +171,13 @@ public class PageShape extends SiteShape {
 //    log.info("pageShape redraw");
 //    remove();
 //    draw();
-    drawComponent.redrawSurface();
+//    drawComponent.redrawSurface();
+    rectangle.redraw();
+    line.redraw();
+    if (id == 1) {
+      imageSprite.redraw();
+    }
+    titleSprite.redraw();
   }
 
   @Override
