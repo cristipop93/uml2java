@@ -2,6 +2,7 @@ package com.uml2Java.client.siteView.shapes;
 
 import com.sencha.gxt.chart.client.draw.DrawComponent;
 import com.uml2Java.client.MainController;
+import com.uml2Java.shared.DataTypes;
 
 /**
  * Created by Cristi on 3/25/2016.
@@ -9,7 +10,7 @@ import com.uml2Java.client.MainController;
 public class DetailsShape extends ViewComponentShape {
   private static int shapeId = 1;
 
-  public DetailsShape(DrawComponent drawComponent, int x, int y, int width, int height, String title, String dataType,
+  public DetailsShape(DrawComponent drawComponent, int x, int y, int width, int height, String title, DataTypes dataType,
       PageShape parent) {
     this.id = shapeId++;
     this.x = x;
@@ -19,9 +20,6 @@ public class DetailsShape extends ViewComponentShape {
     this.drawComponent = drawComponent;
     if (title == null || title.isEmpty()) {
       title = "Details" + id;
-    }
-    if (dataType == null || dataType.isEmpty()) {
-      dataType = "<Data Type>";
     }
     this.title = title;
     this.dataType = dataType;

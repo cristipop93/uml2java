@@ -9,6 +9,7 @@ import com.sencha.gxt.chart.client.draw.path.PathSprite;
 import com.sencha.gxt.chart.client.draw.sprite.ImageSprite;
 import com.sencha.gxt.chart.client.draw.sprite.RectangleSprite;
 import com.sencha.gxt.chart.client.draw.sprite.TextSprite;
+import com.uml2Java.shared.DataTypes;
 
 /**
  * Created by Cristi on 3/26/2016.
@@ -21,22 +22,23 @@ public abstract class ViewComponentShape extends SiteShape {
   protected PathSprite line;
   protected int originalHeight;
   protected int originalWidth;
-  protected String dataType;
+  protected DataTypes dataType;
   protected ImageResource imageResource = null;
   protected PageShape parentShape = null;
 
   protected void draw() {
-    int max = this.width;
+    int max = 0;
     if (title.length() * 7 + 20 > max) {
       max = title.length() * 7 + 20;
     }
-    if (dataType.length() * 7 + 20 > max) {
-      max = dataType.length() * 7 + 20;
+    if (dataType.getDisplayName().length() * 7 + 20 > max) {
+      max = dataType.getDisplayName().length() * 7 + 20;
     }
     this.width = max;
     this.originalHeight = height;
     this.originalWidth = width;
-    rectangle = new RectangleSprite();
+    if (rectangle == null)
+      rectangle = new RectangleSprite();
 
     rectangle.setX(0);
     rectangle.setY(0);
@@ -49,14 +51,16 @@ public abstract class ViewComponentShape extends SiteShape {
     rectangle.setFillOpacity(1);
     rectangle.setRadius(6);
 
-    imageSprite = new ImageSprite();
+    if (imageSprite == null)
+      imageSprite = new ImageSprite();
     if(imageResource != null) {
       imageSprite.setResource(imageResource);
     }
     imageSprite.setX(0);
     imageSprite.setY(0);
 
-    titleSprite = new TextSprite();
+    if (titleSprite == null)
+      titleSprite = new TextSprite();
     titleSprite.setText(title);
     titleSprite.setFontSize(12);
     titleSprite.setFont("Times New Roman");
@@ -64,14 +68,16 @@ public abstract class ViewComponentShape extends SiteShape {
     titleSprite.setY(0);
     titleSprite.setFill(RGB.BLACK);
 
-    line = new PathSprite();
+    if (line == null)
+      line = new PathSprite();
     line.addCommand(new MoveTo(0, 0));
     line.addCommand(new LineTo(width, 0));
     line.setStroke(new Color("#000"));
     line.setStrokeWidth(0.5);
 
-    dataTypeSprite = new TextSprite();
-    dataTypeSprite.setText(dataType);
+    if (dataTypeSprite == null)
+      dataTypeSprite = new TextSprite();
+    dataTypeSprite.setText("<" + dataType.getDisplayName() + ">");
     dataTypeSprite.setFontSize(12);
     dataTypeSprite.setFont("Times New Roman");
     dataTypeSprite.setX(0);
@@ -131,16 +137,11 @@ public abstract class ViewComponentShape extends SiteShape {
   public void redraw() {
     remove();
     draw();
-//    drawComponent.redrawSurface();
   }
 
   @Override
   public void remove() {
-    drawComponent.remove(rectangle);
-    drawComponent.remove(titleSprite);
-    drawComponent.remove(line);
-    drawComponent.remove(imageSprite);
-    drawComponent.remove(dataTypeSprite);
+    line.clearCommands();
   }
 
   public void translateToParentsCoords(int x, int y) {
@@ -159,5 +160,13 @@ public abstract class ViewComponentShape extends SiteShape {
     dataTypeSprite.redraw();
 
     drawFlows(scaleFactor);
+  }
+
+  public DataTypes getDataType() {
+    return dataType;
+  }
+
+  public void setDataType(DataTypes dataType) {
+    this.dataType = dataType;
   }
 }

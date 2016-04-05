@@ -10,6 +10,7 @@ import com.sencha.gxt.chart.client.draw.sprite.ImageSprite;
 import com.sencha.gxt.chart.client.draw.sprite.RectangleSprite;
 import com.sencha.gxt.chart.client.draw.sprite.TextSprite;
 import com.uml2Java.client.MainController;
+import com.uml2Java.shared.DataTypes;
 
 /**
  * Created by Cristi on 3/24/2016.
@@ -18,7 +19,7 @@ public class SimpleListShape extends ViewComponentShape {
   private static int shapeId = 1;
 
   public SimpleListShape(DrawComponent drawComponent, int x, int y, int width, int height, String title,
-      String dataType, PageShape parent) {
+      DataTypes dataType, PageShape parent) {
     this.id = shapeId++;
     this.x = x;
     this.y = y;
@@ -27,9 +28,6 @@ public class SimpleListShape extends ViewComponentShape {
     this.drawComponent = drawComponent;
     if (title == null || title.isEmpty()) {
       title = "SimpleList" + id;
-    }
-    if (dataType == null || dataType.isEmpty()) {
-      dataType = "<Data Type>";
     }
     this.title = title;
     this.dataType = dataType;

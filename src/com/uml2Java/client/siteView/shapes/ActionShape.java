@@ -75,6 +75,9 @@ public class ActionShape extends SiteShape{
         .setTranslation(x + (width - (title.length() * 7) * scaleFactor) / 2, y + height / 2 - 7 * scaleFactor);
 
     drawFlows(scaleFactor);
+
+    path.redraw();
+    titleSprite.redraw();
   }
 
   @Override
@@ -101,7 +104,7 @@ public class ActionShape extends SiteShape{
 
   @Override
   public void remove() {
-
+    path.clearCommands();
   }
   @Override
   public boolean canBeDragged(int mouseX, int mouseY){
