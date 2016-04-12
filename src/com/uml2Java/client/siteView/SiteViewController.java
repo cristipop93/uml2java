@@ -152,6 +152,10 @@ public class SiteViewController {
             addDetails(event, hoveredPage);
         } else if (siteMouseState == SiteMouseState.FLOW) {
           log.info("flow");
+        } else if (siteMouseState == SiteMouseState.OK_FLOW) {
+          log.info("okFlow");
+        } else if (siteMouseState == SiteMouseState.KO_FLOW) {
+          log.info("koFlow");
         }
       }
     };

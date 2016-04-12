@@ -20,6 +20,8 @@ public class LeftSiteView implements LeftSitePanelController.ILeftSitePanelView 
   private ToggleButton detailsButton;
   private ToggleButton actionButton;
   private ToggleButton flowButton;
+  private ToggleButton okflowButton;
+  private ToggleButton koflowButton;
 
   public LeftSiteView() {
     initGUI();
@@ -55,6 +57,14 @@ public class LeftSiteView implements LeftSitePanelController.ILeftSitePanelView 
     flowButton.setAllowDepress(false);
     flowButton.setIcon(MainController.ICONS.flow());
     flowButton.setToolTip("Flow");
+    okflowButton = new ToggleButton();
+    okflowButton.setAllowDepress(false);
+    okflowButton.setIcon(MainController.ICONS.okFlow());
+    okflowButton.setToolTip("OK Flow");
+    koflowButton = new ToggleButton();
+    koflowButton.setAllowDepress(false);
+    koflowButton.setIcon(MainController.ICONS.koFlow());
+    koflowButton.setToolTip("KO Flow");
     ToggleGroup group = new ToggleGroup();
     group.add(selectButton);
     group.add(pageButton);
@@ -63,7 +73,8 @@ public class LeftSiteView implements LeftSitePanelController.ILeftSitePanelView 
     group.add(detailsButton);
     group.add(actionButton);
     group.add(flowButton);
-    group.setValue(selectButton);
+    group.add(okflowButton);
+    group.add(koflowButton);
 
     mainContainer.add(selectButton, new VerticalLayoutContainer.VerticalLayoutData(-1, -1, new Margins(5)));
     mainContainer.add(pageButton, new VerticalLayoutContainer.VerticalLayoutData(-1, -1, new Margins(5)));
@@ -72,6 +83,8 @@ public class LeftSiteView implements LeftSitePanelController.ILeftSitePanelView 
     mainContainer.add(detailsButton, new VerticalLayoutContainer.VerticalLayoutData(-1, -1, new Margins(5)));
     mainContainer.add(actionButton, new VerticalLayoutContainer.VerticalLayoutData(-1, -1, new Margins(5)));
     mainContainer.add(flowButton, new VerticalLayoutContainer.VerticalLayoutData(-1, -1, new Margins(5)));
+    mainContainer.add(okflowButton, new VerticalLayoutContainer.VerticalLayoutData(-1, -1, new Margins(5)));
+    mainContainer.add(koflowButton, new VerticalLayoutContainer.VerticalLayoutData(-1, -1, new Margins(5)));
   }
 
   @Override
@@ -107,6 +120,16 @@ public class LeftSiteView implements LeftSitePanelController.ILeftSitePanelView 
   @Override
   public ToggleButton getFlowButton() {
     return flowButton;
+  }
+
+  @Override
+  public ToggleButton getOKFlowButton() {
+    return okflowButton;
+  }
+
+  @Override
+  public ToggleButton getKOFlowButton() {
+    return koflowButton;
   }
 
   @Override

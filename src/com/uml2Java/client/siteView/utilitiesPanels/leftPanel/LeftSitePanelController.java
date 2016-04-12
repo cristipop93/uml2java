@@ -18,6 +18,8 @@ public class LeftSitePanelController {
     ToggleButton getDetailsButton();
     ToggleButton getActionButton();
     ToggleButton getFlowButton();
+    ToggleButton getOKFlowButton();
+    ToggleButton getKOFlowButton();
     Widget asWidget();
   }
   ILeftSitePanelView view;
@@ -74,6 +76,20 @@ public class LeftSitePanelController {
       @Override
       public void onSelect(SelectEvent event) {
         SiteViewController.getInstance().setSiteMouseState(SiteMouseState.FLOW);
+      }
+    });
+
+    view.getOKFlowButton().addSelectHandler(new SelectEvent.SelectHandler() {
+      @Override
+      public void onSelect(SelectEvent event) {
+        SiteViewController.getInstance().setSiteMouseState(SiteMouseState.OK_FLOW);
+      }
+    });
+
+    view.getKOFlowButton().addSelectHandler(new SelectEvent.SelectHandler() {
+      @Override
+      public void onSelect(SelectEvent event) {
+        SiteViewController.getInstance().setSiteMouseState(SiteMouseState.KO_FLOW);
       }
     });
   }

@@ -65,4 +65,10 @@ public interface Icons extends ClientBundle {
 
   @ClientBundle.Source("flow.png")
   ImageResource flow();
+
+  @ClientBundle.Source("okFlow.png")
+  ImageResource okFlow();
+
+  @ClientBundle.Source("koFlow.png")
+  ImageResource koFlow();
 }
