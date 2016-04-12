@@ -62,4 +62,7 @@ public interface Icons extends ClientBundle {
 
   @ClientBundle.Source("action.png")
   ImageResource action();
+
+  @ClientBundle.Source("flow.png")
+  ImageResource flow();
 }

@@ -169,4 +169,16 @@ public abstract class ViewComponentShape extends SiteShape {
   public void setDataType(DataTypes dataType) {
     this.dataType = dataType;
   }
+
+  @Override
+  public void setSelected(boolean isSelected) {
+    if (isSelected) {
+      rectangle.setStrokeWidth(1.5);
+      rectangle.setStroke(new Color("#AA3"));
+    } else {
+      rectangle.setStrokeWidth(0.5);
+      rectangle.setStroke(new Color("#000"));
+    }
+    rectangle.redraw();
+  }
 }

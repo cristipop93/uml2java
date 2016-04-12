@@ -19,6 +19,7 @@ public class LeftSiteView implements LeftSitePanelController.ILeftSitePanelView 
   private ToggleButton formButton;
   private ToggleButton detailsButton;
   private ToggleButton actionButton;
+  private ToggleButton flowButton;
 
   public LeftSiteView() {
     initGUI();
@@ -50,6 +51,10 @@ public class LeftSiteView implements LeftSitePanelController.ILeftSitePanelView 
     actionButton.setAllowDepress(false);
     actionButton.setIcon(MainController.ICONS.action());
     actionButton.setToolTip("Action");
+    flowButton = new ToggleButton();
+    flowButton.setAllowDepress(false);
+    flowButton.setIcon(MainController.ICONS.flow());
+    flowButton.setToolTip("Flow");
     ToggleGroup group = new ToggleGroup();
     group.add(selectButton);
     group.add(pageButton);
@@ -57,6 +62,7 @@ public class LeftSiteView implements LeftSitePanelController.ILeftSitePanelView 
     group.add(formButton);
     group.add(detailsButton);
     group.add(actionButton);
+    group.add(flowButton);
     group.setValue(selectButton);
 
     mainContainer.add(selectButton, new VerticalLayoutContainer.VerticalLayoutData(-1, -1, new Margins(5)));
@@ -65,6 +71,7 @@ public class LeftSiteView implements LeftSitePanelController.ILeftSitePanelView 
     mainContainer.add(formButton, new VerticalLayoutContainer.VerticalLayoutData(-1, -1, new Margins(5)));
     mainContainer.add(detailsButton, new VerticalLayoutContainer.VerticalLayoutData(-1, -1, new Margins(5)));
     mainContainer.add(actionButton, new VerticalLayoutContainer.VerticalLayoutData(-1, -1, new Margins(5)));
+    mainContainer.add(flowButton, new VerticalLayoutContainer.VerticalLayoutData(-1, -1, new Margins(5)));
   }
 
   @Override
@@ -95,6 +102,11 @@ public class LeftSiteView implements LeftSitePanelController.ILeftSitePanelView 
   @Override
   public ToggleButton getActionButton() {
     return actionButton;
+  }
+
+  @Override
+  public ToggleButton getFlowButton() {
+    return flowButton;
   }
 
   @Override

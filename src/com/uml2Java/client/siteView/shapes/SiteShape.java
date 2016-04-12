@@ -87,4 +87,6 @@ public abstract class SiteShape {
     this.flows.add(flow);
     drawFlows(scaleFactor);
   }
+
+  public abstract void setSelected(boolean isSelected);
 }

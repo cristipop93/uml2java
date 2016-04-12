@@ -8,6 +8,7 @@ import com.uml2Java.client.domainModel.UmlController;
 import com.uml2Java.client.icons.Icons;
 import com.uml2Java.client.login.LoginController;
 import com.uml2Java.client.login.LoginView;
+import com.uml2Java.client.siteView.SiteView;
 import com.uml2Java.client.siteView.SiteViewController;
 import com.uml2Java.client.toolbar.ToolbarView;
 import com.uml2Java.shared.UserData;
@@ -68,6 +69,7 @@ public class MainController {
       public void onSelect(SelectEvent event) {
         mainContainer.setCenterWidget(UmlController.getView().asWidget());
         mainContainer.forceLayout();
+        SiteViewController.getInstance().setSelectedShape(null);
       }
     });
 

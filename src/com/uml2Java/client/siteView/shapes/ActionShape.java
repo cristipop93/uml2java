@@ -52,7 +52,8 @@ public class ActionShape extends SiteShape{
     path.addCommand(new LineTo(0, 0));
     path.setStrokeWidth(0.5);
     path.setFillOpacity(0.25);
-    path.setFill(new Color("#121"));
+    path.setFill(new Color("#111"));
+    path.setStroke(new Color("#000"));
 
     titleSprite.setText(title);
     titleSprite.setFontSize(12);
@@ -110,5 +111,17 @@ public class ActionShape extends SiteShape{
   public boolean canBeDragged(int mouseX, int mouseY){
     return mouseX >= x - 20 && (mouseX <= x + width + 20) &&
         mouseY >= y && mouseY <= y + height;
+  }
+
+  @Override
+  public void setSelected(boolean isSelected) {
+    if (isSelected) {
+      path.setStrokeWidth(1.5);
+      path.setStroke(new Color("#AA3"));
+    } else {
+      path.setStrokeWidth(0.5);
+      path.setStroke(new Color("#000"));
+    }
+    path.redraw();
   }
 }

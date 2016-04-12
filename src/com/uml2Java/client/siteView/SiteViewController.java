@@ -44,6 +44,7 @@ public class SiteViewController {
   private List<SiteShape> siteShapes;
   private ToolbarView toolbarView;
   private SiteShape clickedShape = null;
+  private SiteShape selectedShape = null;
   private int lastClickX, lastClickY;
   private int lastDraggedX, lastDraggedY;
   private double scaleFactor = 1; // TODO load from users saved
@@ -97,12 +98,17 @@ public class SiteViewController {
       public void onMouseDown(MouseDownEvent event) {
         if (siteMouseState == SiteMouseState.SELECT) {
           int minArea = 20000 * 10000;
+          boolean found = false;
           for (SiteShape shape : siteShapes) {
             if (shape.canBeDragged(event.getRelativeX(view.getDrawComponent().getElement()),
                 event.getRelativeY(view.getDrawComponent().getElement()))) {
               if (shape.getWidth() * shape.getHeight() < minArea) {
                 minArea = shape.getWidth() * shape.getHeight();
                 clickedShape = shape;
+//                selectedShape = shape;
+//                selectedShape.setSelected(true);
+                setSelectedShape(shape);
+                found = true;
                 lastClickX = event.getRelativeX(view.getDrawComponent().getElement());
                 lastClickY = event.getRelativeY(view.getDrawComponent().getElement());
                 lastDraggedX = shape.getX();
@@ -110,6 +116,9 @@ public class SiteViewController {
               }
               //TODO display popup with info about that shape
             }
+          }
+          if (found == false) {
+            setSelectedShape(null);
           }
           return;
         }
@@ -141,6 +150,8 @@ public class SiteViewController {
         } else if (siteMouseState == SiteMouseState.DETAILS) {
           if (hoveredPage != null)
             addDetails(event, hoveredPage);
+        } else if (siteMouseState == SiteMouseState.FLOW) {
+          log.info("flow");
         }
       }
     };
@@ -226,6 +237,15 @@ public class SiteViewController {
       }
     };
 
+    KeyDownHandler keyDownHandler = new KeyDownHandler() {
+      @Override
+      public void onKeyDown(KeyDownEvent event) {
+        if (event.getNativeKeyCode() == KeyCodes.KEY_DELETE) {
+          log.info("delete " + (selectedShape != null ? selectedShape.getTitle() : "null"));
+        }
+      }
+    };
+    RootPanel.get().addDomHandler(keyDownHandler, KeyDownEvent.getType());
     view.getDrawComponent().addDomHandler(doubleClickHandler, DoubleClickEvent.getType());
 
     view.getDrawComponent().addDomHandler(mouseDownHandler, MouseDownEvent.getType());
@@ -291,5 +311,14 @@ public class SiteViewController {
 
   public void setSiteMouseState(SiteMouseState siteMouseState) {
     this.siteMouseState = siteMouseState;
+  }
+
+  public void setSelectedShape(SiteShape selectedShape) {
+    if (this.selectedShape != null) {
+      this.selectedShape.setSelected(false);
+    }
+    this.selectedShape = selectedShape;
+    if(selectedShape != null)
+      this.selectedShape.setSelected(true);
   }
 }
