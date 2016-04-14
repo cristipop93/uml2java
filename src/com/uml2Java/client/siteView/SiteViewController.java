@@ -4,9 +4,14 @@ import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.chart.client.draw.Color;
 import com.sencha.gxt.chart.client.draw.DrawComponent;
+import com.sencha.gxt.chart.client.draw.path.LineTo;
+import com.sencha.gxt.chart.client.draw.path.MoveTo;
+import com.sencha.gxt.chart.client.draw.path.PathSprite;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.Popup;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
@@ -49,6 +54,11 @@ public class SiteViewController {
   private int lastDraggedX, lastDraggedY;
   private double scaleFactor = 1; // TODO load from users saved
   private DataTypes defaultDataType = new ObjectDataTypes(-1, "Default Data Type");
+  private boolean firstShapeSelected = false;
+  private SiteShape firstShape, secondShape;
+  private PathSprite previewFlow;
+  private int firstFlowClickX;
+  private int firstFlowClickY;
 
   public static SiteViewController getInstance() {
     if (INSTANCE == null) {
@@ -80,15 +90,15 @@ public class SiteViewController {
     PageShape page2 = new PageShape(view.getDrawComponent(), 400, 500, 200, 90, "");
     ViewComponentShape list1 = new SimpleListShape(view.getDrawComponent(), 100, 100, 80, 90, "", defaultDataType, page1);
     ActionShape action1 = new ActionShape(view.getDrawComponent(), 700, 400, 80, 60, "");
-    Flow flow1 = new NavigationFlow(page1, page2);
-    page1.addFlow(flow1);
-    page2.addFlow(flow1);
-    Flow flow2 = new NavigationFlow(page2, list1);
-    page2.addFlow(flow2);
-    list1.addFlow(flow2);
-    Flow flow3 = new NavigationFlow(page2, action1);
-    page2.addFlow(flow3);
-    action1.addFlow(flow3);
+//    Flow flow1 = new NavigationFlow(page1, page2);
+//    page1.addFlow(flow1);
+//    page2.addFlow(flow1);
+//    Flow flow2 = new NavigationFlow(page2, list1);
+//    page2.addFlow(flow2);
+//    list1.addFlow(flow2);
+//    Flow flow3 = new NavigationFlow(page2, action1);
+//    page2.addFlow(flow3);
+//    action1.addFlow(flow3);
     siteShapes.add(page1);
     siteShapes.add(page2);
     siteShapes.add(list1);
@@ -130,6 +140,20 @@ public class SiteViewController {
           addAction(event);
           return;
         }
+        if (siteMouseState == SiteMouseState.FLOW || siteMouseState == SiteMouseState.OK_FLOW || siteMouseState == SiteMouseState.KO_FLOW) {
+          SiteShape shape = getClickedShapeDown(event);
+          if (shape != null) {
+            if (!firstShapeSelected) {
+              firstShape = shape;
+              firstShapeSelected = true;
+              firstFlowClickX = event.getRelativeX(view.getDrawComponent().getElement());
+              firstFlowClickY = event.getRelativeY(view.getDrawComponent().getElement());
+              previewFlow = new PathSprite();
+            }
+          }
+        }
+
+
         //  adding a component
         PageShape hoveredPage = null;
         for (SiteShape shape : siteShapes) {
@@ -150,12 +174,6 @@ public class SiteViewController {
         } else if (siteMouseState == SiteMouseState.DETAILS) {
           if (hoveredPage != null)
             addDetails(event, hoveredPage);
-        } else if (siteMouseState == SiteMouseState.FLOW) {
-          log.info("flow");
-        } else if (siteMouseState == SiteMouseState.OK_FLOW) {
-          log.info("okFlow");
-        } else if (siteMouseState == SiteMouseState.KO_FLOW) {
-          log.info("koFlow");
         }
       }
     };
@@ -191,6 +209,35 @@ public class SiteViewController {
           if (!found) {
             DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "no-drop");
           }
+        } else if (siteMouseState == SiteMouseState.FLOW || siteMouseState == SiteMouseState.OK_FLOW || siteMouseState == SiteMouseState.KO_FLOW) {
+          boolean found = false;
+          for (SiteShape shape : siteShapes) {
+            if (shape.canBeDragged(event.getRelativeX(view.getDrawComponent().getElement()),
+                event.getRelativeY(view.getDrawComponent().getElement()))) {
+              DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "hand");
+              found = true;
+              break;
+            }
+          }
+          if (!found) {
+            DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "default");
+          }
+          if (firstShapeSelected) {
+            previewFlow.clearCommands();
+            previewFlow.addCommand(new MoveTo(firstFlowClickX, firstFlowClickY));
+            previewFlow.addCommand(new LineTo(event.getRelativeX(view.getDrawComponent().getElement()),
+                event.getRelativeY(view.getDrawComponent().getElement())));
+            previewFlow.setStrokeWidth(0.5);
+            if (siteMouseState == SiteMouseState.OK_FLOW) {
+              previewFlow.setStroke(new Color("#0F0"));
+            } else if (siteMouseState == SiteMouseState.KO_FLOW) {
+              previewFlow.setStroke(new Color("#F00"));
+            } else {
+              previewFlow.setStroke(new Color("#000"));
+            }
+            view.getDrawComponent().addSprite(previewFlow);
+            previewFlow.redraw();
+          }
         } else {
           DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "default");
         }
@@ -210,6 +257,34 @@ public class SiteViewController {
     MouseUpHandler mouseUpHandler = new MouseUpHandler() {
       @Override
       public void onMouseUp(MouseUpEvent event) {
+        if (siteMouseState == SiteMouseState.FLOW || siteMouseState == SiteMouseState.OK_FLOW || siteMouseState == SiteMouseState.KO_FLOW) {
+          SiteShape shape = getClickedShapeUp(event);
+          if (firstShapeSelected && shape != null) {
+            if (siteMouseState == SiteMouseState.FLOW) {
+              secondShape = shape;
+              Flow flow = new NavigationFlow(secondShape, firstShape);
+              firstShape.addFlow(flow);
+              secondShape.addFlow(flow);
+            } else if (siteMouseState == SiteMouseState.OK_FLOW) {
+              secondShape = shape;
+              Flow flow = new OkFlow(secondShape, firstShape);
+              firstShape.addFlow(flow);
+              secondShape.addFlow(flow);
+            } else if (siteMouseState == SiteMouseState.KO_FLOW) {
+              secondShape = shape;
+              Flow flow = new KoFlow(secondShape, firstShape);
+              firstShape.addFlow(flow);
+              secondShape.addFlow(flow);
+
+            }
+          }
+          firstShape = null;
+          secondShape = null;
+          firstShapeSelected = false;
+          previewFlow.clearCommands();
+          view.getDrawComponent().remove(previewFlow);
+          previewFlow.redraw();
+        }
         clickedShape = null;
       }
     };
@@ -267,6 +342,36 @@ public class SiteViewController {
       }
     });
 
+  }
+
+  private SiteShape getClickedShapeDown(MouseDownEvent event) {
+    int minArea = 20000 * 10000;
+    SiteShape result = null;
+    for (SiteShape shape : siteShapes) {
+      if (shape.canBeDragged(event.getRelativeX(view.getDrawComponent().getElement()),
+          event.getRelativeY(view.getDrawComponent().getElement()))) {
+        if (shape.getWidth() * shape.getHeight() < minArea) {
+          minArea = shape.getWidth() * shape.getHeight();
+          result = shape;
+        }
+      }
+    }
+    return result;
+  }
+
+  private SiteShape getClickedShapeUp(MouseUpEvent event) {
+    int minArea = 20000 * 10000;
+    SiteShape result = null;
+    for (SiteShape shape : siteShapes) {
+      if (shape.canBeDragged(event.getRelativeX(view.getDrawComponent().getElement()),
+          event.getRelativeY(view.getDrawComponent().getElement()))) {
+        if (shape.getWidth() * shape.getHeight() < minArea) {
+          minArea = shape.getWidth() * shape.getHeight();
+          result = shape;
+        }
+      }
+    }
+    return result;
   }
 
   private void addPage(MouseDownEvent event) {

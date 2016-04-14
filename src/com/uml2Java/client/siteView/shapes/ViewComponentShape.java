@@ -33,6 +33,10 @@ public abstract class ViewComponentShape extends SiteShape {
     }
     if (dataType.getDisplayName().length() * 7 + 20 > max) {
       max = dataType.getDisplayName().length() * 7 + 20;
+      log.info("max = " + max + " displayName: " + dataType.getDisplayName().length());
+    }
+    if (max < 100) {
+      max = 100;
     }
     this.width = max;
     this.originalHeight = height;

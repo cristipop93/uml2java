@@ -75,6 +75,7 @@ public class LeftSiteView implements LeftSitePanelController.ILeftSitePanelView 
     group.add(flowButton);
     group.add(okflowButton);
     group.add(koflowButton);
+    group.setValue(selectButton);
 
     mainContainer.add(selectButton, new VerticalLayoutContainer.VerticalLayoutData(-1, -1, new Margins(5)));
     mainContainer.add(pageButton, new VerticalLayoutContainer.VerticalLayoutData(-1, -1, new Margins(5)));
