@@ -123,6 +123,7 @@ public class SiteViewController {
                 lastClickY = event.getRelativeY(view.getDrawComponent().getElement());
                 lastDraggedX = shape.getX();
                 lastDraggedY = shape.getY();
+                log.info(shape.getFlows().size() + " ");
               }
               //TODO display popup with info about that shape
             }
@@ -260,22 +261,22 @@ public class SiteViewController {
         if (siteMouseState == SiteMouseState.FLOW || siteMouseState == SiteMouseState.OK_FLOW || siteMouseState == SiteMouseState.KO_FLOW) {
           SiteShape shape = getClickedShapeUp(event);
           if (firstShapeSelected && shape != null) {
-            if (siteMouseState == SiteMouseState.FLOW) {
-              secondShape = shape;
-              Flow flow = new NavigationFlow(secondShape, firstShape);
-              firstShape.addFlow(flow);
-              secondShape.addFlow(flow);
-            } else if (siteMouseState == SiteMouseState.OK_FLOW) {
-              secondShape = shape;
-              Flow flow = new OkFlow(secondShape, firstShape);
-              firstShape.addFlow(flow);
-              secondShape.addFlow(flow);
-            } else if (siteMouseState == SiteMouseState.KO_FLOW) {
-              secondShape = shape;
-              Flow flow = new KoFlow(secondShape, firstShape);
-              firstShape.addFlow(flow);
-              secondShape.addFlow(flow);
+            secondShape = shape;
+            if (secondShape != firstShape) {
+              if (siteMouseState == SiteMouseState.FLOW) {
+                Flow flow = new NavigationFlow(secondShape, firstShape);
+                firstShape.addFlow(flow);
+                secondShape.addFlow(flow);
+              } else if (siteMouseState == SiteMouseState.OK_FLOW) {
+                Flow flow = new OkFlow(secondShape, firstShape);
+                firstShape.addFlow(flow);
+                secondShape.addFlow(flow);
+              } else if (siteMouseState == SiteMouseState.KO_FLOW) {
+                Flow flow = new KoFlow(secondShape, firstShape);
+                firstShape.addFlow(flow);
+                secondShape.addFlow(flow);
 
+              }
             }
           }
           firstShape = null;
@@ -321,6 +322,11 @@ public class SiteViewController {
       public void onKeyDown(KeyDownEvent event) {
         if (event.getNativeKeyCode() == KeyCodes.KEY_DELETE) {
           log.info("delete " + (selectedShape != null ? selectedShape.getTitle() : "null"));
+          if (selectedShape != null) {
+            selectedShape.removeAllFlows();
+            selectedShape.remove();
+            setSelectedShape(null);
+          }
         }
       }
     };
@@ -429,5 +435,9 @@ public class SiteViewController {
     this.selectedShape = selectedShape;
     if(selectedShape != null)
       this.selectedShape.setSelected(true);
+  }
+
+  public List<SiteShape> getSiteShapes() {
+    return siteShapes;
   }
 }

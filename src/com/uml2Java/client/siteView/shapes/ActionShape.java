@@ -7,11 +7,12 @@ import com.sencha.gxt.chart.client.draw.path.LineTo;
 import com.sencha.gxt.chart.client.draw.path.MoveTo;
 import com.sencha.gxt.chart.client.draw.path.PathSprite;
 import com.sencha.gxt.chart.client.draw.sprite.TextSprite;
+import com.uml2Java.client.siteView.SiteViewController;
 
 /**
  * Created by Cristi on 3/25/2016.
  */
-public class ActionShape extends SiteShape{
+public class ActionShape extends SiteShape {
   private static int shapeId = 1;
   private int originalHeight;
   private int originalWidth;
@@ -99,14 +100,18 @@ public class ActionShape extends SiteShape{
 
   @Override
   public void redraw() {
-    remove();
+    path.clearCommands();
     draw();
   }
 
   @Override
   public void remove() {
     path.clearCommands();
+    drawComponent.remove(path);
+    drawComponent.remove(titleSprite);
+    SiteViewController.getInstance().getSiteShapes().remove(this);
   }
+
   @Override
   public boolean canBeDragged(int mouseX, int mouseY){
     return mouseX >= x - 20 && (mouseX <= x + width + 20) &&

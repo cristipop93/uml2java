@@ -89,4 +89,22 @@ public abstract class SiteShape {
   }
 
   public abstract void setSelected(boolean isSelected);
+
+  public void removeAllFlows() {
+    for(Flow flow : flows) {
+      // remove the flow from the drawing component
+      flow.remove(drawComponent);
+      // remove the flow from the other end shapes flow list.
+      if (flow.getFirstUmlShape().equals(this)) {
+        flow.getSecondUmlShape().removeFlow(flow);
+      } else {
+        flow.getFirstUmlShape().removeFlow(flow);
+      }
+    }
+    this.flows.clear();
+  }
+
+  private void removeFlow(Flow flow) {
+    this.flows.remove(flow);
+  }
 }

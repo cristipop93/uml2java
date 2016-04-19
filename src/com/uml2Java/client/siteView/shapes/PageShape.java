@@ -10,6 +10,7 @@ import com.sencha.gxt.chart.client.draw.sprite.ImageSprite;
 import com.sencha.gxt.chart.client.draw.sprite.RectangleSprite;
 import com.sencha.gxt.chart.client.draw.sprite.TextSprite;
 import com.uml2Java.client.MainController;
+import com.uml2Java.client.siteView.SiteViewController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -188,6 +189,12 @@ public class PageShape extends SiteShape {
     if(id == 1) {
       drawComponent.remove(imageSprite);
     }
+    for (ViewComponentShape componentShape : components) {
+      componentShape.removeAllFlows();
+      componentShape.removeFromPage();
+    }
+    SiteViewController.getInstance().getSiteShapes().remove(this);
+
   }
 
   @Override
@@ -215,6 +222,17 @@ public class PageShape extends SiteShape {
     this.height = (int)(height / scaleFactor);
     this.originalWidth = width;
     this.originalHeight = height;
+    if (width < 0 || height < 0) {
+      this.width = 120;
+      this.height = 110;
+      this.originalWidth = 120;
+      this.originalHeight = 110;
+      max = this.width;
+      if ( (title.length() * 7 + 10) * scaleFactor > max) {
+        max = (int) ((title.length() * 7 + 10) * scaleFactor);
+      }
+      width = max;
+    }
     redraw();
   }
 
@@ -232,5 +250,9 @@ public class PageShape extends SiteShape {
       rectangle.setStroke(new Color("#000"));
     }
     rectangle.redraw();
+  }
+
+  public void removeChild(ViewComponentShape viewComponentShape) {
+    components.remove(viewComponentShape);
   }
 }

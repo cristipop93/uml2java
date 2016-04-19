@@ -9,6 +9,7 @@ import com.sencha.gxt.chart.client.draw.path.PathSprite;
 import com.sencha.gxt.chart.client.draw.sprite.ImageSprite;
 import com.sencha.gxt.chart.client.draw.sprite.RectangleSprite;
 import com.sencha.gxt.chart.client.draw.sprite.TextSprite;
+import com.uml2Java.client.siteView.SiteViewController;
 import com.uml2Java.shared.DataTypes;
 
 /**
@@ -139,13 +140,20 @@ public abstract class ViewComponentShape extends SiteShape {
 
   @Override
   public void redraw() {
-    remove();
+    line.clearCommands();
     draw();
   }
 
   @Override
   public void remove() {
-    line.clearCommands();
+    drawComponent.remove(line);
+    drawComponent.remove(rectangle);
+    drawComponent.remove(titleSprite);
+    drawComponent.remove(imageSprite);
+    drawComponent.remove(dataTypeSprite);
+    parentShape.removeChild(this);
+    parentShape.resize();
+    SiteViewController.getInstance().getSiteShapes().remove(this);
   }
 
   public void translateToParentsCoords(int x, int y) {
@@ -184,5 +192,14 @@ public abstract class ViewComponentShape extends SiteShape {
       rectangle.setStroke(new Color("#000"));
     }
     rectangle.redraw();
+  }
+
+  public void removeFromPage() {
+    drawComponent.remove(line);
+    drawComponent.remove(rectangle);
+    drawComponent.remove(titleSprite);
+    drawComponent.remove(imageSprite);
+    drawComponent.remove(dataTypeSprite);
+    SiteViewController.getInstance().getSiteShapes().remove(this);
   }
 }
