@@ -79,13 +79,14 @@ public class OkFlow extends Flow {
 
     circle.setCenterX(point2.getX());
     circle.setCenterY(point2.getY());
-    circle.setRadius(5);
-    circle.setScaling(scaleFactor);
+    circle.setRadius(5 * scaleFactor);
     circle.setStroke(new Color("#0D0"));
     circle.setFill(new Color("#0D0"));
+    circle.setFillOpacity(0.25);
 
     triangle.setStroke(new Color("#0D0"));
     triangle.setFill(new Color("#0D0"));
+    triangle.setFillOpacity(0.6);
 
     drawComponent.addSprite(line);
     drawComponent.addSprite(triangle);

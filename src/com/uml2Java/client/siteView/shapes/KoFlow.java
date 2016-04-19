@@ -79,13 +79,14 @@ public class KoFlow extends Flow{
 
     circle.setCenterX(point2.getX());
     circle.setCenterY(point2.getY());
-    circle.setRadius(5);
-    circle.setScaling(scaleFactor);
+    circle.setRadius(5 * scaleFactor);
     circle.setStroke(new Color("#D00"));
     circle.setFill(new Color("#D00"));
+    circle.setFillOpacity(0.25);
 
     triangle.setStroke(new Color("#D00"));
     triangle.setFill(new Color("#D00"));
+    triangle.setFillOpacity(0.6);
 
     drawComponent.addSprite(line);
     drawComponent.addSprite(triangle);

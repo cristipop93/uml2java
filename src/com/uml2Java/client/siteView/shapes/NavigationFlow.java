@@ -72,6 +72,8 @@ public class NavigationFlow extends Flow {
     line.setStroke(new Color("#000"));
     line.setStrokeWidth(0.5);
 
+    triangle.setFillOpacity(0.6);
+
     drawComponent.addSprite(line);
     drawComponent.addSprite(triangle);
 
