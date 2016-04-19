@@ -59,6 +59,7 @@ public class SiteViewController {
   private PathSprite previewFlow;
   private int firstFlowClickX;
   private int firstFlowClickY;
+  private boolean previewFlowAdded;
 
   public static SiteViewController getInstance() {
     if (INSTANCE == null) {
@@ -238,6 +239,7 @@ public class SiteViewController {
             }
             view.getDrawComponent().addSprite(previewFlow);
             previewFlow.redraw();
+            previewFlowAdded = true;
           }
         } else {
           DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "default");
@@ -263,19 +265,27 @@ public class SiteViewController {
           if (firstShapeSelected && shape != null) {
             secondShape = shape;
             if (secondShape != firstShape) {
-              if (siteMouseState == SiteMouseState.FLOW) {
-                Flow flow = new NavigationFlow(secondShape, firstShape);
-                firstShape.addFlow(flow);
-                secondShape.addFlow(flow);
-              } else if (siteMouseState == SiteMouseState.OK_FLOW) {
-                Flow flow = new OkFlow(secondShape, firstShape);
-                firstShape.addFlow(flow);
-                secondShape.addFlow(flow);
-              } else if (siteMouseState == SiteMouseState.KO_FLOW) {
-                Flow flow = new KoFlow(secondShape, firstShape);
-                firstShape.addFlow(flow);
-                secondShape.addFlow(flow);
-
+              //check if the flow exists
+              boolean found = false;
+              for (Flow flow : secondShape.getFlows()) {
+                if ( (flow.getFirstUmlShape() == secondShape && flow.getSecondUmlShape() == firstShape) || (flow.getSecondUmlShape() == secondShape && flow.getFirstUmlShape() == firstShape)) {
+                  found = true;
+                }
+              }
+              if (!found) {
+                if (siteMouseState == SiteMouseState.FLOW) {
+                  Flow flow = new NavigationFlow(secondShape, firstShape);
+                  firstShape.addFlow(flow);
+                  secondShape.addFlow(flow);
+                } else if (siteMouseState == SiteMouseState.OK_FLOW) {
+                  Flow flow = new OkFlow(secondShape, firstShape);
+                  firstShape.addFlow(flow);
+                  secondShape.addFlow(flow);
+                } else if (siteMouseState == SiteMouseState.KO_FLOW) {
+                  Flow flow = new KoFlow(secondShape, firstShape);
+                  firstShape.addFlow(flow);
+                  secondShape.addFlow(flow);
+                }
               }
             }
           }
@@ -283,7 +293,9 @@ public class SiteViewController {
           secondShape = null;
           firstShapeSelected = false;
           previewFlow.clearCommands();
-          view.getDrawComponent().remove(previewFlow);
+          if (previewFlowAdded)
+            view.getDrawComponent().remove(previewFlow);
+          previewFlowAdded = false;
           previewFlow.redraw();
         }
         clickedShape = null;
