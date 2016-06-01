@@ -16,6 +16,8 @@ public class LeftDomainPanelController {
     ToggleButton getSelectButton();
     ToggleButton getClassButton();
     ToggleButton getInterfaceButton();
+    ToggleButton getGeneralizationButton();
+    ToggleButton getAssociationButton();
   }
   ILeftPanelView view;
 
@@ -41,6 +43,18 @@ public class LeftDomainPanelController {
       @Override
       public void onValueChange(ValueChangeEvent<Boolean> event) {
         UmlController.getInstance().setDomainMouseState(DomainMouseState.INTERFACE);
+      }
+    });
+    view.getGeneralizationButton().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+      @Override
+      public void onValueChange(ValueChangeEvent<Boolean> event) {
+        UmlController.getInstance().setDomainMouseState(DomainMouseState.GENERALIZATION_LINK);
+      }
+    });
+    view.getAssociationButton().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+      @Override
+      public void onValueChange(ValueChangeEvent<Boolean> event) {
+        UmlController.getInstance().setDomainMouseState(DomainMouseState.ASSOCIATION_LINK);
       }
     });
   }

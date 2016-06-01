@@ -6,7 +6,11 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.chart.client.draw.Color;
 import com.sencha.gxt.chart.client.draw.DrawComponent;
+import com.sencha.gxt.chart.client.draw.path.LineTo;
+import com.sencha.gxt.chart.client.draw.path.MoveTo;
+import com.sencha.gxt.chart.client.draw.path.PathSprite;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.CenterLayoutContainer;
@@ -53,6 +57,12 @@ public class UmlController {
   private double scaleFactor = 1; // TODO load from users saved
   private List<UmlShape> umlShapes;
   private UmlShape clickedUmlShape;
+  private boolean firstShapeSelected = false;
+  private UmlShape firstShape, secondShape;
+  private int firstLinkClickX;
+  private int firstLinkClickY;
+  private boolean previewLinkAdded;
+  private PathSprite previewLink;
   private static Logger log = Logger.getLogger(UmlController.class.getName());
 
   public UmlController() {
@@ -169,12 +179,60 @@ public class UmlController {
               event.getRelativeY(view.getDrawComponent().getElement()), 100, 100, "", new ArrayList<Method>());
           tempShape.scaleTo(scaleFactor);
           umlShapes.add(tempShape);
+        } else if (domainMouseState == DomainMouseState.GENERALIZATION_LINK || domainMouseState == DomainMouseState.ASSOCIATION_LINK) {
+          UmlShape shape = getClickedShapeDown(event);
+          if (shape != null) {
+            if (!firstShapeSelected) {
+              firstShape = shape;
+              firstShapeSelected = true;
+              firstLinkClickX = event.getRelativeX(view.getDrawComponent().getElement());
+              firstLinkClickY = event.getRelativeY(view.getDrawComponent().getElement());
+              previewLink = new PathSprite();
+            }
+          }
         }
       }
     };
     MouseUpHandler mouseUpHandler = new MouseUpHandler() {
       @Override
       public void onMouseUp(MouseUpEvent event) {
+        if (domainMouseState == DomainMouseState.GENERALIZATION_LINK || domainMouseState == DomainMouseState.ASSOCIATION_LINK) {
+          UmlShape shape = getClickedShapeUp(event);
+          if (firstShapeSelected && shape != null) {
+            secondShape = shape;
+            if (secondShape != firstShape) {
+              //check if the flow exists
+              boolean found = false;
+              for (Link link : secondShape.getLinks()) {
+                if ( (link.getFirstUmlShape() == secondShape && link.getSecondUmlShape() == firstShape) || (link.getSecondUmlShape() == secondShape && link.getFirstUmlShape() == firstShape)) {
+                  found = true;
+                }
+              }
+              if (!found) {
+                if (domainMouseState == DomainMouseState.GENERALIZATION_LINK) {
+                  GeneralizationLink link = new GeneralizationLink(firstShape, secondShape);
+                  firstShape.getLinks().add(link);
+                  secondShape.getLinks().add(link);
+                } else if (domainMouseState == DomainMouseState.ASSOCIATION_LINK) {
+                  AssociationLink link = new AssociationLink(firstShape, secondShape);
+                  firstShape.getLinks().add(link);
+                  secondShape.getLinks().add(link);
+                }
+              }
+            }
+          }
+          firstShape = null;
+          secondShape = null;
+          firstShapeSelected = false;
+          previewLink.clearCommands();
+          if (previewLinkAdded)
+            view.getDrawComponent().remove(previewLink);
+          previewLinkAdded = false;
+          previewLink.redraw();
+
+        }
+
+
         clickedUmlShape = null;
         for (UmlShape shape1 : umlShapes)
           shape1.drawLinks();
@@ -185,7 +243,7 @@ public class UmlController {
     MouseMoveHandler mouseMoveHandler = new MouseMoveHandler() {
       @Override
       public void onMouseMove(MouseMoveEvent event) {
-        if (domainMouseState == DomainMouseState.SELECT) {
+        if (domainMouseState == DomainMouseState.SELECT || domainMouseState == DomainMouseState.GENERALIZATION_LINK || domainMouseState == DomainMouseState.ASSOCIATION_LINK) {
           if (clickedUmlShape == null) {
             boolean found = false;
             for (UmlShape shape : umlShapes) {
@@ -198,6 +256,19 @@ public class UmlController {
             }
             if (!found) {
               DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "default");
+            }
+          }
+          if (domainMouseState == DomainMouseState.GENERALIZATION_LINK || domainMouseState == DomainMouseState.ASSOCIATION_LINK) {
+            if (firstShapeSelected) {
+              previewLink.clearCommands();
+              previewLink.addCommand(new MoveTo(firstLinkClickX, firstLinkClickY));
+              previewLink.addCommand(new LineTo(event.getRelativeX(view.getDrawComponent().getElement()),
+                  event.getRelativeY(view.getDrawComponent().getElement())));
+              previewLink.setStrokeWidth(0.5);
+              previewLink.setStroke(new Color("#000"));
+              view.getDrawComponent().addSprite(previewLink);
+              previewLink.redraw();
+              previewLinkAdded = true;
             }
           }
         }
@@ -230,6 +301,37 @@ public class UmlController {
         view.getDrawComponent().redrawSurface();
       }
     });
+  }
+
+  private UmlShape getClickedShapeUp(MouseUpEvent event) {
+    int minArea = 20000 * 10000;
+    UmlShape result = null;
+    for (UmlShape shape : umlShapes) {
+      if (shape.canBeDragged(event.getRelativeX(view.getDrawComponent().getElement()),
+          event.getRelativeY(view.getDrawComponent().getElement()))) {
+        if (shape.getWidth() * shape.getHeight() < minArea) {
+          minArea = shape.getWidth() * shape.getHeight();
+          result = shape;
+        }
+      }
+    }
+    return result;
+
+  }
+
+  private UmlShape getClickedShapeDown(MouseDownEvent event) {
+    int minArea = 20000 * 10000;
+    UmlShape result = null;
+    for (UmlShape shape : umlShapes) {
+      if (shape.canBeDragged(event.getRelativeX(view.getDrawComponent().getElement()),
+          event.getRelativeY(view.getDrawComponent().getElement()))) {
+        if (shape.getWidth() * shape.getHeight() < minArea) {
+          minArea = shape.getWidth() * shape.getHeight();
+          result = shape;
+        }
+      }
+    }
+    return result;
   }
 
   public List<UmlShape> getUmlShapes() {

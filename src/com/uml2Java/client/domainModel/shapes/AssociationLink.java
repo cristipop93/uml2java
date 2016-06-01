@@ -22,7 +22,7 @@ public class AssociationLink extends Link {
   }
 
   private PathSprite sprite;
-  private TextSprite textSprite;
+//  private TextSprite textSprite;
   private Logger log = Logger.getLogger(AssociationLink.class.getName());
 
   @Override
@@ -31,32 +31,32 @@ public class AssociationLink extends Link {
     if (sprite == null) {
       sprite = new PathSprite();
     }
-    if(textSprite == null) {
-      textSprite = new TextSprite();
-    }
+//    if(textSprite == null) {
+//      textSprite = new TextSprite();
+//    }
     sprite.clearCommands();
     sprite.setStrokeWidth(0.7);
 
     List<Point> points = getLinesPoints();
     if (points.size() >= 2) {
       Point point1 = points.get(0);
-      textSprite.setText("1..*");
-      if (point1.getPosition() == Position.N) {
-        textSprite.setX(point1.getX() + 2);
-        textSprite.setY(point1.getY() - 20);
-      } else if (point1.getPosition() == Position.S) {
-        textSprite.setX(point1.getX() + 2);
-        textSprite.setY(point1.getY() + 3);
-      } else if (point1.getPosition() == Position.E) {
-        textSprite.setX(point1.getX() + 7);
-        textSprite.setY(point1.getY() + 3);
-      } else if (point1.getPosition() == Position.W) {
-        textSprite.setX(point1.getX() - 25);
-        textSprite.setY(point1.getY() + 3);
-      }
-      textSprite.setFontSize(12);
-      textSprite.setFill(RGB.BLACK);
-      drawComponent.addSprite(textSprite);
+//      textSprite.setText("1..*");
+//      if (point1.getPosition() == Position.N) {
+//        textSprite.setX(point1.getX() + 2);
+//        textSprite.setY(point1.getY() - 20);
+//      } else if (point1.getPosition() == Position.S) {
+//        textSprite.setX(point1.getX() + 2);
+//        textSprite.setY(point1.getY() + 3);
+//      } else if (point1.getPosition() == Position.E) {
+//        textSprite.setX(point1.getX() + 7);
+//        textSprite.setY(point1.getY() + 3);
+//      } else if (point1.getPosition() == Position.W) {
+//        textSprite.setX(point1.getX() - 25);
+//        textSprite.setY(point1.getY() + 3);
+//      }
+//      textSprite.setFontSize(12);
+//      textSprite.setFill(RGB.BLACK);
+//      drawComponent.addSprite(textSprite);
       for (int i = 1; i < points.size(); i++) {
         Point point2 = points.get(i);
         sprite.addCommand(new MoveTo(point1.getX(), point1.getY()));
@@ -70,6 +70,6 @@ public class AssociationLink extends Link {
 
   public void remove(DrawComponent drawComponent) {
     drawComponent.remove(sprite);
-    drawComponent.remove(textSprite);
+//    drawComponent.remove(textSprite);
   }
 }

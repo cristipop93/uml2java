@@ -13,6 +13,8 @@ public class LeftDomainPanelView implements LeftDomainPanelController.ILeftPanel
   private ToggleButton selectButton;
   private ToggleButton classButton;
   private ToggleButton interfaceButton;
+  private ToggleButton generalizationButton;
+  private ToggleButton associationButton;
 
   public LeftDomainPanelView() {
     initGUI();
@@ -28,9 +30,13 @@ public class LeftDomainPanelView implements LeftDomainPanelController.ILeftPanel
     selectButton = new ToggleButton("Select");
     classButton = new ToggleButton("Class");
     interfaceButton = new ToggleButton("Interface");
+    generalizationButton = new ToggleButton("Generalization");
+    associationButton = new ToggleButton("Association");
     group.add(selectButton);
     group.add(classButton);
     group.add(interfaceButton);
+    group.add(generalizationButton);
+    group.add(associationButton);
     group.setValue(selectButton);
 
 //    vBoxLayoutContainer.add(selectButton, new BoxLayoutContainer.BoxLayoutData(new Margins(5,0,0,10)));
@@ -38,6 +44,8 @@ public class LeftDomainPanelView implements LeftDomainPanelController.ILeftPanel
     mainContainer.add(selectButton, new VerticalLayoutContainer.VerticalLayoutData(-1, -1, new Margins(5, 0, 0, 10)));
     mainContainer.add(classButton, new VerticalLayoutContainer.VerticalLayoutData(-1, -1, new Margins(5, 0, 0, 10)));
     mainContainer.add(interfaceButton, new VerticalLayoutContainer.VerticalLayoutData(-1, -1, new Margins(5, 0, 0, 10)));
+    mainContainer.add(generalizationButton, new VerticalLayoutContainer.VerticalLayoutData(-1, -1, new Margins(5, 0, 0, 10)));
+    mainContainer.add(associationButton, new VerticalLayoutContainer.VerticalLayoutData(-1, -1, new Margins(5, 0, 0, 10)));
   }
 
   @Override
@@ -58,5 +66,15 @@ public class LeftDomainPanelView implements LeftDomainPanelController.ILeftPanel
   @Override
   public ToggleButton getInterfaceButton() {
     return interfaceButton;
+  }
+
+  @Override
+  public ToggleButton getGeneralizationButton() {
+    return generalizationButton;
+  }
+
+  @Override
+  public ToggleButton getAssociationButton() {
+    return associationButton;
   }
 }
