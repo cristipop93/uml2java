@@ -235,7 +235,7 @@ public class UmlController {
 
         clickedUmlShape = null;
         for (UmlShape shape1 : umlShapes)
-          shape1.drawLinks();
+          shape1.drawLinks(scaleFactor);
         view.getDrawComponent().redrawSurface();
       }
     };

@@ -264,7 +264,7 @@ public abstract class Link {
     return secondUmlShape;
   }
 
-  public abstract void draw(DrawComponent drawComponent);
+  public abstract void draw(DrawComponent drawComponent, double scaleFactor);
 
   public abstract void remove(DrawComponent drawComponent);
 

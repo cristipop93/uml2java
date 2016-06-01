@@ -213,7 +213,7 @@ public class ClassUmlShape extends UmlShape {
         .setTranslation(x + (width - ((title.length() + BRACKETS_SIZE) * 7) * scaleFactor) / 2, y + 5 * scaleFactor);
     translateTextAndLine();
 
-    drawLinks();
+    drawLinks(scaleFactor);
   }
 
 

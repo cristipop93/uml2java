@@ -86,7 +86,7 @@ public abstract class UmlShape {
 
   public abstract void remove();
 
-  public void drawLinks() {
+  public void drawLinks(double scaleFactor) {
     // establish if this class is first or not
     // count the links on each side (N, S, E, W)
     // establish for each side how many links are, than set for each one an offset where should be drawn
@@ -113,7 +113,7 @@ public abstract class UmlShape {
     setLinkOffsets(WLinks);
 
     for(Link link : links) {
-      link.draw(drawComponent);
+      link.draw(drawComponent, scaleFactor);
     }
   }
 

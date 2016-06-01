@@ -25,13 +25,15 @@ public class GeneralizationLink extends Link {
   }
 
   @Override
-  public void draw(DrawComponent drawComponent) {
+  public void draw(DrawComponent drawComponent, double scaleFactor) {
     if (line == null) {
       line = new PathSprite();
     }
     if (triangle == null) {
       triangle = new PathSprite();
     }
+    int halfWidth =(int) (this.halfWidth * scaleFactor);
+    int height = (int) (this.height * scaleFactor);
     line.clearCommands();
     line.setStrokeWidth(0.7);
     triangle.clearCommands();

@@ -26,7 +26,7 @@ public class AssociationLink extends Link {
   private Logger log = Logger.getLogger(AssociationLink.class.getName());
 
   @Override
-  public void draw(DrawComponent drawComponent) {
+  public void draw(DrawComponent drawComponent, double scaleFactor) {
 //    log.info("draw from " + getFirstUmlShape().title + " to " + getSecondUmlShape().title);
     if (sprite == null) {
       sprite = new PathSprite();
