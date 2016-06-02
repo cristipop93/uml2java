@@ -33,12 +33,12 @@ public class UmlView implements UmlController.IUmlView {
 
     //TODO add utilities to left panel
 
-    BorderLayoutContainer.BorderLayoutData layoutData = new BorderLayoutContainer.BorderLayoutData(250);
+    BorderLayoutContainer.BorderLayoutData layoutData = new BorderLayoutContainer.BorderLayoutData(55);
     layoutData.setSplit(false);
     layoutData.setCollapsible(false);
     layoutData.setCollapseMini(false);
-    layoutData.setMinSize(150);
-    layoutData.setMaxSize(450);
+    layoutData.setMinSize(55);
+    layoutData.setMaxSize(160);
     layoutData.setMargins(new Margins(0, 5, 0, 0));
     mainContainer.setWestWidget(leftPanel, layoutData);
 
