@@ -83,4 +83,7 @@ public interface Icons extends ClientBundle {
 
   @ClientBundle.Source("association.jpg")
   ImageResource association();
+
+  @ClientBundle.Source("play.png")
+  ImageResource play();
 }

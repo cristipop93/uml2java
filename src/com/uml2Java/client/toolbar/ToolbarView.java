@@ -21,6 +21,7 @@ public class ToolbarView {
   private TextButton logoutButton;
   private ToggleButton domainButton;
   private ToggleButton siteButton;
+  private TextButton playButton;
 
   public ToolbarView() {
     initGUI();
@@ -36,6 +37,8 @@ public class ToolbarView {
 
     domainButton = new ToggleButton("Domain Model");
     siteButton = new ToggleButton("Site View");
+    playButton = new TextButton("Play");
+    playButton.setIcon(MainController.ICONS.play());
     domainButton.setAllowDepress(false);
     siteButton.setAllowDepress(false);
     ToggleGroup group = new ToggleGroup();
@@ -44,8 +47,9 @@ public class ToolbarView {
     group.setValue(domainButton);
 
     toolbar.add(new Label(""), flex);
-    toolbar.add(domainButton);
+    toolbar.add(domainButton, flex);
     toolbar.add(siteButton, flex);
+    toolbar.add(playButton, flex);
     toolbar.add(new Label(""), flex3);
 
     zoomSlider = new Slider();
