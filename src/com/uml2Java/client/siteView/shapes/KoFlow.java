@@ -44,8 +44,8 @@ public class KoFlow extends Flow{
     List<Point> points = getLinesPoints();
     if (points == null || points.size() < 2)
       return;
-    Point point1 = points.get(0);
-    Point point2 = points.get(1);
+    Point point1 = points.get(1);
+    Point point2 = points.get(0);
 
     if (point1.getPosition() == Position.N) {
       triangle.addCommand(new MoveTo(point1.getX() - halfWidth, point1.getY() - height));

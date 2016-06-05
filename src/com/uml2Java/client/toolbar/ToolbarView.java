@@ -86,4 +86,8 @@ public class ToolbarView {
   public ToggleButton getSiteButton() {
     return siteButton;
   }
+
+  public TextButton getPlayButton() {
+    return playButton;
+  }
 }

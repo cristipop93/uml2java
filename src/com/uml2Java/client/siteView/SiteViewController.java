@@ -274,15 +274,15 @@ public class SiteViewController {
               }
               if (!found) {
                 if (siteMouseState == SiteMouseState.FLOW) {
-                  Flow flow = new NavigationFlow(secondShape, firstShape);
+                  Flow flow = new NavigationFlow(firstShape, secondShape);
                   firstShape.addFlow(flow);
                   secondShape.addFlow(flow);
                 } else if (siteMouseState == SiteMouseState.OK_FLOW) {
-                  Flow flow = new OkFlow(secondShape, firstShape);
+                  Flow flow = new OkFlow(firstShape, secondShape);
                   firstShape.addFlow(flow);
                   secondShape.addFlow(flow);
                 } else if (siteMouseState == SiteMouseState.KO_FLOW) {
-                  Flow flow = new KoFlow(secondShape, firstShape);
+                  Flow flow = new KoFlow(firstShape, secondShape);
                   firstShape.addFlow(flow);
                   secondShape.addFlow(flow);
                 }
