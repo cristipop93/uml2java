@@ -24,11 +24,12 @@ import com.uml2Java.client.siteView.siteUtils.SiteMouseState;
 import com.uml2Java.client.siteView.utilitiesPanels.leftPanel.LeftSitePanelController;
 import com.uml2Java.client.siteView.utilitiesPanels.leftPanel.LeftSiteView;
 import com.uml2Java.client.toolbar.ToolbarView;
-import com.uml2Java.shared.DataTypes;
-import com.uml2Java.shared.ObjectDataTypes;
+import com.uml2Java.shared.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -451,5 +452,99 @@ public class SiteViewController {
 
   public List<SiteShape> getSiteShapes() {
     return siteShapes;
+  }
+
+  public Map<Long, PageDTO> getPagesDTO() {
+    Map<Long, PageDTO> pageDTOs = new HashMap<Long, PageDTO>();
+
+    for(SiteShape siteShape : siteShapes) {
+      if (siteShape instanceof PageShape) {
+        PageShape page = (PageShape) siteShape;
+        List<Long> componentId = new ArrayList<Long>();
+        for (ViewComponentShape component : page.getComponents()) {
+          componentId.add((long) component.getId());
+        }
+        List<FlowDTO> flowDTOs = getFlowDTOsForShape(page);
+        PageDTO temp = new PageDTO(page.getId(), page.getTitle(), componentId, flowDTOs);
+        pageDTOs.put((long) page.getId(), temp);
+      }
+    }
+
+    return pageDTOs;
+  }
+
+  public Map<Long, ComponentDTO> getComponentsDTO() {
+    Map<Long, ComponentDTO> componentDTOsMap = new HashMap<Long, ComponentDTO>();
+
+    for (SiteShape siteShape : siteShapes) {
+      if (siteShape instanceof ViewComponentShape) {
+        ShapeType type;
+        if (siteShape instanceof SimpleListShape) {
+          type = ShapeType.LIST;
+        } else if (siteShape instanceof DetailsShape) {
+          type = ShapeType.DETAILS;
+        } else {
+          type = ShapeType.FORM;
+        }
+        ViewComponentShape componentShape = (ViewComponentShape) siteShape;
+        List<FlowDTO> flowDTOs = getFlowDTOsForShape(componentShape);
+        ComponentDTO temp = new ComponentDTO(componentShape.getId(), componentShape.getTitle(), type, componentShape.getDataType(), flowDTOs, componentShape.getParentId());
+
+        componentDTOsMap.put(temp.getParentId(), temp);
+      }
+    }
+
+    return componentDTOsMap;
+  }
+
+  public Map<Long, ActionDTO> getActionDTO() {
+    Map<Long, ActionDTO> actionDTOs = new HashMap<Long, ActionDTO>();
+
+    for (SiteShape siteShape : siteShapes) {
+      if (siteShape instanceof ActionShape) {
+        ActionShape actionShape = (ActionShape) siteShape;
+        List<FlowDTO> flowDTOs = getFlowDTOsForShape(actionShape);
+        ActionDTO temp = new ActionDTO(actionShape.getId(), actionShape.getTitle(), flowDTOs);
+        actionDTOs.put(temp.getId(), temp);
+      }
+    }
+    return actionDTOs;
+  }
+
+  /**
+   * Get flows only from that shape (coming out of that shape)
+   * @param shape
+   * @return
+   */
+  private List<FlowDTO> getFlowDTOsForShape(SiteShape shape) {
+    List<FlowDTO> flowDTOs = new ArrayList<FlowDTO>();
+    for (Flow flow : shape.getFlows()) {
+      ShapeType type;
+      if (flow instanceof OkFlow) {
+        type = ShapeType.OKFLOW;
+      } else if (flow instanceof KoFlow) {
+        type = ShapeType.KOFLOW;
+      } else {
+        type = ShapeType.NAVIGATIONFLOW;
+      }
+      ShapeType firstShapeType = getShapeType(flow.getFirstUmlShape());
+      ShapeType secondShapeType = getShapeType(flow.getSecondUmlShape());
+      // get flows only where the first shape is the given one (shape)
+      if (flow.getFirstUmlShape().getId() == shape.getId()) // remove this if if you want all the flows
+        flowDTOs.add(new FlowDTO(flow.getFirstUmlShape().getId(), firstShapeType, flow.getSecondUmlShape().getId(), secondShapeType, type));
+    }
+    return flowDTOs;
+  }
+
+  /**
+   * returns PAGE, COMPONENT, ACTION
+   */
+  private ShapeType getShapeType(SiteShape siteShape) {
+    if (siteShape instanceof PageShape)
+      return ShapeType.PAGE;
+    else if (siteShape instanceof ViewComponentShape)
+      return ShapeType.COMPONENT;
+    else
+      return ShapeType.ACTION;
   }
 }

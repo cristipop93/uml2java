@@ -84,7 +84,7 @@ public class ActionShape extends SiteShape {
 
   @Override
   public int getId() {
-    return shapeId;
+    return id;
   }
 
   @Override

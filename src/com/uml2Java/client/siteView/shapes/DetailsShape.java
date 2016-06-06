@@ -32,6 +32,6 @@ public class DetailsShape extends ViewComponentShape {
 
   @Override
   public int getId() {
-    return shapeId;
+    return id;
   }
 }

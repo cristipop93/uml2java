@@ -40,6 +40,6 @@ public class FormShape extends ViewComponentShape{
 
   @Override
   public int getId() {
-    return shapeId;
+    return id;
   }
 }

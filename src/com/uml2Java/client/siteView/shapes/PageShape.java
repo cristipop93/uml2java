@@ -199,7 +199,7 @@ public class PageShape extends SiteShape {
 
   @Override
   public int getId() {
-    return shapeId;
+    return id;
   }
 
   public void resize() {

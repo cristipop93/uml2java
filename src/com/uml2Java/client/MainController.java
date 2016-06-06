@@ -95,7 +95,19 @@ public class MainController {
     toolbarView.getPlayButton().addSelectHandler(new SelectEvent.SelectHandler() {
       @Override
       public void onSelect(SelectEvent event) {
+        service.generateCode(SiteViewController.getInstance().getPagesDTO(),
+            SiteViewController.getInstance().getComponentsDTO(), SiteViewController.getInstance().getActionDTO(),
+            UmlController.getInstance().getClassDtos(), new AsyncCallback<Void>() {
+              @Override
+              public void onFailure(Throwable caught) {
 
+              }
+
+              @Override
+              public void onSuccess(Void result) {
+
+              }
+            });
       }
     });
   }

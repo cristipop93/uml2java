@@ -202,4 +202,8 @@ public abstract class ViewComponentShape extends SiteShape {
     drawComponent.remove(dataTypeSprite);
     SiteViewController.getInstance().getSiteShapes().remove(this);
   }
+
+  public long getParentId() {
+    return parentShape.getId();
+  }
 }

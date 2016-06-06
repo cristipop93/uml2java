@@ -25,7 +25,9 @@ import com.uml2Java.client.domainModel.utilitiesPanels.rightPanel.RightPanelView
 import com.uml2Java.shared.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -109,40 +111,18 @@ public class UmlController {
     methods.add(new Method("setUser", AccessType.PRIVATE, dataType3, attr));
 
     List<Attribute> attributes = new ArrayList<Attribute>();
-    Attribute user1 = new Attribute("user", dataType1, AccessType.PRIVATE);
+    Attribute user0 = new Attribute("id", PrimitiveDataTypes.INT, AccessType.PRIVATE);
+    Attribute user1 = new Attribute("name", dataType1, AccessType.PRIVATE);
+    Attribute user2 = new Attribute("address", dataType1, AccessType.PRIVATE);
+    Attribute user3 = new Attribute("telephone", dataType1, AccessType.PRIVATE);
 //    user1.setIsStatic(true);
     user1.setIsFinal(true);
-    attributes.add(user1);
+    attributes.add(user0); attributes.add(user1); attributes.add(user2); attributes.add(user3);
     ClassUmlShape shape = new ClassUmlShape(view.getDrawComponent(), 300, 200, 100, 65, "User", attributes, methods);
-    ClassUmlShape shape2 = new ClassUmlShape(view.getDrawComponent(), 600, 300, 100, 65, "classExample",
-        new ArrayList<Attribute>(), new ArrayList<Method>());
-    ClassUmlShape shape3 = new ClassUmlShape(view.getDrawComponent(), 600, 100, 100, 65, "AClass", new ArrayList<Attribute>(), new ArrayList<Method>());
-    ClassUmlShape shape4 = new ClassUmlShape(view.getDrawComponent(), 200, 450, 100, 65, "BClass", new ArrayList<Attribute>(), new ArrayList<Method>());
-    ClassUmlShape shape5 = new ClassUmlShape(view.getDrawComponent(), 150, 100, 100, 65, "CClass", new ArrayList<Attribute>(), new ArrayList<Method>());
-    InterfaceUmlShape shape6 = new InterfaceUmlShape(view.getDrawComponent(), 700, 450, 100, 65, "Interface", new ArrayList<Method>());
     //    shape2.scaleTo(0.8);
     //    shape.scaleTo(0.8);
     umlShapes.add(shape);
-    umlShapes.add(shape2);
-    umlShapes.add(shape3);
-    umlShapes.add(shape4);
-    umlShapes.add(shape5);
-    umlShapes.add(shape6);
-    Link link = new GeneralizationLink(shape2, shape);
-    shape.getLinks().add(link);
-    shape2.getLinks().add(link);
-    Link link11 = new AssociationLink(shape, shape3);
-    shape.getLinks().add(link11);
-    shape3.getLinks().add(link11);
-    Link link2 = new AssociationLink(shape, shape4);
-    shape.getLinks().add(link2);
-    shape4.getLinks().add(link2);
-    Link link3 = new AssociationLink(shape4, shape5);
-    shape4.getLinks().add(link3);
-    shape5.getLinks().add(link3);
-    Link link4 = new AssociationLink(shape, shape6);
-    shape.getLinks().add(link4);
-    shape6.getLinks().add(link4);
+
 //    view.getDrawComponent().clearSurface();
     for (UmlShape umlShapeTemp : umlShapes) {
       umlShapeTemp.redraw();
@@ -356,5 +336,19 @@ public class UmlController {
 
   public static IUmlView getView() {
     return view;
+  }
+
+  public Map<String, ClassDTO> getClassDtos() {
+    Map<String, ClassDTO> classDTOMap = new HashMap<String, ClassDTO>();
+
+    for (UmlShape umlShape : umlShapes) {
+      if (umlShape instanceof ClassUmlShape) {
+        ClassUmlShape classUmlShape = (ClassUmlShape) umlShape;
+        ClassDTO temp = new ClassDTO(classUmlShape.getId(), classUmlShape.getTitle(), classUmlShape.getAttributesList(), classUmlShape.getMethodsList());
+
+        classDTOMap.put(classUmlShape.getTitle(), temp);
+      }
+    }
+    return classDTOMap;
   }
 }
