@@ -68,7 +68,7 @@ public class GeneretaeCodeUtil {
 
     if (isAdd) {
       result += String
-          .format(" \n public addData() {\n" + "        this.nav.push(%s, {item: new %s()});\n" + "    }", formName,
+          .format(" \n public addData() {\n" + "        this.nav.push(%s, {item: new %s()});\n" + "    }", addFormName,
               typeName);
     }
     result += "\n }";
@@ -91,7 +91,7 @@ public class GeneretaeCodeUtil {
     result += String.format("<ion-buttons start>\n" + "            <button (click) = \"%s()\">\n"
         + "                <ion-icon name=\"add\" ></ion-icon>\n" + "                Submit\n"
         + "            </button>\n" + "        </ion-buttons>\n" + "    </ion-list>\n" + "</ion-content>",
-        (isAction ? actionName : "addData()"));
+        (isAction ? actionName : "addData"));
 
     return result;
   }
@@ -99,15 +99,15 @@ public class GeneretaeCodeUtil {
   public static String formTS(String title, String typeName, List<Attribute> attributes, boolean isList,
       String listName, boolean isAction, String actionName, boolean isOkAction, String okAction, boolean isDetails,
       String detailsName) {
-    String result = "import {Page, Alert, NavController, NavParams} from 'ionic-angular';";
-    result += String.format("import {%s} from './%s';", typeName, typeName);
+    String result = "import {Page, Alert, NavController, NavParams} from 'ionic-angular'; \n";
+    result += String.format("import {%s} from './%s'; \n", typeName, typeName);
 
     if (isOkAction)
-      result += String.format("import {%s} from './%s';", okAction, okAction);
+      result += String.format("import {%s} from './%s'; \n", okAction, okAction);
     if (isList)
-      result += String.format("import {%s} from './%s';", listName, listName);
+      result += String.format("import {%s} from './%s'; \n", listName, listName);
     if (isDetails)
-      result += String.format("import {%s} from './%s';", detailsName, detailsName);
+      result += String.format("import {%s} from './%s'; \n", detailsName, detailsName);
 
     result += String.format("@Page({\n" + "    templateUrl: 'build/%s.html'\n" + "}) \n", title);
     result += String.format("export class %s {\n" + "\t public item : %s;\n", title, typeName);
@@ -130,11 +130,11 @@ public class GeneretaeCodeUtil {
     } else if (isDetails) {
       String fields = "";
       for (Attribute attribute : attributes) {
-        fields += String.format("this.item.%s, ", attribute.getDisplayName());
+        fields += String.format("this.data.%s, ", attribute.getDisplayName());
       }
       fields = fields.substring(0, fields.length() - 2);  // cut the ", " fomr the last attribute
 
-      result += String.format("public addData() { \n this.nav.push(%s, new %s (%s))", detailsName, typeName, fields);
+      result += String.format("public addData() { \n this.nav.push(%s, { item: new %s (%s) }) \n }", detailsName, typeName, fields);
 
     } else {
       result += "public addData() { \n }";
@@ -146,7 +146,7 @@ public class GeneretaeCodeUtil {
 
   public static String detailsHTML(String title, String typeName, List<Attribute> attributes) {
     String result = String.format(
-        "<ion-navbar *navbar>\n" + "    <ion-row>\n" + "        <ion-title>{{item.%s}} details</ion-title>\n"
+        "<ion-navbar *navbar>\n" + "    <ion-row>\n" + "        <ion-title> %s details</ion-title>\n"
             + "    </ion-row>\n" + "</ion-navbar>\n" + "\n" + "<ion-content padding class=\"about\">\n" + "\n"
             + "    <!-- Primary infos -->\n" + "    <ion-list>\n" + "        <ion-list-header>Info</ion-list-header>",
         typeName);
