@@ -9,9 +9,8 @@ import com.uml2Java.client.domainModel.UmlController;
 import com.uml2Java.client.icons.Icons;
 import com.uml2Java.client.login.LoginController;
 import com.uml2Java.client.login.LoginView;
-import com.uml2Java.client.service.Uml2JavaService;
-import com.uml2Java.client.service.Uml2JavaServiceAsync;
-import com.uml2Java.client.siteView.SiteView;
+import com.uml2Java.client.service.UIEditorService;
+import com.uml2Java.client.service.UIEditorServiceAsync;
 import com.uml2Java.client.siteView.SiteViewController;
 import com.uml2Java.client.toolbar.ToolbarView;
 import com.uml2Java.shared.UserData;
@@ -26,7 +25,7 @@ public class MainController {
   private HBoxLayoutContainer buttonsContainer;
   private UserData currentUser;
   private ToolbarView toolbarView;
-  private Uml2JavaServiceAsync service = GWT.create(Uml2JavaService.class);
+  private UIEditorServiceAsync service = GWT.create(UIEditorService.class);
 
   public static MainController getInstance() {
     if (INSTANCE == null)

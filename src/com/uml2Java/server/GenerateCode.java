@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Created by Cristi on 6/6/2016.
  */
-public class Ionic2Generator {
+public class GenerateCode {
   private Map<Long, PageDTO> pageDTOMap;
   private Map<Long, ComponentDTO> componentDTOMap;
   private Map<Long, ActionDTO> actionDTOMap;
@@ -17,7 +17,7 @@ public class Ionic2Generator {
 
   private Map<String, String> finalResult;
 
-  public Ionic2Generator(Map<Long, PageDTO> pageDTOMap, Map<Long, ComponentDTO> componentDTOMap,
+  public GenerateCode(Map<Long, PageDTO> pageDTOMap, Map<Long, ComponentDTO> componentDTOMap,
       Map<Long, ActionDTO> actionDTOMap, Map<String, ClassDTO> classDTOMap) {
     this.pageDTOMap = pageDTOMap;
     this.componentDTOMap = componentDTOMap;
@@ -30,7 +30,7 @@ public class Ionic2Generator {
     for (String key: classDTOMap.keySet()) {
       ClassDTO classDTO = classDTOMap.get(key);
       String className = classDTO.getTitle() + ".ts";
-      String classContent = GeneretaeCodeUtil.classTS(classDTO.getTitle(), classDTO.getAttributes());
+      String classContent = GenerateIonic2Utils.classTS(classDTO.getTitle(), classDTO.getAttributes());
       finalResult.put(className, classContent);
     }
 
@@ -40,7 +40,7 @@ public class Ionic2Generator {
 
     // set HomePage 1l
     String appTsName = "app.ts";
-    String appTsContent = GeneretaeCodeUtil.appTS(pageDTOMap.get(1l).getTitle());
+    String appTsContent = GenerateIonic2Utils.appTS(pageDTOMap.get(1l).getTitle());
 
     finalResult.put(appTsName, appTsContent);
   }
@@ -62,10 +62,10 @@ public class Ionic2Generator {
 
   private void generateDetails(PageDTO page, ComponentDTO component, List<Attribute> attributeList) {
     String tsName = page.getTitle() + ".ts";
-    String tsContent = GeneretaeCodeUtil.detailsTS(page.getTitle(), component.getDataTypes().getDisplayName());
+    String tsContent = GenerateIonic2Utils.detailsTS(page.getTitle(), component.getDataTypes().getDisplayName());
 
     String htmlName = page.getTitle() + ".html";
-    String htmlContent = GeneretaeCodeUtil
+    String htmlContent = GenerateIonic2Utils
         .detailsHTML(page.getTitle(), component.getDataTypes().getDisplayName(), attributeList);
 
     finalResult.put(tsName, tsContent);
@@ -111,12 +111,12 @@ public class Ionic2Generator {
     //pageFlow ...
 
     String tsName = page.getTitle() + ".ts";
-    String tsContent = GeneretaeCodeUtil
+    String tsContent = GenerateIonic2Utils
         .formTS(page.getTitle(), typeName, attributeList, isList, listName, isAction, actionName, isOkAction,
             okActionName, isDetails, detailsName);
 
     String htmlName = page.getTitle() + ".html";
-    String htmlContent = GeneretaeCodeUtil.formHTML(page.getTitle(), typeName, attributeList, isAction, actionName);
+    String htmlContent = GenerateIonic2Utils.formHTML(page.getTitle(), typeName, attributeList, isAction, actionName);
 
     finalResult.put(tsName, tsContent);
     finalResult.put(htmlName, htmlContent);
@@ -175,7 +175,7 @@ public class Ionic2Generator {
     }
 
     String tsFileName = page.getTitle() + ".ts";
-    String tsContent = GeneretaeCodeUtil
+    String tsContent = GenerateIonic2Utils
         .listTS(isDetails, isAdd, isAction, isOkAction, isList, isForm, detailsName, addFormName, page.getTitle(),
             actionName, otherListName, formName, isOkActionName, typeName);
 
@@ -187,7 +187,7 @@ public class Ionic2Generator {
     }
 
     String htmlFileName = page.getTitle() + ".html";
-    String htmlContent = GeneretaeCodeUtil.listHTML(page.getTitle(), fieldToDisplay, actionName, isAdd, isAction);
+    String htmlContent = GenerateIonic2Utils.listHTML(page.getTitle(), fieldToDisplay, actionName, isAdd, isAction);
 
     finalResult.put(tsFileName, tsContent);
     finalResult.put(htmlFileName, htmlContent);

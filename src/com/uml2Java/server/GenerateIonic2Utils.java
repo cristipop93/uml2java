@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Cristi on 2/5/2016.
  */
-public class GeneretaeCodeUtil {
+public class GenerateIonic2Utils {
   public static String listHTML(String title, String fieldToDisplay, String actionName, boolean isAdd,
       boolean isAction) {
     String str = String.format(

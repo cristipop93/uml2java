@@ -8,7 +8,7 @@ import com.uml2Java.shared.PageDTO;
 
 import java.util.Map;
 
-public interface Uml2JavaServiceAsync {
+public interface UIEditorServiceAsync {
   void getMessage(String msg, AsyncCallback<String> async);
 
   void generateCode(Map<Long, PageDTO> pageDTOMap, Map<Long, ComponentDTO> componentDTOMap,

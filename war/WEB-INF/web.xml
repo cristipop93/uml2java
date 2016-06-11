@@ -6,15 +6,15 @@
            version="3.0">
 
     <servlet>
-        <servlet-name>com.uml2Java.Uml2Java Uml2JavaService</servlet-name>
-        <servlet-class>com.uml2Java.server.service.Uml2JavaServiceImpl</servlet-class>
+        <servlet-name>com.uml2Java.Uml2Java UIEditorService</servlet-name>
+        <servlet-class>com.uml2Java.server.service.UIEditorServiceImpl</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>com.uml2Java.Uml2Java UsersService</servlet-name>
         <servlet-class>com.uml2Java.server.service.UsersServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>com.uml2Java.Uml2Java Uml2JavaService</servlet-name>
+        <servlet-name>com.uml2Java.Uml2Java UIEditorService</servlet-name>
         <url-pattern>/Uml2Java/Uml2JavaService</url-pattern>
     </servlet-mapping>
     <servlet-mapping>

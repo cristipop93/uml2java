@@ -56,7 +56,7 @@ public class Uml2Java implements EntryPoint {
 //      @Override
 //      public void onSelect(SelectEvent event) {
 //        if (label.getText().equals("")) {
-//          Uml2JavaService.App.getInstance().getMessage("Hello, World!", new MyAsyncCallback(label));
+//          UIEditorService.App.getInstance().getMessage("Hello, World!", new MyAsyncCallback(label));
 //        } else {
 //          label.setText("");
 //        }

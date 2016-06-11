@@ -25,7 +25,7 @@
 
 
     <!-- Specify the app servlets.                   -->
-    <servlet path='/Uml2JavaService' class='com.uml2Java.server.service.Uml2JavaServiceImpl'/>
+    <servlet path='/Uml2JavaService' class='com.uml2Java.server.service.UIEditorServiceImpl'/>
 
     <add-linker name="xsiframe"/> <set-configuration-property name="devModeRedirectEnabled" value="true"/>
     <set-property name="compiler.useSourceMaps" value="true" />

@@ -12,18 +12,18 @@ import com.uml2Java.shared.exception.Uml2JavaException;
 import java.util.Map;
 
 @RemoteServiceRelativePath("Uml2JavaService")
-public interface Uml2JavaService extends RemoteService {
+public interface UIEditorService extends RemoteService {
   // Sample interface method of remote interface
   String getMessage(String msg);
 
   /**
    * Utility/Convenience class.
-   * Use Uml2JavaService.App.getInstance() to access static instance of Uml2JavaServiceAsync
+   * Use UIEditorService.App.getInstance() to access static instance of Uml2JavaServiceAsync
    */
   public static class App {
-    private static Uml2JavaServiceAsync ourInstance = GWT.create(Uml2JavaService.class);
+    private static UIEditorServiceAsync ourInstance = GWT.create(UIEditorService.class);
 
-    public static synchronized Uml2JavaServiceAsync getInstance() {
+    public static synchronized UIEditorServiceAsync getInstance() {
       return ourInstance;
     }
   }
