@@ -17,8 +17,8 @@ public class UIEditorServiceImpl extends RemoteServiceServlet implements UIEdito
 
   @Override
   public void generateCode(Map<Long, PageDTO> pageDTOMap, Map<Long, ComponentDTO> componentDTOMap,
-      Map<Long, ActionDTO> actionDTOMap, Map<String, ClassDTO> classDTOMap) throws Uml2JavaException {
-    GenerateCode generator = new GenerateCode(pageDTOMap, componentDTOMap, actionDTOMap, classDTOMap);
+      Map<Long, ActionDTO> actionDTOMap, Map<String, ClassDTO> classDTOMap, boolean isAddMockData, String username) throws Uml2JavaException {
+    GenerateCode generator = new GenerateCode(pageDTOMap, componentDTOMap, actionDTOMap, classDTOMap, isAddMockData, username);
     generator.generate();
 
     Map<String, String> filesMap = generator.getFinalResult();

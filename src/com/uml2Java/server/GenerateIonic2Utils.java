@@ -9,6 +9,8 @@ import java.util.List;
  * Created by Cristi on 2/5/2016.
  */
 public class GenerateIonic2Utils {
+  private static final int MOCKS_NO= 10;
+
   public static String listHTML(String title, String fieldToDisplay, String actionName, boolean isAdd,
       boolean isAction) {
     String str = String.format(
@@ -28,7 +30,7 @@ public class GenerateIonic2Utils {
 
   public static String listTS(boolean isDetails, boolean isAdd, boolean isAction, boolean isActionOK, boolean isList,
       boolean isForm, String detailsName, String addFormName, String listName, String actionName, String otherListName,
-      String formName, String actionOkName, String typeName) {
+      String formName, String actionOkName, String typeName, boolean isAddMockData, List<Attribute> attributeList) {
     String result = "import {Page, NavController, Platform, NavParams, ViewController, Modal, IonicApp} from 'ionic-angular';";
     if (isDetails)
       result += String.format("import {%s} from './%s';", detailsName, detailsName);
@@ -45,9 +47,23 @@ public class GenerateIonic2Utils {
 
     result += String.format("@Page({\n" + "    templateUrl: 'build/%s.html'\n" + "})\n" + "\n" + "export class %s {\n"
             + "    public data: %s;\n" + "\n" + "    constructor(public nav : NavController) {\n"
-            + "        this.load();\n" + "    }\n" + "\n" + "    private load() {\n" + "        \n" + "    }", listName,
+            + "        this.load();\n" + "    }\n" + "\n" + "    private load() {\n", listName,
         listName, typeName);
+    if (isAddMockData) {
+      result += "        this.data = [";
+      for (int i=0; i<MOCKS_NO; i++) {
+        result += "\n            new " + typeName + "(";
+        for (Attribute attribute : attributeList) {
+          result += (attribute.getDataType().getDisplayName().equals("int") ? i : "\"" + attribute.getDisplayName() + i + "\"") + ", ";
+        }
+        result = result.substring(0, result.length() - 2);
+        result += "), ";
+      }
+      result = result.substring(0, result.length() - 2);
+      result += "\n        ]\n";
+    }
 
+    result += "    }\n";
     if (isAction) {
       if (isActionOK) {
         result += String.format("public %s(item) {\n this.nav.push(%s); }", actionName, actionOkName);
@@ -56,19 +72,19 @@ public class GenerateIonic2Utils {
       }
     } else if (isDetails) {
       result += String
-          .format("public goToDetails(item) {\n" + "        this.nav.push(%s, {item: item});\n" + "    }", detailsName);
+          .format("    public goToDetails(item) {\n" + "        this.nav.push(%s, {item: item});\n" + "    }", detailsName);
     } else if (isForm) {
       result += String
-          .format("public goToDetails(item) {\n" + "        this.nav.push(%s, {item: item});\n" + "    }", formName);
+          .format("    public goToDetails(item) {\n" + "        this.nav.push(%s, {item: item});\n" + "    }", formName);
     } else if (isList) {
-      result += String.format("public goToDetails(item) {\n" + "        this.nav.push(%s);\n" + "    }", otherListName);
+      result += String.format("    public goToDetails(item) {\n" + "        this.nav.push(%s);\n" + "    }", otherListName);
     } else {
-      result += "public goToDetails(item) { \n } \n";
+      result += "    public goToDetails(item) { \n } \n";
     }
 
     if (isAdd) {
       result += String
-          .format(" \n public addData() {\n" + "        this.nav.push(%s, {item: new %s()});\n" + "    }", addFormName,
+          .format(" \n    public addData() {\n" + "        this.nav.push(%s, {item: new %s()});\n" + "    }", addFormName,
               typeName);
     }
     result += "\n }";

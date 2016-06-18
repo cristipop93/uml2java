@@ -1,9 +1,14 @@
 package com.uml2Java.client;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Label;
+import com.sencha.gxt.widget.core.client.Dialog;
+import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer;
+import com.sencha.gxt.widget.core.client.event.HideEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.uml2Java.client.domainModel.UmlController;
 import com.uml2Java.client.icons.Icons;
@@ -14,6 +19,8 @@ import com.uml2Java.client.service.UIEditorServiceAsync;
 import com.uml2Java.client.siteView.SiteViewController;
 import com.uml2Java.client.toolbar.ToolbarView;
 import com.uml2Java.shared.UserData;
+
+import java.util.logging.Logger;
 
 /**
  * Created by Cristi on 3/21/2016.
@@ -26,6 +33,7 @@ public class MainController {
   private UserData currentUser;
   private ToolbarView toolbarView;
   private UIEditorServiceAsync service = GWT.create(UIEditorService.class);
+  private Logger logger = Logger.getLogger(MainController.class.getName());
 
   public static MainController getInstance() {
     if (INSTANCE == null)
@@ -94,19 +102,40 @@ public class MainController {
     toolbarView.getPlayButton().addSelectHandler(new SelectEvent.SelectHandler() {
       @Override
       public void onSelect(SelectEvent event) {
-        service.generateCode(SiteViewController.getInstance().getPagesDTO(),
-            SiteViewController.getInstance().getComponentsDTO(), SiteViewController.getInstance().getActionDTO(),
-            UmlController.getInstance().getClassDtos(), new AsyncCallback<Void>() {
-              @Override
-              public void onFailure(Throwable caught) {
+        final Dialog dialog = new Dialog();
+        dialog.setHeadingText("Info");
+        dialog.setWidth(300);
+        dialog.setResizable(false);
+        dialog.setHideOnButtonClick(true);
+        dialog.setPredefinedButtons(Dialog.PredefinedButton.YES, Dialog.PredefinedButton.NO);
+        dialog.add(new Label("Add mock data ?"));
+        dialog.addHideHandler(new HideEvent.HideHandler() {
+          @Override
+          public void onHide(HideEvent event) {
+            boolean isAddMockData = false;
+            if (dialog.getHideButton() == dialog.getButtonById(Dialog.PredefinedButton.YES.name())) {
+              isAddMockData = true;
+            } else {
+              isAddMockData = false;
+            }
+            service.generateCode(SiteViewController.getInstance().getPagesDTO(),
+                SiteViewController.getInstance().getComponentsDTO(), SiteViewController.getInstance().getActionDTO(),
+                UmlController.getInstance().getClassDtos(), isAddMockData, currentUser.getUserName(), new AsyncCallback<Void>() {
+                  @Override
+                  public void onFailure(Throwable caught) {
+                    new AlertMessageBox("Error", "Error while generating the code.").show();
+                  }
 
-              }
+                  @Override
+                  public void onSuccess(Void result) {
+                    String url = GWT.getModuleBaseURL() + "ZipDownloadService?user="+currentUser.getUserName();
+                    Window.open(url, "_self", "");
+                  }
+                });
+          }
+        });
+        dialog.show();
 
-              @Override
-              public void onSuccess(Void result) {
-
-              }
-            });
       }
     });
   }

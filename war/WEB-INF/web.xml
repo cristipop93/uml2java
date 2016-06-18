@@ -13,6 +13,10 @@
         <servlet-name>com.uml2Java.Uml2Java UsersService</servlet-name>
         <servlet-class>com.uml2Java.server.service.UsersServiceImpl</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ZipDownloadService</servlet-name>
+        <servlet-class>com.uml2Java.server.service.ZipDownloadService</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>com.uml2Java.Uml2Java UIEditorService</servlet-name>
         <url-pattern>/Uml2Java/Uml2JavaService</url-pattern>
@@ -20,5 +24,9 @@
     <servlet-mapping>
         <servlet-name>com.uml2Java.Uml2Java UsersService</servlet-name>
         <url-pattern>/Uml2Java/UsersService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ZipDownloadService</servlet-name>
+        <url-pattern>/Uml2Java/ZipDownloadService</url-pattern>
     </servlet-mapping>
 </web-app>

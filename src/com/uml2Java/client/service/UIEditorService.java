@@ -29,5 +29,5 @@ public interface UIEditorService extends RemoteService {
   }
 
   void generateCode(Map<Long, PageDTO> pageDTOMap, Map<Long, ComponentDTO> componentDTOMap,
-      Map<Long, ActionDTO> actionDTOMap, Map<String, ClassDTO> classDTOMap) throws Uml2JavaException;
+      Map<Long, ActionDTO> actionDTOMap, Map<String, ClassDTO> classDTOMap, boolean isAddMockData, String username) throws Uml2JavaException;
 }

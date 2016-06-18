@@ -12,5 +12,5 @@ public interface UIEditorServiceAsync {
   void getMessage(String msg, AsyncCallback<String> async);
 
   void generateCode(Map<Long, PageDTO> pageDTOMap, Map<Long, ComponentDTO> componentDTOMap,
-      Map<Long, ActionDTO> actionDTOMap, Map<String, ClassDTO> classDTOMap, AsyncCallback<Void> async);
+      Map<Long, ActionDTO> actionDTOMap, Map<String, ClassDTO> classDTOMap, boolean isAddMockData, String username, AsyncCallback<Void> async);
 }

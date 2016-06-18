@@ -2,9 +2,15 @@ package com.uml2Java.server;
 
 import com.uml2Java.shared.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * Created by Cristi on 6/6/2016.
@@ -14,16 +20,21 @@ public class GenerateCode {
   private Map<Long, ComponentDTO> componentDTOMap;
   private Map<Long, ActionDTO> actionDTOMap;
   private Map<String, ClassDTO> classDTOMap;
+  private boolean isAddMockData;
+  private String username;
+  public static final String SOURCE_FOLDER = "C:\\Users\\Cristi\\";
 
   private Map<String, String> finalResult;
 
   public GenerateCode(Map<Long, PageDTO> pageDTOMap, Map<Long, ComponentDTO> componentDTOMap,
-      Map<Long, ActionDTO> actionDTOMap, Map<String, ClassDTO> classDTOMap) {
+      Map<Long, ActionDTO> actionDTOMap, Map<String, ClassDTO> classDTOMap, boolean isAddMockData, String username) {
     this.pageDTOMap = pageDTOMap;
     this.componentDTOMap = componentDTOMap;
     this.actionDTOMap = actionDTOMap;
     this.classDTOMap = classDTOMap;
     this.finalResult = new HashMap<String, String>();
+    this.isAddMockData = isAddMockData;
+    this.username = username;
   }
 
   public void generate() {
@@ -43,6 +54,8 @@ public class GenerateCode {
     String appTsContent = GenerateIonic2Utils.appTS(pageDTOMap.get(1l).getTitle());
 
     finalResult.put(appTsName, appTsContent);
+
+    zipFiles();
   }
 
   private void generatePage(Long key) {
@@ -177,7 +190,7 @@ public class GenerateCode {
     String tsFileName = page.getTitle() + ".ts";
     String tsContent = GenerateIonic2Utils
         .listTS(isDetails, isAdd, isAction, isOkAction, isList, isForm, detailsName, addFormName, page.getTitle(),
-            actionName, otherListName, formName, isOkActionName, typeName);
+            actionName, otherListName, formName, isOkActionName, typeName, isAddMockData, attributeList);
 
     String fieldToDisplay = "";
     if (attributeList.size() > 2) {
@@ -202,6 +215,37 @@ public class GenerateCode {
     }
     return null;
   }
+
+  private void zipFiles() {
+    try {
+
+      FileOutputStream fos = new FileOutputStream(SOURCE_FOLDER + this.username + ".zip");
+      ZipOutputStream zos = new ZipOutputStream(fos);
+
+      System.out.println("Output to Zip : " + SOURCE_FOLDER + this.username + ".zip");
+
+      for (String file : finalResult.keySet()) {
+
+        System.out.println("File Added : " + file);
+        ZipEntry ze = new ZipEntry(file);
+        zos.putNextEntry(ze);
+
+        String fileContent = finalResult.get(file);
+        byte[] bytes = fileContent.getBytes();
+        int len;
+        zos.write(bytes, 0, bytes.length);
+      }
+
+      zos.closeEntry();
+      //remember close it
+      zos.close();
+
+      System.out.println("Done");
+    } catch (IOException ex) {
+      ex.printStackTrace();
+    }
+  }
+
 
   public Map<String, String> getFinalResult() {
     return finalResult;
