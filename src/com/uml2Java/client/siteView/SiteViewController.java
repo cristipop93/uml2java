@@ -334,8 +334,8 @@ public class SiteViewController {
       @Override
       public void onKeyDown(KeyDownEvent event) {
         if (event.getNativeKeyCode() == KeyCodes.KEY_DELETE) {
-          log.info("delete " + (selectedShape != null ? selectedShape.getTitle() : "null"));
-          if (selectedShape != null) {
+          if (selectedShape != null && !(selectedShape instanceof PageShape && selectedShape.getId() == 1)) {
+            log.info("delete " + (selectedShape != null ? selectedShape.getTitle() : "null"));
             selectedShape.removeAllFlows();
             selectedShape.remove();
             setSelectedShape(null);
