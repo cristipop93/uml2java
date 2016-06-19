@@ -126,10 +126,10 @@ public class GenerateCode {
     String tsName = page.getTitle() + ".ts";
     String tsContent = GenerateIonic2Utils
         .formTS(page.getTitle(), typeName, attributeList, isList, listName, isAction, actionName, isOkAction,
-            okActionName, isDetails, detailsName);
+            okActionName, isDetails, detailsName, page.getId());
 
     String htmlName = page.getTitle() + ".html";
-    String htmlContent = GenerateIonic2Utils.formHTML(page.getTitle(), typeName, attributeList, isAction, actionName);
+    String htmlContent = GenerateIonic2Utils.formHTML(page.getTitle(), typeName, attributeList, isAction, actionName, page.getId());
 
     finalResult.put(tsName, tsContent);
     finalResult.put(htmlName, htmlContent);

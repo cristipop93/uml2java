@@ -92,7 +92,7 @@ public class GenerateIonic2Utils {
   }
 
   public static String formHTML(String title, String typeName, List<Attribute> attributes, boolean isAction,
-      String actionName) {
+      String actionName, long id) {
     String result = String.format(
         "<ion-navbar *navbar>\n" + "    <ion-row>\n" + "        <ion-title>Add %s</ion-title>\n" + "    </ion-row>\n"
             + "</ion-navbar>", typeName);
@@ -100,9 +100,9 @@ public class GenerateIonic2Utils {
 
     for (Attribute attribute : attributes) {
       result += String.format("<ion-item>\n" + "            <ion-label floating>%s</ion-label>\n"
-          + "            <ion-input type=\"text\" id = \"%s\" name = \"%s\" [(ngModel)]=\"data.%s\"></ion-input>\n"
+          + "            <ion-input type=\"text\" id = \"%s\" name = \"%s\" %s></ion-input>\n"
           + "        </ion-item> \n", attribute.getDisplayName(), attribute.getDisplayName(),
-          attribute.getDisplayName(), attribute.getDisplayName());
+          attribute.getDisplayName(), (id != 1l ? "[(ngModel)]=\"data." + attribute.getDisplayName() + "\"" : ""));
     }
     result += String.format("<ion-buttons start>\n" + "            <button (click) = \"%s()\">\n"
         + "                <ion-icon name=\"add\" ></ion-icon>\n" + "                Submit\n"
@@ -114,7 +114,7 @@ public class GenerateIonic2Utils {
 
   public static String formTS(String title, String typeName, List<Attribute> attributes, boolean isList,
       String listName, boolean isAction, String actionName, boolean isOkAction, String okAction, boolean isDetails,
-      String detailsName) {
+      String detailsName, long id) {
     String result = "import {Page, Alert, NavController, NavParams} from 'ionic-angular'; \n";
     result += String.format("import {%s} from './%s'; \n", typeName, typeName);
 
@@ -128,10 +128,12 @@ public class GenerateIonic2Utils {
     result += String.format("@Page({\n" + "    templateUrl: 'build/%s.html'\n" + "}) \n", title);
     result += String.format("export class %s {\n" + "\t public item : %s;\n", title, typeName);
     result += "constructor(public nav: NavController, public params: NavParams) { \n";
-    result += "this.item = params.data.item; \n this.data = {};";
-    for (Attribute attribute : attributes) {
-      result += String
-          .format("this.data.%s = this.item.%s; \n", attribute.getDisplayName(), attribute.getDisplayName());
+    if (id != 1l) {
+      result += "this.item = params.data.item; \n this.data = {};";
+      for (Attribute attribute : attributes) {
+        result += String
+            .format("this.data.%s = this.item.%s; \n", attribute.getDisplayName(), attribute.getDisplayName());
+      }
     }
     result += "} \n";
 

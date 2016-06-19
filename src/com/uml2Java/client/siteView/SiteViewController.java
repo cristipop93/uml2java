@@ -530,7 +530,7 @@ public class SiteViewController {
       ShapeType firstShapeType = getShapeType(flow.getFirstUmlShape());
       ShapeType secondShapeType = getShapeType(flow.getSecondUmlShape());
       // get flows only where the first shape is the given one (shape)
-      if (flow.getFirstUmlShape().getId() == shape.getId()) // remove this if if you want all the flows
+      if (flow.getFirstUmlShape().equals(shape)) // remove this if if you want all the flows
         flowDTOs.add(new FlowDTO(flow.getFirstUmlShape().getId(), firstShapeType, flow.getSecondUmlShape().getId(), secondShapeType, type));
     }
     return flowDTOs;
