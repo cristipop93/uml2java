@@ -61,7 +61,7 @@ public class ToolbarView {
     toolbar.add(new Image(MainController.ICONS.zoomOut()),
         new BoxLayoutContainer.BoxLayoutData(new Margins(0, 5, 0, 0)));
     toolbar.add(zoomSlider, new BoxLayoutContainer.BoxLayoutData(new Margins(0, 0, 0, 0)));
-    toolbar.add(new Image(MainController.ICONS.zoomIn()), new BoxLayoutContainer.BoxLayoutData(new Margins(0, 100, 3, 5)));
+    toolbar.add(new Image(MainController.ICONS.zoomIn()), new BoxLayoutContainer.BoxLayoutData(new Margins(0, 30, 3, 5)));
     logoutButton = new TextButton("Log out", MainController.ICONS.logout());
     toolbar.add(logoutButton, new BoxLayoutContainer.BoxLayoutData(new Margins(0, 0, 0, 0)));
 

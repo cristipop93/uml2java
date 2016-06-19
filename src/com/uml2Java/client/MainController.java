@@ -95,7 +95,7 @@ public class MainController {
     toolbarView.getLogoutButton().addSelectHandler(new SelectEvent.SelectHandler() {
       @Override
       public void onSelect(SelectEvent event) {
-        //TODO
+        Window.Location.reload();
       }
     });
 
