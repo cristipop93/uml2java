@@ -18,8 +18,9 @@ import com.uml2Java.client.service.UIEditorService;
 import com.uml2Java.client.service.UIEditorServiceAsync;
 import com.uml2Java.client.siteView.SiteViewController;
 import com.uml2Java.client.toolbar.ToolbarView;
-import com.uml2Java.shared.UserData;
+import com.uml2Java.shared.*;
 
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -102,6 +103,22 @@ public class MainController {
     toolbarView.getPlayButton().addSelectHandler(new SelectEvent.SelectHandler() {
       @Override
       public void onSelect(SelectEvent event) {
+        final Map<Long, PageDTO> pagesDTO = SiteViewController.getInstance().getPagesDTO();
+        final Map<Long, ComponentDTO> componentsDTO = SiteViewController.getInstance().getComponentsDTO();
+        final Map<Long, ActionDTO> actionDTO = SiteViewController.getInstance().getActionDTO();
+        final Map<String, ClassDTO> classDtos = UmlController.getInstance().getClassDtos();
+        if (!validComponentDataTypes(componentsDTO)) {
+          new AlertMessageBox("Error", "All components must have valid data types assigned.").show();
+          return;
+        }
+        if (!validPages(pagesDTO)) {
+          new AlertMessageBox("Error", "All pages must have components assigned.").show();
+          return;
+        }
+        if (!validClasses(classDtos)) {
+          new AlertMessageBox("Error", "All classes must have at least two attributes.").show();
+          return;
+        }
         final Dialog dialog = new Dialog();
         dialog.setHeadingText("Info");
         dialog.setWidth(300);
@@ -118,25 +135,51 @@ public class MainController {
             } else {
               isAddMockData = false;
             }
-            service.generateCode(SiteViewController.getInstance().getPagesDTO(),
-                SiteViewController.getInstance().getComponentsDTO(), SiteViewController.getInstance().getActionDTO(),
-                UmlController.getInstance().getClassDtos(), isAddMockData, currentUser.getUserName(), new AsyncCallback<Void>() {
-                  @Override
-                  public void onFailure(Throwable caught) {
-                    new AlertMessageBox("Error", "Error while generating the code.").show();
-                  }
+            service
+                .generateCode(pagesDTO, componentsDTO, actionDTO, classDtos, isAddMockData, currentUser.getUserName(),
+                    new AsyncCallback<Void>() {
+                      @Override
+                      public void onFailure(Throwable caught) {
+                        new AlertMessageBox("Error", "Error while generating the code.").show();
+                      }
 
-                  @Override
-                  public void onSuccess(Void result) {
-                    String url = GWT.getModuleBaseURL() + "ZipDownloadService?user="+currentUser.getUserName();
-                    Window.open(url, "_self", "");
-                  }
-                });
+                      @Override
+                      public void onSuccess(Void result) {
+                        String url = GWT.getModuleBaseURL() + "ZipDownloadService?user=" + currentUser.getUserName();
+                        Window.open(url, "_self", "");
+                      }
+                    });
           }
         });
         dialog.show();
 
       }
     });
+  }
+
+  private boolean validPages(Map<Long, PageDTO> pagesDTO) {
+    for (Long id : pagesDTO.keySet()) {
+      if (pagesDTO.get(id).getComponentsId().isEmpty())
+        return false;
+    }
+    return true;
+  }
+
+  private boolean validComponentDataTypes(Map<Long, ComponentDTO> componentsDTO) {
+    for (Long id : componentsDTO.keySet()) {
+      if(componentsDTO.get(id).getDataTypes().getId() == -1) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private boolean validClasses(Map<String, ClassDTO> classDTOMap) {
+    for (String id : classDTOMap.keySet()) {
+      if (classDTOMap.get(id).getAttributes().size() < 2) {
+        return false;
+      }
+    }
+    return true;
   }
 }
