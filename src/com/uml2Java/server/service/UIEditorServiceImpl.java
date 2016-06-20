@@ -2,6 +2,7 @@ package com.uml2Java.server.service;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.uml2Java.client.service.UIEditorService;
+import com.uml2Java.client.siteView.siteUtils.Framework;
 import com.uml2Java.server.GenerateCode;
 import com.uml2Java.shared.*;
 import com.uml2Java.shared.exception.Uml2JavaException;
@@ -17,8 +18,8 @@ public class UIEditorServiceImpl extends RemoteServiceServlet implements UIEdito
 
   @Override
   public void generateCode(Map<Long, PageDTO> pageDTOMap, Map<Long, ComponentDTO> componentDTOMap,
-      Map<Long, ActionDTO> actionDTOMap, Map<String, ClassDTO> classDTOMap, boolean isAddMockData, String username) throws Uml2JavaException {
-    GenerateCode generator = new GenerateCode(pageDTOMap, componentDTOMap, actionDTOMap, classDTOMap, isAddMockData, username);
+      Map<Long, ActionDTO> actionDTOMap, Map<String, ClassDTO> classDTOMap, boolean isAddMockData, String username, Framework selectedFramework) throws Uml2JavaException {
+    GenerateCode generator = new GenerateCode(pageDTOMap, componentDTOMap, actionDTOMap, classDTOMap, isAddMockData, username, selectedFramework);
     generator.generate();
 
     Map<String, String> filesMap = generator.getFinalResult();

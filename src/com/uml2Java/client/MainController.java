@@ -8,8 +8,11 @@ import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer;
+import com.sencha.gxt.widget.core.client.event.CheckChangeEvent;
 import com.sencha.gxt.widget.core.client.event.HideEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.menu.CheckMenuItem;
+import com.sencha.gxt.widget.core.client.tree.Tree;
 import com.uml2Java.client.domainModel.UmlController;
 import com.uml2Java.client.icons.Icons;
 import com.uml2Java.client.login.LoginController;
@@ -17,6 +20,7 @@ import com.uml2Java.client.login.LoginView;
 import com.uml2Java.client.service.UIEditorService;
 import com.uml2Java.client.service.UIEditorServiceAsync;
 import com.uml2Java.client.siteView.SiteViewController;
+import com.uml2Java.client.siteView.siteUtils.Framework;
 import com.uml2Java.client.toolbar.ToolbarView;
 import com.uml2Java.shared.*;
 
@@ -63,12 +67,14 @@ public class MainController {
 
   private void initWindow() {
     toolbarView = new ToolbarView();
+    toolbarView.getBasic().setChecked(true);  // enable the basic framework
     buttonsContainer.add(toolbarView.asWidget());
 
     UmlController.getInstance().setViews(mainContainer, buttonsContainer, toolbarView);
     UmlController.getInstance().initMainWindow();
 
     SiteViewController.getInstance().setViews(mainContainer, buttonsContainer, toolbarView);
+    SiteViewController.getInstance().setSelectedFramework(Framework.BASIC);
     SiteViewController.getInstance().initMainWindow();
 
     mainContainer.setCenterWidget(UmlController.getView().asWidget());
@@ -100,9 +106,40 @@ public class MainController {
       }
     });
 
+    toolbarView.getBasic().addCheckChangeHandler(new CheckChangeEvent.CheckChangeHandler<CheckMenuItem>() {
+      @Override
+      public void onCheckChange(CheckChangeEvent<CheckMenuItem> event) {
+        if (event.getChecked() == Tree.CheckState.CHECKED) {
+
+          SiteViewController.getInstance().setSelectedFramework(Framework.BASIC);
+          toolbarView.getIonic().setChecked(false);
+        }
+      }
+    });
+
+    toolbarView.getIonic().addCheckChangeHandler(new CheckChangeEvent.CheckChangeHandler<CheckMenuItem>() {
+      @Override
+      public void onCheckChange(CheckChangeEvent<CheckMenuItem> event) {
+        if (event.getChecked() == Tree.CheckState.CHECKED) {
+          if (!SiteViewController.getInstance().validOneComponentPerPage_Ionic2()) {
+            new AlertMessageBox("Info", "For Ionic 2, all pages must contain only one component.").show();
+            toolbarView.getIonic().setChecked(false);
+            return;
+          }
+
+          SiteViewController.getInstance().setSelectedFramework(Framework.IONIC2);
+          toolbarView.getBasic().setChecked(false);
+        }
+      }
+    });
+
     toolbarView.getPlayButton().addSelectHandler(new SelectEvent.SelectHandler() {
       @Override
       public void onSelect(SelectEvent event) {
+        if (SiteViewController.getInstance().getSelectedFramework() == Framework.BASIC) {
+          new AlertMessageBox("Info", "Basic option is meant only for designing the model, and not generating code.").show();
+          return;
+        }
         final Map<Long, PageDTO> pagesDTO = SiteViewController.getInstance().getPagesDTO();
         final Map<Long, ComponentDTO> componentsDTO = SiteViewController.getInstance().getComponentsDTO();
         final Map<Long, ActionDTO> actionDTO = SiteViewController.getInstance().getActionDTO();
@@ -130,13 +167,9 @@ public class MainController {
           @Override
           public void onHide(HideEvent event) {
             boolean isAddMockData = false;
-            if (dialog.getHideButton() == dialog.getButtonById(Dialog.PredefinedButton.YES.name())) {
-              isAddMockData = true;
-            } else {
-              isAddMockData = false;
-            }
+            isAddMockData = dialog.getHideButton() == dialog.getButtonById(Dialog.PredefinedButton.YES.name());
             service
-                .generateCode(pagesDTO, componentsDTO, actionDTO, classDtos, isAddMockData, currentUser.getUserName(),
+                .generateCode(pagesDTO, componentsDTO, actionDTO, classDtos, isAddMockData, currentUser.getUserName(), SiteViewController.getInstance().getSelectedFramework(),
                     new AsyncCallback<Void>() {
                       @Override
                       public void onFailure(Throwable caught) {

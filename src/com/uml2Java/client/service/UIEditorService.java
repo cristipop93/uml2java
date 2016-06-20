@@ -3,6 +3,7 @@ package com.uml2Java.client.service;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.uml2Java.client.siteView.siteUtils.Framework;
 import com.uml2Java.shared.ActionDTO;
 import com.uml2Java.shared.ClassDTO;
 import com.uml2Java.shared.ComponentDTO;
@@ -29,5 +30,5 @@ public interface UIEditorService extends RemoteService {
   }
 
   void generateCode(Map<Long, PageDTO> pageDTOMap, Map<Long, ComponentDTO> componentDTOMap,
-      Map<Long, ActionDTO> actionDTOMap, Map<String, ClassDTO> classDTOMap, boolean isAddMockData, String username) throws Uml2JavaException;
+      Map<Long, ActionDTO> actionDTOMap, Map<String, ClassDTO> classDTOMap, boolean isAddMockData, String username, Framework selectedFramework) throws Uml2JavaException;
 }

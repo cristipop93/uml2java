@@ -3,14 +3,19 @@ package com.uml2Java.client.toolbar;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.cell.core.client.ButtonCell;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.core.client.util.ToggleGroup;
 import com.sencha.gxt.widget.core.client.Slider;
+import com.sencha.gxt.widget.core.client.button.SplitButton;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.button.ToggleButton;
 import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer;
+import com.sencha.gxt.widget.core.client.menu.CheckMenuItem;
+import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.uml2Java.client.MainController;
+import com.uml2Java.client.siteView.siteUtils.Framework;
 
 /**
  * Created by Cristi on 2/13/2016.
@@ -21,7 +26,9 @@ public class ToolbarView {
   private TextButton logoutButton;
   private ToggleButton domainButton;
   private ToggleButton siteButton;
-  private TextButton playButton;
+  private SplitButton playButton;
+  private CheckMenuItem ionic;
+  private CheckMenuItem basic;
 
   public ToolbarView() {
     initGUI();
@@ -37,7 +44,7 @@ public class ToolbarView {
 
     domainButton = new ToggleButton("Domain Model");
     siteButton = new ToggleButton("Site View");
-    playButton = new TextButton("Play");
+    playButton = new SplitButton("Play");
     playButton.setIcon(MainController.ICONS.play());
     domainButton.setAllowDepress(false);
     siteButton.setAllowDepress(false);
@@ -65,6 +72,13 @@ public class ToolbarView {
     logoutButton = new TextButton("Log out", MainController.ICONS.logout());
     toolbar.add(logoutButton, new BoxLayoutContainer.BoxLayoutData(new Margins(0, 0, 0, 0)));
 
+    Menu menu = new Menu();
+    basic = new CheckMenuItem(Framework.BASIC.name());
+    ionic = new CheckMenuItem(Framework.IONIC2.name());
+    menu.add(basic);
+    menu.add(ionic);
+    playButton.setMenu(menu);
+    playButton.setArrowAlign(ButtonCell.ButtonArrowAlign.RIGHT);
   }
 
   public Widget asWidget(){
@@ -89,5 +103,13 @@ public class ToolbarView {
 
   public TextButton getPlayButton() {
     return playButton;
+  }
+
+  public CheckMenuItem getIonic() {
+    return ionic;
+  }
+
+  public CheckMenuItem getBasic() {
+    return basic;
   }
 }

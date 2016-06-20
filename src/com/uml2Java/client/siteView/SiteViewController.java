@@ -20,6 +20,7 @@ import com.sencha.gxt.widget.core.client.event.BeforeHideEvent;
 import com.uml2Java.client.siteView.edit_shapes.SiteViewPopup;
 import com.uml2Java.client.siteView.edit_shapes.SiteViewPopupController;
 import com.uml2Java.client.siteView.shapes.*;
+import com.uml2Java.client.siteView.siteUtils.Framework;
 import com.uml2Java.client.siteView.siteUtils.SiteMouseState;
 import com.uml2Java.client.siteView.utilitiesPanels.leftPanel.LeftSitePanelController;
 import com.uml2Java.client.siteView.utilitiesPanels.leftPanel.LeftSiteView;
@@ -61,6 +62,7 @@ public class SiteViewController {
   private int firstFlowClickX;
   private int firstFlowClickY;
   private boolean previewFlowAdded;
+  private Framework selectedFramework = null;
 
   public static SiteViewController getInstance() {
     if (INSTANCE == null) {
@@ -167,16 +169,14 @@ public class SiteViewController {
             break;
           }
         }
-
-        if (siteMouseState == SiteMouseState.SIMPLE_LIST) {
-          if (hoveredPage != null)
-            addSimpleList(event, hoveredPage);
-        } else if (siteMouseState == SiteMouseState.FORM) {
-          if (hoveredPage != null)
-            addForm(event, hoveredPage);
-        } else if (siteMouseState == SiteMouseState.DETAILS) {
-          if (hoveredPage != null)
-            addDetails(event, hoveredPage);
+        if (hoveredPage != null && ((selectedFramework == Framework.IONIC2 && (hoveredPage.getComponents() == null || hoveredPage.getComponents().size() == 0)) || selectedFramework == Framework.BASIC)) {  // remove this if you want more than one component per page
+          if (siteMouseState == SiteMouseState.SIMPLE_LIST) {
+              addSimpleList(event, hoveredPage);
+          } else if (siteMouseState == SiteMouseState.FORM) {
+              addForm(event, hoveredPage);
+          } else if (siteMouseState == SiteMouseState.DETAILS) {
+              addDetails(event, hoveredPage);
+          }
         }
       }
     };
@@ -536,6 +536,17 @@ public class SiteViewController {
     return flowDTOs;
   }
 
+  public boolean validOneComponentPerPage_Ionic2 () {
+    for(SiteShape siteShape : siteShapes) {
+      if (siteShape instanceof PageShape) {
+        PageShape page = (PageShape) siteShape;
+        if (page.getComponents() != null && page.getComponents().size() > 1)
+          return false;
+      }
+    }
+    return true;
+  }
+
   /**
    * returns PAGE, COMPONENT, ACTION
    */
@@ -546,5 +557,13 @@ public class SiteViewController {
       return ShapeType.COMPONENT;
     else
       return ShapeType.ACTION;
+  }
+
+  public Framework getSelectedFramework() {
+    return selectedFramework;
+  }
+
+  public void setSelectedFramework(Framework selectedFramework) {
+    this.selectedFramework = selectedFramework;
   }
 }

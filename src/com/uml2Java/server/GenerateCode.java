@@ -1,5 +1,6 @@
 package com.uml2Java.server;
 
+import com.uml2Java.client.siteView.siteUtils.Framework;
 import com.uml2Java.shared.*;
 
 import java.io.File;
@@ -22,12 +23,14 @@ public class GenerateCode {
   private Map<String, ClassDTO> classDTOMap;
   private boolean isAddMockData;
   private String username;
+  private final Framework selectedFramework;
   public static final String SOURCE_FOLDER = "C:\\Users\\Cristi\\";
 
   private Map<String, String> finalResult;
 
   public GenerateCode(Map<Long, PageDTO> pageDTOMap, Map<Long, ComponentDTO> componentDTOMap,
-      Map<Long, ActionDTO> actionDTOMap, Map<String, ClassDTO> classDTOMap, boolean isAddMockData, String username) {
+      Map<Long, ActionDTO> actionDTOMap, Map<String, ClassDTO> classDTOMap, boolean isAddMockData, String username,
+      Framework selectedFramework) {
     this.pageDTOMap = pageDTOMap;
     this.componentDTOMap = componentDTOMap;
     this.actionDTOMap = actionDTOMap;
@@ -35,10 +38,11 @@ public class GenerateCode {
     this.finalResult = new HashMap<String, String>();
     this.isAddMockData = isAddMockData;
     this.username = username;
+    this.selectedFramework = selectedFramework;
   }
 
   public void generate() {
-    for (String key: classDTOMap.keySet()) {
+    for (String key : classDTOMap.keySet()) {
       ClassDTO classDTO = classDTOMap.get(key);
       String className = classDTO.getTitle() + ".ts";
       String classContent = GenerateIonic2Utils.classTS(classDTO.getTitle(), classDTO.getAttributes());
@@ -75,10 +79,14 @@ public class GenerateCode {
 
   private void generateDetails(PageDTO page, ComponentDTO component, List<Attribute> attributeList) {
     String tsName = page.getTitle() + ".ts";
-    String tsContent = GenerateIonic2Utils.detailsTS(page.getTitle(), component.getDataTypes().getDisplayName());
+    String tsContent = "";
+    if (selectedFramework == Framework.IONIC2)
+      tsContent = GenerateIonic2Utils.detailsTS(page.getTitle(), component.getDataTypes().getDisplayName());
 
     String htmlName = page.getTitle() + ".html";
-    String htmlContent = GenerateIonic2Utils
+    String htmlContent = "";
+    if (selectedFramework == Framework.IONIC2)
+      htmlContent = GenerateIonic2Utils
         .detailsHTML(page.getTitle(), component.getDataTypes().getDisplayName(), attributeList);
 
     finalResult.put(tsName, tsContent);
@@ -124,12 +132,17 @@ public class GenerateCode {
     //pageFlow ...
 
     String tsName = page.getTitle() + ".ts";
-    String tsContent = GenerateIonic2Utils
-        .formTS(page.getTitle(), typeName, attributeList, isList, listName, isAction, actionName, isOkAction,
-            okActionName, isDetails, detailsName, page.getId());
+    String tsContent = "";
+    if (selectedFramework == Framework.IONIC2)
+      tsContent = GenerateIonic2Utils
+          .formTS(page.getTitle(), typeName, attributeList, isList, listName, isAction, actionName, isOkAction,
+              okActionName, isDetails, detailsName, page.getId());
 
     String htmlName = page.getTitle() + ".html";
-    String htmlContent = GenerateIonic2Utils.formHTML(page.getTitle(), typeName, attributeList, isAction, actionName, page.getId());
+    String htmlContent = "";
+    if (selectedFramework == Framework.IONIC2)
+      htmlContent = GenerateIonic2Utils
+        .formHTML(page.getTitle(), typeName, attributeList, isAction, actionName, page.getId());
 
     finalResult.put(tsName, tsContent);
     finalResult.put(htmlName, htmlContent);
@@ -188,9 +201,11 @@ public class GenerateCode {
     }
 
     String tsFileName = page.getTitle() + ".ts";
-    String tsContent = GenerateIonic2Utils
-        .listTS(isDetails, isAdd, isAction, isOkAction, isList, isForm, detailsName, addFormName, page.getTitle(),
-            actionName, otherListName, formName, isOkActionName, typeName, isAddMockData, attributeList);
+    String tsContent = "";
+    if (selectedFramework == Framework.IONIC2)
+      tsContent = GenerateIonic2Utils
+          .listTS(isDetails, isAdd, isAction, isOkAction, isList, isForm, detailsName, addFormName, page.getTitle(),
+              actionName, otherListName, formName, isOkActionName, typeName, isAddMockData, attributeList);
 
     String fieldToDisplay = "";
     if (attributeList.size() > 2) {
@@ -200,7 +215,9 @@ public class GenerateCode {
     }
 
     String htmlFileName = page.getTitle() + ".html";
-    String htmlContent = GenerateIonic2Utils.listHTML(page.getTitle(), fieldToDisplay, actionName, isAdd, isAction);
+    String htmlContent = "";
+    if (selectedFramework == Framework.IONIC2)
+      htmlContent = GenerateIonic2Utils.listHTML(page.getTitle(), fieldToDisplay, actionName, isAdd, isAction);
 
     finalResult.put(tsFileName, tsContent);
     finalResult.put(htmlFileName, htmlContent);
@@ -245,7 +262,6 @@ public class GenerateCode {
       ex.printStackTrace();
     }
   }
-
 
   public Map<String, String> getFinalResult() {
     return finalResult;
