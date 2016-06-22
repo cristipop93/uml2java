@@ -208,7 +208,7 @@ public class GenerateCode {
               actionName, otherListName, formName, isOkActionName, typeName, isAddMockData, attributeList);
 
     String fieldToDisplay = "";
-    if (attributeList.size() > 2) {
+    if (attributeList.size() >= 2) {
       fieldToDisplay = attributeList.get(1).getDisplayName();
     } else if (attributeList.size() == 1) {
       fieldToDisplay = attributeList.get(0).getDisplayName();

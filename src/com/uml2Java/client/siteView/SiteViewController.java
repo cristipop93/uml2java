@@ -107,7 +107,7 @@ public class SiteViewController {
     siteShapes.add(page2);
     siteShapes.add(list1);
     siteShapes.add(action1);
-    MouseDownHandler mouseDownHandler = new MouseDownHandler() {
+    final MouseDownHandler mouseDownHandler = new MouseDownHandler() {
       @Override
       public void onMouseDown(MouseDownEvent event) {
         if (siteMouseState == SiteMouseState.SELECT) {
@@ -145,16 +145,23 @@ public class SiteViewController {
           addAction(event);
           return;
         }
-        if (siteMouseState == SiteMouseState.FLOW || siteMouseState == SiteMouseState.OK_FLOW || siteMouseState == SiteMouseState.KO_FLOW) {
+        if (siteMouseState == SiteMouseState.FLOW) {
           SiteShape shape = getClickedShapeDown(event);
-          if (shape != null) {
-            if (!firstShapeSelected) {
-              firstShape = shape;
-              firstShapeSelected = true;
-              firstFlowClickX = event.getRelativeX(view.getDrawComponent().getElement());
-              firstFlowClickY = event.getRelativeY(view.getDrawComponent().getElement());
-              previewFlow = new PathSprite();
-            }
+          if (selectedFramework == Framework.IONIC2) {
+            if (shape instanceof PageShape || shape instanceof ViewComponentShape)
+              mouseDownFlowHandler(shape, event);
+          } else {
+            mouseDownFlowHandler(shape, event);
+          }
+        }
+
+        if (siteMouseState == SiteMouseState.OK_FLOW || siteMouseState == SiteMouseState.KO_FLOW) {
+          SiteShape shape = getClickedShapeDown(event);
+          if (selectedFramework == Framework.IONIC2) {
+            if (shape instanceof ActionShape)
+              mouseDownFlowHandler(shape, event);
+          } else {
+            mouseDownFlowHandler(shape, event);
           }
         }
 
@@ -275,17 +282,42 @@ public class SiteViewController {
               }
               if (!found) {
                 if (siteMouseState == SiteMouseState.FLOW) {
-                  Flow flow = new NavigationFlow(firstShape, secondShape);
-                  firstShape.addFlow(flow);
-                  secondShape.addFlow(flow);
+                  if (selectedFramework == Framework.IONIC2) {
+                    if (secondShape instanceof PageShape || secondShape instanceof ActionShape) {
+                      Flow flow = new NavigationFlow(firstShape, secondShape);
+                      firstShape.addFlow(flow);
+                      secondShape.addFlow(flow);
+                    }
+                  } else {
+                    Flow flow = new NavigationFlow(firstShape, secondShape);
+                    firstShape.addFlow(flow);
+                    secondShape.addFlow(flow);
+                  }
                 } else if (siteMouseState == SiteMouseState.OK_FLOW) {
-                  Flow flow = new OkFlow(firstShape, secondShape);
-                  firstShape.addFlow(flow);
-                  secondShape.addFlow(flow);
+                  if (selectedFramework == Framework.IONIC2) {
+                    if (secondShape instanceof PageShape) {
+                      Flow flow = new OkFlow(firstShape, secondShape);
+                      firstShape.addFlow(flow);
+                      secondShape.addFlow(flow);
+                    }
+                  } else {
+                    Flow flow = new OkFlow(firstShape, secondShape);
+                    firstShape.addFlow(flow);
+                    secondShape.addFlow(flow);
+                  }
                 } else if (siteMouseState == SiteMouseState.KO_FLOW) {
-                  Flow flow = new KoFlow(firstShape, secondShape);
-                  firstShape.addFlow(flow);
-                  secondShape.addFlow(flow);
+                  if (selectedFramework == Framework.IONIC2) {
+                    if (secondShape instanceof PageShape) {
+                      Flow flow = new KoFlow(firstShape, secondShape);
+                      firstShape.addFlow(flow);
+                      secondShape.addFlow(flow);
+                    }
+                  } else {
+                    Flow flow = new KoFlow(firstShape, secondShape);
+                    firstShape.addFlow(flow);
+                    secondShape.addFlow(flow);
+                  }
+
                 }
               }
             }
@@ -361,6 +393,19 @@ public class SiteViewController {
       }
     });
 
+  }
+
+  private void mouseDownFlowHandler(SiteShape shape, MouseDownEvent event) {
+
+    if (shape != null) {
+      if (!firstShapeSelected) {
+        firstShape = shape;
+        firstShapeSelected = true;
+        firstFlowClickX = event.getRelativeX(view.getDrawComponent().getElement());
+        firstFlowClickY = event.getRelativeY(view.getDrawComponent().getElement());
+        previewFlow = new PathSprite();
+      }
+    }
   }
 
   private SiteShape getClickedShapeDown(MouseDownEvent event) {
