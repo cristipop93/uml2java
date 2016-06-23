@@ -24,6 +24,7 @@ import com.uml2Java.client.siteView.siteUtils.Framework;
 import com.uml2Java.client.toolbar.ToolbarView;
 import com.uml2Java.shared.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -137,7 +138,8 @@ public class MainController {
       @Override
       public void onSelect(SelectEvent event) {
         if (SiteViewController.getInstance().getSelectedFramework() == Framework.BASIC) {
-          new AlertMessageBox("Info", "Basic option is meant only for designing the model, and not generating code.").show();
+          new AlertMessageBox("Info", "Basic option is meant only for designing the model, and not generating code.")
+              .show();
           return;
         }
         final Map<Long, PageDTO> pagesDTO = SiteViewController.getInstance().getPagesDTO();
@@ -156,6 +158,10 @@ public class MainController {
           new AlertMessageBox("Error", "All classes must have at least two attributes.").show();
           return;
         }
+        if (!validAttributes(classDtos)) {
+          new AlertMessageBox("Error", "Some attributes have invalid data types.").show();
+          return;
+        }
         final Dialog dialog = new Dialog();
         dialog.setHeadingText("Info");
         dialog.setWidth(300);
@@ -169,8 +175,8 @@ public class MainController {
             boolean isAddMockData = false;
             isAddMockData = dialog.getHideButton() == dialog.getButtonById(Dialog.PredefinedButton.YES.name());
             service
-                .generateCode(pagesDTO, componentsDTO, actionDTO, classDtos, isAddMockData, currentUser.getUserName(), SiteViewController.getInstance().getSelectedFramework(),
-                    new AsyncCallback<Void>() {
+                .generateCode(pagesDTO, componentsDTO, actionDTO, classDtos, isAddMockData, currentUser.getUserName(),
+                    SiteViewController.getInstance().getSelectedFramework(), new AsyncCallback<Void>() {
                       @Override
                       public void onFailure(Throwable caught) {
                         new AlertMessageBox("Error", "Error while generating the code.").show();
@@ -211,6 +217,17 @@ public class MainController {
     for (String id : classDTOMap.keySet()) {
       if (classDTOMap.get(id).getAttributes().size() < 2) {
         return false;
+      }
+    }
+    return true;
+  }
+
+  private boolean validAttributes(Map<String, ClassDTO> classDTOMap) {
+    for (String id : classDTOMap.keySet()) {
+      List<Attribute> attributeList = classDTOMap.get(id).getAttributes();
+      for (Attribute attr : attributeList) {
+        if (attr.getDataType() != PrimitiveDataTypes.STRING && attr.getDataType() != PrimitiveDataTypes.INT)
+          return false;
       }
     }
     return true;
