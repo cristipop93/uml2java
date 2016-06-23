@@ -104,6 +104,12 @@ public abstract class SiteShape {
     this.flows.clear();
   }
 
+  public void removeAFlow(Flow flow) {
+    flow.remove(drawComponent);
+    flow.getFirstUmlShape().removeFlow(flow);
+    flow.getSecondUmlShape().removeFlow(flow);
+  }
+
   private void removeFlow(Flow flow) {
     this.flows.remove(flow);
   }

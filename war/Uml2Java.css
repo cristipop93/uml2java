@@ -30,3 +30,12 @@ body, td, a, div, .p {
     font-size: 70%;
     /*font-weight: bold;*/
 }
+
+.myLabel2 {
+    font-size: 75%;
+}
+
+.boldLabel {
+    font-weight: bold;
+
+}
