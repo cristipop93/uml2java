@@ -113,10 +113,7 @@ public class RightPanelController {
     view.getRemoveButton().addSelectHandler(new SelectEvent.SelectHandler() {
       @Override
       public void onSelect(SelectEvent event) {
-        UmlController.getInstance().getUmlShapes().remove(umlShape);
-        umlShape.remove();
-        umlShape.removeLinks();
-        onCancelButton();
+        removeShape();
       }
     });
     view.getAddAttribute().addSelectHandler(new SelectEvent.SelectHandler() {
@@ -169,6 +166,15 @@ public class RightPanelController {
         }
       }
     });
+  }
+
+  public void removeShape() {
+    if (umlShape == null)
+      return;
+    UmlController.getInstance().getUmlShapes().remove(umlShape);
+    umlShape.remove();
+    umlShape.removeLinks();
+    onCancelButton();
   }
 
   private void createEditMethodWindow(Method method) {

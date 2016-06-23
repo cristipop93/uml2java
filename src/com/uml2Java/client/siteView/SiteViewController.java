@@ -362,20 +362,6 @@ public class SiteViewController {
       }
     };
 
-    KeyDownHandler keyDownHandler = new KeyDownHandler() {
-      @Override
-      public void onKeyDown(KeyDownEvent event) {
-        if (event.getNativeKeyCode() == KeyCodes.KEY_DELETE) {
-          if (selectedShape != null && !(selectedShape instanceof PageShape && selectedShape.getId() == 1)) {
-            log.info("delete " + (selectedShape != null ? selectedShape.getTitle() : "null"));
-            selectedShape.removeAllFlows();
-            selectedShape.remove();
-            setSelectedShape(null);
-          }
-        }
-      }
-    };
-    RootPanel.get().addDomHandler(keyDownHandler, KeyDownEvent.getType());
     view.getDrawComponent().addDomHandler(doubleClickHandler, DoubleClickEvent.getType());
 
     view.getDrawComponent().addDomHandler(mouseDownHandler, MouseDownEvent.getType());
@@ -393,6 +379,15 @@ public class SiteViewController {
       }
     });
 
+  }
+
+  public void onDelete() {
+    if (selectedShape != null && !(selectedShape instanceof PageShape && selectedShape.getId() == 1)) {
+      log.info("delete " + (selectedShape != null ? selectedShape.getTitle() : "null"));
+      selectedShape.removeAllFlows();
+      selectedShape.remove();
+      setSelectedShape(null);
+    }
   }
 
   private void mouseDownFlowHandler(SiteShape shape, MouseDownEvent event) {

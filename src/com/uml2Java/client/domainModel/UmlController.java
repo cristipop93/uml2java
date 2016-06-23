@@ -351,4 +351,8 @@ public class UmlController {
     }
     return classDTOMap;
   }
+
+  public RightPanelController getRightPanelController() {
+    return rightPanelController;
+  }
 }

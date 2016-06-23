@@ -1,9 +1,13 @@
 package com.uml2Java.client;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
@@ -40,6 +44,7 @@ public class MainController {
   private ToolbarView toolbarView;
   private UIEditorServiceAsync service = GWT.create(UIEditorService.class);
   private Logger logger = Logger.getLogger(MainController.class.getName());
+  private boolean isDomain = true;
 
   public static MainController getInstance() {
     if (INSTANCE == null)
@@ -89,6 +94,7 @@ public class MainController {
         mainContainer.setCenterWidget(UmlController.getView().asWidget());
         mainContainer.forceLayout();
         SiteViewController.getInstance().setSelectedShape(null);
+        isDomain = true;
       }
     });
 
@@ -97,6 +103,7 @@ public class MainController {
       public void onSelect(SelectEvent event) {
         mainContainer.setCenterWidget(SiteViewController.getView().asWidget());
         mainContainer.forceLayout();
+        isDomain = false;
       }
     });
 
@@ -194,6 +201,21 @@ public class MainController {
 
       }
     });
+
+    KeyDownHandler keyDownHandler = new KeyDownHandler() {
+      @Override
+      public void onKeyDown(KeyDownEvent event) {
+        if (event.getNativeKeyCode() == KeyCodes.KEY_DELETE) {
+          if (isDomain)
+            UmlController.getInstance().getRightPanelController().removeShape();
+          else {
+            SiteViewController.getInstance().onDelete();
+          }
+        }
+      }
+    };
+
+    RootPanel.get().addDomHandler(keyDownHandler, KeyDownEvent.getType());
   }
 
   private boolean validPages(Map<Long, PageDTO> pagesDTO) {
