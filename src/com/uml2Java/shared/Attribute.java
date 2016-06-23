@@ -10,8 +10,8 @@ public class Attribute implements IsSerializable {
   private String displayName;
   private DataTypes dataType;
   private AccessType accessType;
-  private boolean isStatic;
-  private boolean isFinal;
+  private boolean isPassword;
+  private boolean isShowInList;
 
   public Attribute(String displayName, DataTypes dataType, AccessType accessType) {
     this.displayName = displayName;
@@ -81,20 +81,20 @@ public class Attribute implements IsSerializable {
     return displayName + ": " + dataType.getDisplayName();
   }
 
-  public boolean isStatic() {
-    return isStatic;
+  public boolean isPassword() {
+    return isPassword;
   }
 
   public void setIsStatic(boolean isStatic) {
-    this.isStatic = isStatic;
+    this.isPassword = isStatic;
   }
 
-  public boolean isFinal() {
-    return isFinal;
+  public boolean isShowInList() {
+    return isShowInList;
   }
 
   public void setIsFinal(boolean isFinal) {
-    this.isFinal = isFinal;
+    this.isShowInList = isFinal;
   }
 
   @Override
@@ -106,9 +106,9 @@ public class Attribute implements IsSerializable {
 
     Attribute attribute = (Attribute) o;
 
-    if (isStatic != attribute.isStatic)
+    if (isPassword != attribute.isPassword)
       return false;
-    if (isFinal != attribute.isFinal)
+    if (isShowInList != attribute.isShowInList)
       return false;
     if (displayName != null ? !displayName.equals(attribute.displayName) : attribute.displayName != null)
       return false;
@@ -123,8 +123,8 @@ public class Attribute implements IsSerializable {
     int result = displayName != null ? displayName.hashCode() : 0;
     result = 31 * result + (dataType != null ? dataType.hashCode() : 0);
     result = 31 * result + (accessType != null ? accessType.hashCode() : 0);
-    result = 31 * result + (isStatic ? 1 : 0);
-    result = 31 * result + (isFinal ? 1 : 0);
+    result = 31 * result + (isPassword ? 1 : 0);
+    result = 31 * result + (isShowInList ? 1 : 0);
     return result;
   }
 }

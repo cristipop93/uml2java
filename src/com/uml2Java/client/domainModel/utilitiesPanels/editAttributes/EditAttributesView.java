@@ -104,9 +104,9 @@ public class EditAttributesView implements EditAttributesController.IEditAttribu
     HBoxLayoutContainer hBoxLayoutContainer = new HBoxLayoutContainer(HBoxLayoutContainer.HBoxLayoutAlign.MIDDLE);
     isStaticCB = new CheckBox();
     isFinalCB = new CheckBox();
-    isStaticCB.setBoxLabel("Static");
+    isStaticCB.setBoxLabel("Password");
     hBoxLayoutContainer.add(isStaticCB);
-    isFinalCB.setBoxLabel("Final");
+    isFinalCB.setBoxLabel("Show in List");
     hBoxLayoutContainer.add(isFinalCB);
     hBoxLayoutContainer.setPack(BoxLayoutContainer.BoxLayoutPack.END);
     verticalLayoutContainer.add(hBoxLayoutContainer, new VerticalLayoutContainer.VerticalLayoutData(1, -1));

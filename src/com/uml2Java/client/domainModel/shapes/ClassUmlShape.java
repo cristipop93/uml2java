@@ -119,12 +119,12 @@ public class ClassUmlShape extends UmlShape {
       attributeText.setFontSize(12);
       attributeText.setX(0);
       attributeText.setY(0);
-      if(attribute.isFinal()) {
+      if(attribute.isShowInList()) {
         attributeText.setFill(RGB.PURPLE);
       } else {
         attributeText.setFill(RGB.BLACK);
       }
-      if(attribute.isStatic()) {
+      if(attribute.isPassword()) {
         attributeText.setFontStyle(Style.FontStyle.ITALIC);
       }
       attributeTextSprite.add(attributeText);

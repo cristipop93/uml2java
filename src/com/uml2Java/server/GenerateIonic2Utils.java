@@ -11,21 +11,34 @@ import java.util.List;
 public class GenerateIonic2Utils {
   private static final int MOCKS_NO= 10;
 
-  public static String listHTML(String title, String fieldToDisplay, String actionName, boolean isAdd,
+  public static String listHTML(String title, List<Attribute> fields, String actionName, boolean isAdd,
       boolean isAction) {
     String str = String.format(
         "<ion-navbar *navbar>\n" + "    <ion-title>\n" + "        %s\n" + "    </ion-title>\n" + "\n"
             + "</ion-navbar>\n" + "\n" + "<ion-content class=\"home\">\n" + "    <ion-row>\n" + "        <ion-col>\n"
             + "            <ion-list>\n"
             + "                <ion-item *ngFor = \"#myData of data\" (click)=\"%s(myData)\">\n"
-            + "                    <h2>{{myData.%s}}</h2>\n" + "                </ion-item>\n"
+            + "                    <h2>%s</h2>\n" + "                </ion-item>\n"
             + "            </ion-list>\n" + "        </ion-col>\n" + "    </ion-row>\n" + "</ion-content>", title,
-        (isAction ? actionName : "goToDetails"), fieldToDisplay);
+        (isAction ? actionName : "goToDetails"), getFieldsToDisplay(fields));
     if (isAdd) {
       str += "<button fab fab-bottom fab-right style=\"z-index: 999; margin-right: 10px;\" (click)=\"addData()\">\n"
           + "    <ion-icon name=\"add\"></ion-icon>\n" + "</button>";
     }
     return str;
+  }
+
+  private static String getFieldsToDisplay(List<Attribute> fields) {
+    String result = "";
+    for (Attribute attribute : fields) {
+      if (attribute.isShowInList()) {
+        result += "{{myData." + attribute.getDisplayName() + "}} ";
+      }
+    }
+    if (result.isEmpty()) {
+      result +=  "{{myData." + fields.get(0).getDisplayName() + "}} ";
+    }
+    return result;
   }
 
   public static String listTS(boolean isDetails, boolean isAdd, boolean isAction, boolean isActionOK, boolean isList,
@@ -100,8 +113,8 @@ public class GenerateIonic2Utils {
 
     for (Attribute attribute : attributes) {
       result += String.format("<ion-item>\n" + "            <ion-label floating>%s</ion-label>\n"
-          + "            <ion-input type=\"text\" id = \"%s\" name = \"%s\" %s></ion-input>\n"
-          + "        </ion-item> \n", attribute.getDisplayName(), attribute.getDisplayName(),
+          + "            <ion-input type=\"%s\" id = \"%s\" name = \"%s\" %s></ion-input>\n"
+          + "        </ion-item> \n", attribute.getDisplayName(), (attribute.isPassword() ? "password" : "text"), attribute.getDisplayName(),
           attribute.getDisplayName(), (id != 1l ? "[(ngModel)]=\"data." + attribute.getDisplayName() + "\"" : ""));
     }
     result += String.format("<ion-buttons start>\n" + "            <button (click) = \"%s()\">\n"

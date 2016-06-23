@@ -67,8 +67,8 @@ public class EditAttributesController {
       view.getAccessTypeComboBox().setValue(selectedAttribute.getAccessType());
     }
     view.getDataTypesComboBox().setValue(selectedAttribute.getDataType());
-    view.getIsStaticCheckBox().setValue(selectedAttribute.isStatic());
-    view.getIsFinalCheckBox().setValue(selectedAttribute.isFinal());
+    view.getIsStaticCheckBox().setValue(selectedAttribute.isPassword());
+    view.getIsFinalCheckBox().setValue(selectedAttribute.isShowInList());
   }
 
   private void load() {
@@ -106,8 +106,8 @@ public class EditAttributesController {
                 view.getDataTypesComboBox().getValue(), view.getAccessTypeComboBox().getValue());
             item.setIsFinal(view.getIsFinalCheckBox().getValue());
             item.setIsStatic(view.getIsStaticCheckBox().getValue());
-            if(item.isFinal() && !isParameter) {
-              item.setDisplayName(item.getDisplayName().toUpperCase());
+            if(item.isShowInList() && !isParameter) {
+              item.setDisplayName(item.getDisplayName());
             }
             attributeGrid.getStore().add(item);
           }
@@ -117,8 +117,8 @@ public class EditAttributesController {
             selectedAttribute.setAccessType(view.getAccessTypeComboBox().getValue());
             selectedAttribute.setIsFinal(view.getIsFinalCheckBox().getValue());
             selectedAttribute.setIsStatic(view.getIsStaticCheckBox().getValue());
-            if(selectedAttribute.isFinal() && !isParameter) {
-              selectedAttribute.setDisplayName(selectedAttribute.getDisplayName().toUpperCase());
+            if(selectedAttribute.isShowInList() && !isParameter) {
+              selectedAttribute.setDisplayName(selectedAttribute.getDisplayName());
             }
           }
           attributeGrid.getView().refresh(false);

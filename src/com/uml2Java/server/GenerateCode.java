@@ -207,17 +207,10 @@ public class GenerateCode {
           .listTS(isDetails, isAdd, isAction, isOkAction, isList, isForm, detailsName, addFormName, page.getTitle(),
               actionName, otherListName, formName, isOkActionName, typeName, isAddMockData, attributeList);
 
-    String fieldToDisplay = "";
-    if (attributeList.size() >= 2) {
-      fieldToDisplay = attributeList.get(1).getDisplayName();
-    } else if (attributeList.size() == 1) {
-      fieldToDisplay = attributeList.get(0).getDisplayName();
-    }
-
     String htmlFileName = page.getTitle() + ".html";
     String htmlContent = "";
     if (selectedFramework == Framework.IONIC2)
-      htmlContent = GenerateIonic2Utils.listHTML(page.getTitle(), fieldToDisplay, actionName, isAdd, isAction);
+      htmlContent = GenerateIonic2Utils.listHTML(page.getTitle(), attributeList, actionName, isAdd, isAction);
 
     finalResult.put(tsFileName, tsContent);
     finalResult.put(htmlFileName, htmlContent);
